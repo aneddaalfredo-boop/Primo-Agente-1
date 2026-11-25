@@ -1,0 +1,27 @@
+{
+  "name": "La Lampada delle Parole",
+  "short_name": "Lampada",
+  "description": "Impara l'italiano con Gennaro, il Genio della Lampada: duelli, enigmi, storie, pronuncia e tanti giochi di parole.",
+  "lang": "it",
+  "dir": "ltr",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0e0a24",
+  "theme_color": "#0e0a24",
+  "categories": ["education", "games", "kids"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Parola Magica del giorno", "short_name": "Parola Magica", "url": "./#parola", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Ripassa il Grimorio", "short_name": "Grimorio", "url": "./#grimorio", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Eco del Genio: pronuncia", "short_name": "Pronuncia", "url": "./#eco", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Biblioteca delle Storie", "short_name": "Storie", "url": "./#biblioteca", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

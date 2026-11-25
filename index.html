@@ -5,8 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0e0a24">
 <title>La Lampada delle Parole</title>
+<meta name="description" content="Impara l'italiano giocando con Gennaro, il Genio della Lampada: duelli magici, enigmi, storie da leggere, pronuncia, verbi e tanti giochi di parole. Dal livello A1 al B2.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231b1442'/%3E%3Cpath d='M17 39c-6-1.8-8.5 6.5-1.5 7.5' fill='none' stroke='%23e8c15a' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M14 41c0-6 9-9 18-9 8 0 13.5 1.8 15.8 5l7.2-3.8c1.8-.9 3.3.8 2 2.3L48.8 44c-2.3 4-8.8 6.2-16.8 6.2-10 0-18-3.5-18-9.2z' fill='%23e8c15a'/%3E%3Cpath d='M23 33c.5-4 17-4 17.5 0z' fill='%23e8c15a'/%3E%3Ccircle cx='32' cy='27.5' r='2.2' fill='%23e8c15a'/%3E%3Cpath d='M26 50h12l2 4H24z' fill='%23e8c15a'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lampada">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700;800&family=Grenze+Gotisch:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700;800&family=Grenze+Gotisch:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700;800&family=Grenze+Gotisch:wght@500;700&display=swap" rel="stylesheet"></noscript>
 <style>/* VOICE: un genio gentile e teatrale che insegna l'italiano con meraviglia, mai con fretta.
    IDEA: la torre di un mago di notte; ogni attività è un incantesimo e ogni risposta una scintilla.
    PICTURE: vetrate gotiche con la luna, candele sospese, pergamene miniate, oro su indaco profondo.
@@ -27,8 +36,8 @@ button:disabled{cursor:default}
 body[data-atmo=aurora] .sky1{stop-color:#03101e}body[data-atmo=aurora] .sky2{stop-color:#0e3a4c}
 body[data-atmo=tramonto] .sky1{stop-color:#2a1650}body[data-atmo=tramonto] .sky2{stop-color:#e8823e}
 .aur,.sun{display:none}body[data-atmo=aurora] .aur{display:inline}body[data-atmo=tramonto] .sun{display:inline}body[data-atmo=tramonto] .moon{display:none}
-body[data-atmo=tramonto] .stars{opacity:.35}
-.stars circle{fill:#fff}
+body[data-atmo=tramonto] #bg .stars{opacity:.35}
+#bg .stars circle{fill:#fff}
 #gl{position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
 #g2d{position:fixed;z-index:2;display:none;pointer-events:none;filter:drop-shadow(0 0 18px rgba(111,227,255,.45));animation:g2f 4s ease-in-out infinite}
 body.no3d #g2d{display:block}body.no3d #gl{display:none}
@@ -228,8 +237,8 @@ body[data-scr=classe] .qprompt{font-size:clamp(26px,2vw + 16px,48px)}body[data-s
 .wheel{width:min(320px,70vw);aspect-ratio:1;margin:0 auto;border-radius:50%;position:relative;transition:transform 4s cubic-bezier(.15,.7,.1,1);box-shadow:0 0 0 6px #b8862b,0 0 30px rgba(232,193,90,.4)}
 .pointer{width:0;height:0;margin:0 auto -8px;border:16px solid transparent;border-top:26px solid var(--gold);position:relative;z-index:2}
 /* ---------- bazar, trofei, statistiche ---------- */
-.shop{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.it{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px;border-radius:14px;border:1px solid rgba(232,193,90,.3);background:rgba(20,12,50,.6)}
-.it .sw{width:52px;height:52px;border-radius:50%;border:3px solid rgba(255,255,255,.4);box-shadow:0 0 14px rgba(0,0,0,.4)}.it.on{border-color:var(--gold);box-shadow:0 0 18px rgba(232,193,90,.4)}
+.shop{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.shop .it{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px;border-radius:14px;border:1px solid rgba(232,193,90,.3);background:rgba(20,12,50,.6)}
+.shop .it .sw{width:52px;height:52px;border-radius:50%;border:3px solid rgba(255,255,255,.4);box-shadow:0 0 14px rgba(0,0,0,.4)}.shop .it.on{border-color:var(--gold);box-shadow:0 0 18px rgba(232,193,90,.4)}
 .achs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}.ach{display:flex;gap:10px;align-items:center;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);opacity:.5}
 .ach.on{opacity:1;border-color:rgba(232,193,90,.5);background:rgba(232,193,90,.08)}.ach .em{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#fff3c4,#e8c15a 45%,#8a5d17);color:#2a1503}
 .ach b{display:block;font:700 17px var(--ft);color:#fff1c4}.ach small{font-size:13px}
@@ -260,6 +269,8 @@ input[type=range]{width:100%;accent-color:var(--gold)}.sw2{display:flex;align-it
 .miss{display:grid;gap:6px;margin-top:10px;text-align:left}.miss div{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);font-size:15px}
 .cnt{font:700 15px var(--fs);color:var(--gold);letter-spacing:.05em}
 .hide{display:none!important}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.main:focus{outline:none}
 /* ---------- impaginazione: telefono (verticale) ---------- */
 #gcol{left:8px;right:8px;top:calc(var(--top) + 2px);height:25dvh;flex-direction:row-reverse;align-items:stretch}
 #gslot{flex:0 0 38%}#bubble{flex:1;max-height:100%;align-self:center}
@@ -313,6 +324,38 @@ body.calm .room .bub,body.calm .room .pend,body.calm .room .swirl,body.calm .roo
 .pot svg{width:clamp(54px,13vw,80px);height:auto;display:block}
 .lvp{font:800 12px/1.4 var(--fs);padding:1px 8px;border-radius:999px;background:rgba(232,193,90,.18);color:#ffe9a8;border:1px solid rgba(232,193,90,.45)}
 
+/* ---------- potenziamenti: app installabile, obiettivo e parola del giorno ---------- */
+#upd{position:fixed;left:50%;top:calc(var(--top) + 6px);transform:translateX(-50%);z-index:26;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-radius:16px;background:rgba(20,12,50,.97);border:1px solid var(--gold);box-shadow:0 12px 34px rgba(0,0,0,.55),0 0 22px rgba(232,193,90,.25);color:#fff3c9;font-weight:700;width:max-content;max-width:calc(100vw - 24px)}
+#upd .ic{color:var(--gold)}#upd .x2{min-width:40px;height:40px;border-radius:10px;border:1px solid rgba(232,193,90,.35);background:transparent;color:var(--gold);display:grid;place-items:center;padding:0}
+.goal{display:flex;align-items:center;gap:10px;flex-basis:100%;margin-top:2px}.goal .bar{flex:1;height:10px;min-width:80px}.goal.done .bar i{background:linear-gradient(90deg,#2f9e6e,#7cf0b0)}.goal small{white-space:nowrap}.goal .ic{color:var(--gold)}
+.wod{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.wod .e{font-size:64px;line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}.wod .w{font:700 clamp(26px,1.4vw + 16px,36px)/1.1 var(--ft);color:#fff1c4}
+.wod .d{flex:1;min-width:200px}.wod .x{font:italic 500 17px/1.45 var(--fb);color:#e8dcff;margin:6px 0 0}.wod .lab{font:700 12px var(--fs);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.weak{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+/* ---------- Eco del Genio (pronuncia) ---------- */
+.eco-word{font:700 clamp(30px,2vw + 20px,50px)/1.15 var(--ft);color:#7a1f1f;text-align:center}
+.eco-sent{font:500 clamp(21px,1vw + 15px,30px)/1.45 var(--fb);color:var(--ink);text-align:center}
+.mic{position:relative;width:104px;height:104px;border-radius:50%;border:3px solid #fff1bf;background:radial-gradient(circle at 35% 30%,#fff0b8,#e8c15a 45%,#b8862b);color:#3a2105;display:grid;place-items:center;margin:4px auto;box-shadow:0 8px 24px rgba(0,0,0,.35),0 0 0 6px rgba(232,193,90,.2);padding:0}
+.mic .ic{width:44px;height:44px;stroke-width:2.2}.mic:disabled{opacity:.5}
+.mic.on{background:radial-gradient(circle at 35% 30%,#ffd0c0,#e0604a 45%,#9a2a1a);color:#fff;border-color:#ffb3a3}
+.mic.on::before,.mic.on::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:3px solid rgba(224,96,74,.6);animation:micr 1.4s ease-out infinite}.mic.on::after{animation-delay:.7s}
+@keyframes micr{from{transform:scale(1);opacity:1}to{transform:scale(1.6);opacity:0}}
+.miclab{text-align:center;font:700 14px var(--fs);letter-spacing:.06em;color:#8a5d17;text-transform:uppercase}
+.eco-heard{min-height:1.5em;text-align:center;font:italic 500 20px var(--fb);color:#4a3a6a}
+.eco-words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;font:600 21px var(--fb)}.eco-words span{padding:2px 9px;border-radius:8px;border:1px solid transparent}
+.eco-words .ok{background:#bfeed6;color:#1f5a3a;border-color:#2f9e6e}.eco-words .ko{background:#f5c8bc;color:#7a1f10;border-color:#c8402a}
+.meter{height:14px;border-radius:999px;background:rgba(120,80,30,.2);overflow:hidden;max-width:420px;width:100%;margin:6px auto}.meter i{display:block;height:100%;width:var(--p,0%);background:linear-gradient(90deg,#c8402a,#e8c15a 55%,#2f9e6e);transition:width .6s}
+.eco-score{text-align:center;font:700 26px var(--ft)}.eco-score.ok{color:#1f7a52}.eco-score.mid{color:#8a5d17}.eco-score.ko{color:#a8321f}
+/* ---------- Biblioteca delle Storie ---------- */
+.shelf2{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.book{position:relative;text-align:left;display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:16px;border:1px solid rgba(232,193,90,.32);background:linear-gradient(180deg,rgba(36,26,84,.86),rgba(18,12,46,.9));min-height:112px;box-shadow:0 10px 24px rgba(0,0,0,.3);transition:transform .2s}
+.book:hover{transform:translateY(-3px)}.book .cv{flex:none;width:58px;height:78px;border-radius:5px 10px 10px 5px;display:grid;place-items:center;font-size:30px;background:linear-gradient(90deg,rgba(0,0,0,.35) 0 7px,transparent 7px),var(--bc,#5b2a92);box-shadow:0 6px 14px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,240,190,.28)}
+.book b{display:block;font:700 19px/1.12 var(--ft);color:#fff1c4;margin-bottom:4px}.book small{display:block;color:var(--mut);font-size:13.5px;line-height:1.35}.book .bst{color:var(--gold);letter-spacing:2px;margin-top:4px}
+.story{font:500 clamp(19px,.6vw + 15px,24px)/1.75 var(--fb);color:var(--ink)}.story p{margin:0 0 14px}
+.story .sn{border-radius:6px;transition:background .25s}.story .sn.rd{background:rgba(232,193,90,.5);box-shadow:0 0 0 3px rgba(232,193,90,.5)}
+.story .wd{border:0;background:none;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;border-bottom:1px dotted rgba(138,93,23,.55);border-radius:3px}
+.story .wd:hover,.story .wd:focus-visible{background:rgba(232,193,90,.32)}
+.story .tr{display:block;font:italic 500 .78em/1.5 var(--fb);color:#4a3a7a;margin:2px 0 0}
+.gloss{display:flex;flex-wrap:wrap;gap:6px}.gloss span{padding:4px 10px;border-radius:999px;background:#fff8e6;border:1px solid #c9a35a;font:500 15px var(--fb);color:var(--ink)}
 </style>
 </head>
 <body data-lay="title" data-scr="title" data-atmo="notte">
@@ -373,6 +416,15 @@ body.calm .room .bub,body.calm .room .pend,body.calm .room .swirl,body.calm .roo
 <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></symbol>
 <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
 <symbol id="i-translate" viewBox="0 0 24 24"><path d="M3 5h10M8 3v2M5 9c1.5 3 4 5 7 6M11 5c-1 4-3.5 7.5-7 9.5"/><path d="M13 21l4-9 4 9M14.5 18h5"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8.5 21h7"/></symbol>
+<symbol id="i-library" viewBox="0 0 24 24"><path d="M2.5 5.5c3.2-1.2 6.3-1 9.5 1 3.2-2 6.3-2.2 9.5-1v13.5c-3.2-1.2-6.3-1-9.5 1-3.2-2-6.3-2.2-9.5-1z"/><path d="M12 6.5v13.5"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 20V8M7 13l5-5 5 5M4 3.5h16"/></symbol>
+<symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></symbol>
+<symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M8.5 16.5a5 5 0 017 0M5 12.6a10 10 0 015.3-2.6M19 12.6a10 10 0 00-2.4-1.7M2 8.8a15 15 0 015-2.8M22 8.8A15 15 0 0011.5 5"/><circle cx="12" cy="20" r="1"/></symbol>
 </defs></svg>
 
 <div id="scene" aria-hidden="true">
@@ -456,15 +508,17 @@ body.calm .room .bub,body.calm .room .pend,body.calm .room .swirl,body.calm .roo
   </div>
  </header>
  <div id="gcol">
-  <div id="bubble" role="status" aria-live="polite"><div class="bin"><p class="btxt"></p><p class="ben"></p></div>
+  <div id="bubble" role="region" aria-label="Gennaro dice"><div class="bin"><p class="btxt"></p><p class="ben" lang="en"></p></div>
    <div class="bbtn"><button class="mini blisten" aria-label="Ascolta di nuovo"><svg class="ic"><use href="#i-speaker"/></svg></button><button class="mini btrans" aria-label="Traduzione"><svg class="ic"><use href="#i-translate"/></svg></button></div></div>
   <div id="gslot"><button id="ghot" aria-label="Parla con il Genio"></button></div>
  </div>
  <div id="eslot"></div>
- <main id="main" class="main"></main>
+ <main id="main" class="main" tabindex="-1"></main>
 </div>
 <div id="modal"></div>
 <div id="toasts" aria-live="polite"></div>
+<div id="srlive" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="upd" role="alert" hidden></div>
 <script>
 (function(){"use strict";
 /* ===== Shader del Genio Gennaro e dei nemici (raymarching di superfici implicite) =====
@@ -2705,14 +2759,15 @@ const DEF=()=>({v:1,name:'Apprendista',xp:0,gems:40,lvl:1,streak:{n:0,last:''},d
   st:{q:0,ok:0,sk:{},best:0,combo:0,wins:0,duels:0,arena:0,esc:0,aki:0,akiWon:0,akiLost:0,akiRev:0,texts:0,words:0,dict:0,wordle:{p:0,w:0,s:0,best:0,last:''},mem:0,verbs:0,order:0,rev:0,cls:0,time:0},
   ach:{},mis:{d:'',l:[]},srs:{},camp:{},escB:{},look:{skin:'azzurro',turb:'viola',vest:'porpora',lamp:'oro',atmo:'notte'},
   own:{skin:['azzurro'],turb:['viola'],vest:['porpora'],lamp:['oro'],atmo:['notte']},
-  set:{music:0.5,sfx:0.8,voice:true,rate:0.95,pitch:0,voiceName:'',qual:'auto',en:true,lv:1,motion:true,tts:true},
-  lists:[],aki:{learn:{},extra:[]},texts:[],miss:[]});
+  set:{music:0.5,sfx:0.8,voice:true,rate:0.95,pitch:0,voiceName:'',qual:'auto',en:true,lv:1,motion:true,tts:true,haptic:true,goal:50},
+  lists:[],aki:{learn:{},extra:[]},texts:[],miss:[],lib:{}});
 let PROF=Store.get('lampada.v1.profiles',null);
 if(!PROF){PROF={list:[{id:'p1',name:'Apprendista'}],cur:'p1'};Store.set('lampada.v1.profiles',PROF);}
 let S=Object.assign(DEF(),Store.get('lampada.v1.p.'+PROF.cur,{}));
 function deepDef(o,d){for(const k in d){if(o[k]===undefined)o[k]=d[k];else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof o[k]==='object')deepDef(o[k],d[k]);}return o;}
 deepDef(S,DEF());
 let saveT=0;function save(){clearTimeout(saveT);saveT=setTimeout(()=>Store.set('lampada.v1.p.'+PROF.cur,S),300);}
+function saveNow(){clearTimeout(saveT);Store.set('lampada.v1.p.'+PROF.cur,S);}
 function switchProfile(id){Store.set('lampada.v1.p.'+PROF.cur,S);PROF.cur=id;Store.set('lampada.v1.profiles',PROF);S=deepDef(Object.assign(DEF(),Store.get('lampada.v1.p.'+id,{})),DEF());applySettings();refreshTop();}
 /* ---------- livelli e titoli ---------- */
 const need=n=>60+30*(n-1);
@@ -2748,7 +2803,7 @@ function ev(type,n,meta){n=n||1;const st=S.st;
   save();refreshTop();}
 /* ---------- XP, gemme, risposte ---------- */
 function addXP(n){const before=lvlInfo(S.xp).n;S.xp+=n;const day=today();S.days[day]=S.days[day]||{xp:0,q:0,ok:0};S.days[day].xp+=n;const after=lvlInfo(S.xp).n;
-  if(after>before){S.lvl=after;addGems(15,true);setTimeout(()=>levelUp(after),400);if(after>=5)award('lv5');if(after>=10)award('lv10');}touchStreak();save();refreshTop();}
+  if(after>before){S.lvl=after;addGems(15,true);setTimeout(()=>levelUp(after),400);if(after>=5)award('lv5');if(after>=10)award('lv10');}touchStreak();save();refreshTop();goalCheck();}
 function addGems(n,silent){S.gems+=n;save();refreshTop();if(!silent&&n>0){const g=$('#gemc');if(g){g.classList.remove('pulse');void g.offsetWidth;g.classList.add('pulse');}}}
 function spend(n){if(S.gems<n){toast(`${icon('gem')}<div>Ti servono <b>${n}</b> gemme: ne hai ${S.gems}.</div>`,'bad');Snd.fx('ko');return false;}S.gems-=n;save();refreshTop();Snd.fx('gem');return true;}
 function answered(ok,skill,word){const st=S.st,d=today();st.q++;S.days[d]=S.days[d]||{xp:0,q:0,ok:0};S.days[d].q++;const sk=st.sk[skill]=st.sk[skill]||{q:0,ok:0};sk.q++;
@@ -2767,9 +2822,11 @@ function srsReview(w,ok){const now=Date.now();const r=S.srs[w]=S.srs[w]||{b:0,du
 /* ---------- toast, modale ---------- */
 function toast(html,kind,ms){const t=document.createElement('div');t.className='toast '+(kind||'');t.innerHTML=html;$('#toasts').appendChild(t);requestAnimationFrame(()=>t.classList.add('in'));
   setTimeout(()=>{t.classList.remove('in');setTimeout(()=>t.remove(),400);},ms||2600);}
-const Modal={open(html,o){o=o||{};const m=$('#modal');m.innerHTML=`<div class="mbox ${o.cls||''}" role="dialog" aria-modal="true">${o.noClose?'':`<button class="mx" aria-label="Chiudi">${icon('x')}</button>`}${html}</div>`;
-  m.classList.add('on');const close=()=>Modal.close(o.onClose);const x=$('.mx',m);if(x)x.onclick=close;m.onclick=e=>{if(e.target===m&&!o.noClose)close();};return $('.mbox',m);},
-  close(cb){const m=$('#modal');m.classList.remove('on');m.innerHTML='';if(cb)cb();}};
+const Modal={open(html,o){o=o||{};const m=$('#modal');if(!Modal._ret)Modal._ret=document.activeElement;m.innerHTML=`<div class="mbox ${o.cls||''}" role="dialog" aria-modal="true">${o.noClose?'':`<button class="mx" aria-label="Chiudi">${icon('x')}</button>`}${html}</div>`;
+  m.classList.add('on');const close=()=>Modal.close(o.onClose);const x=$('.mx',m);if(x)x.onclick=close;m.onclick=e=>{if(e.target===m&&!o.noClose)close();};
+  const box=$('.mbox',m);const h=box.querySelector('h2,h3');if(h){h.id='mdlh';box.setAttribute('aria-labelledby','mdlh');}
+  requestAnimationFrame(()=>{if(!box.isConnected||box.contains(document.activeElement))return;const f=box.querySelector('input:not([readonly]),textarea:not([readonly]),select,button:not(.mx):not([disabled])')||box.querySelector('.mx');if(f)try{f.focus({preventScroll:true});}catch(e){}});return box;},
+  close(cb){const m=$('#modal');const was=m.classList.contains('on');m.classList.remove('on');m.innerHTML='';const r=Modal._ret;Modal._ret=null;if(was&&r&&r.isConnected&&r.focus)try{r.focus({preventScroll:true});}catch(e){}if(cb)cb();}};
 function levelUp(n){Snd.fx('level');FX.confetti(140);Stage.act('cheer');
   Modal.open(`<div class="lvup"><div class="lvring">${n}</div><h2>Livello ${n}!</h2><p>Ora sei <b>${esc(titleOf(n))}</b>. Il Genio ti regala <b>15 gemme</b>.</p><button class="btn gold" data-ok>Avanti</button></div>`).querySelector('[data-ok]').onclick=()=>Modal.close();
   Genie.say(`Straordinario! Sei arrivato al livello ${n}. Ora sei ${titleOf(n)}!`,{act:null,keep:true});}
@@ -2778,7 +2835,7 @@ const Genie=(()=>{let tw=0,queue=Promise.resolve(),curEn='',curTxt='';
   function el(){return $('#bubble');}
   function show(on){const b=el();if(b)b.classList.toggle('on',!!on);}
   function say(text,o){o=o||{};const b=el();if(!b)return Promise.resolve();clearInterval(tw);curTxt=text;curEn=o.en||'';
-    const t=$('.btxt',b);const plain=String(text);b.classList.add('on');b.classList.toggle('hasen',!!curEn);$('.ben',b).classList.remove('open');$('.ben',b).textContent=curEn;
+    const t=$('.btxt',b);const plain=String(text);b.classList.add('on');const sr=$('#srlive');if(sr){sr.textContent='';setTimeout(()=>{sr.textContent=Snd.Voice.clean(plain);},40);}b.classList.toggle('hasen',!!curEn);$('.ben',b).classList.remove('open');$('.ben',b).textContent=curEn;
     if(o.act!==null&&o.act!==undefined)Stage.act(o.act||'talk');const html=o.html||esc(plain);
     let spoken=0;if(S.set.voice&&o.tts!==false)spoken=Snd.Voice.speak(o.speak||plain);if(!spoken)Stage.talk(Math.min(4,plain.length/28));
     if(S.set.motion===false||FX.reduced||o.instant){t.innerHTML=html;return Promise.resolve();}
@@ -2816,6 +2873,7 @@ function go(name,arg){const sc=SCR[name];if(!sc)return;if(gest)Snd.init();
   Snd.play(sc.music||'calm');Stage.enemy(null);if(name!=='title')Stage.appear();Stage.base(sc.pose||'idle');Stage.yaw(sc.yaw||0);Stage.magic(sc.magic||'#6fe3ff');
   const m=$('#main');m.className='main '+(sc.cls||'');m.innerHTML='';m.scrollTop=0;
   try{sc.enter(m,arg);}catch(e){console.error(e);m.innerHTML=`<div class="card"><p>Ops, qualcosa non ha funzionato.</p><button class="btn" onclick="go('hub')">Torna alla mappa</button></div>`;}
+  if(!m.contains(document.activeElement)&&!$('#modal').classList.contains('on'))try{m.focus({preventScroll:true});}catch(e){}
   requestAnimationFrame(()=>{Stage.refit();});Stage.poke();}
 function back(){if(cur&&cur.back)return cur.back();go('hub');}
 
@@ -2966,7 +3024,7 @@ function render(el,q,o){o=o||{};const sk=QG.SK[q.skill];let done=false;if(window
     if(q.exp)h+=`<div class="fbexp">${q.exp}</div>`;fb.innerHTML=h;
     if(res.ok&&S.set.voice&&o.speak!==false&&q.full&&q.kind!=='mc'&&!q.listen)Snd.Voice.speak(q.full.replace(/↔/g,','),{noLips:true});
     if(res.ok&&q.full&&q.kind==='mc'&&S.set.voice&&o.speak!==false&&(q.listen||q.skill==='ore'||q.skill==='dia'))Snd.Voice.speak(q.full.split('\n').pop().replace('— ',''),{noLips:true});
-    Snd.fx(res.ok?'ok':'ko');answered(res.ok,q.skill,q.word);if(o.onDone)o.onDone(res);}
+    Snd.fx(res.ok?'ok':'ko');buzz(res.ok?12:[35,45,35]);answered(res.ok,q.skill,q.word);noteMiss(q,res.ok,o);if(o.onDone)o.onDone(res);}
   const api={finish,get done(){return done},timeout(){finish({ok:false,timeout:true});reveal();},q};
   function reveal(){if(q.kind==='mc'){$$('.opt',body).forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('ok');});}}
   if(q.kind==='mc'||q.kind==='tf'){body.innerHTML=`<div class="opts ${q.pics?'pics':''} n${q.opts.length}">${q.opts.map((t,i)=>`<button class="opt" data-i="${i}"><kbd>${i+1}</kbd><span>${esc(t)}</span></button>`).join('')}</div>`;
@@ -3147,7 +3205,7 @@ SCR.insegnante={lay:'side',title:'Pannello Insegnante',music:'calm',enter(m){Gen
    const off=$('[data-off]',m);if(off)off.onclick=()=>{S.curList=null;save();draw();};
    $$('[data-g]',m).forEach(b=>b.onclick=()=>go(b.dataset.g));
    $('[data-save]',m).onclick=()=>{const name=$('#lname').value.trim()||'Lista '+(S.lists.length+1);const items=$('#ltext').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const [it,en]=l.split('=').map(x=>x&&x.trim());return {it,en:en||''};}).filter(x=>x.it);
-     if(items.length<4){toast(`${icon('x')}<div>Servono almeno 4 parole.</div>`,'bad');return;}const id='l'+Date.now();S.lists.push({id,name,items});S.curList=id;save();draw();Genie.say(`Ho imparato la lista «${name}»: ${items.length} parole nuove nel mio grimorio!`,{act:'happy'});};};draw();}};
+     if(items.length<4){toast(`${icon('x')}<div>Servono almeno 4 parole.</div>`,'bad');return;}const id='l'+Date.now();S.lists.push({id,name,items});S.curList=id;save();draw();Genie.say(`Ho imparato la lista «${name}»: ${items.length} parole nuove nel mio grimorio!`,{act:'happy'});};teachExtras(m);};draw();}};
 
 /* ===== Modalità Classe: squadre, ruota, punteggi ===== */
 const TEAMC=[['Draghi','#ff7a5a'],['Fenici','#e8c15a'],['Unicorni','#6fe3ff'],['Grifoni','#7cf0b0']];
@@ -3170,7 +3228,7 @@ SCR.classegioco={lay:'side',title:'Modalità Classe',music:'game',back(){go('cla
   function next(){if(st.k>=c.r)return end();st.k++;const q=QG.make(rnd(sk),'mc');const ga=$('#ga');
     ga.innerHTML=`<div class="row sb"><span class="cnt">Domanda ${st.k} di ${c.r}</span><button class="btn sm ghost" data-wh>${icon('dice')}<span>Ruota: chi risponde?</span></button></div><div id="qq" style="margin-top:8px"></div>`;
     $('[data-wh]',ga).onclick=wheel;Genie.say(q.say&&!q.prompt?q.say:(q.prompt||q.sub).replace(/<[^>]+>/g,' ').replace(/___/g,'…').replace(/\s+/g,' ').trim()||q.sub,{act:'present',tts:!q.prompt||!q.prompt.startsWith('<svg')});
-    QUI.render($('#qq'),q,{label:QG.SK[q.skill]?QG.SK[q.skill].name:'',noFocus:true,onDone:res=>{const box=document.createElement('div');box.className='row c';box.style.marginTop='12px';
+    QUI.render($('#qq'),q,{label:QG.SK[q.skill]?QG.SK[q.skill].name:'',noFocus:true,noMiss:true,onDone:res=>{const box=document.createElement('div');box.className='row c';box.style.marginTop='12px';
       box.innerHTML=`<span class="cnt">Punto a:</span>${T.map((t,i)=>`<button class="btn" data-w="${i}" style="border-color:${t.col};color:${t.col}">${esc(t.name)}</button>`).join('')}<button class="btn ghost" data-w="-1">Nessuno</button>`;
       $('#qq .q').appendChild(box);$$('[data-w]',box).forEach(b=>b.onclick=()=>{const i=+b.dataset.w;if(i>=0)point(i,1);next();});}});}
   function wheel(){const n=T.length,seg=360/n;const grad=T.map((t,i)=>`${t.col} ${i*seg}deg ${(i+1)*seg}deg`).join(',');const pick=rint(0,n-1);
@@ -3217,14 +3275,14 @@ const SPELLS={fulmine:{n:'Fulmine',ic:'bolt',d:26,f:'type',c:'gold',t:30,txt:'Sc
 SCR.duello={lay:'side',title:'Duello Magico',music:'battle',pose:'ready',enter(m){Genie.show(true);const done=FOES.filter(f=>S.camp[f.id]).length;Stage.precompile(1200,nextFoeTypes());
   const ch2=FOES.filter(f=>f.ch===2),d2=ch2.filter(f=>S.camp[f.id]).length;
   Genie.say(!done?'Il regno è pieno di mostri che rubano le parole! Per lanciare un incantesimo devi rispondere bene. Cominciamo dalla palude, oppure esplora le Terre Selvagge!':
-    d2===0?`Hai sconfitto ${done} nemici su ${FOES.length}. Nelle Terre Selvagge ci sono dieci mostri nuovi: li sfidiamo?`:`Hai sconfitto ${done} nemici su ${FOES.length}. Chi sfidiamo adesso?`,{act:'point',en:'The kingdom is full of monsters that steal words! To cast a spell you must answer correctly.'});
+    (()=>{const fresh=CHAPTERS.find(c=>!FOES.some(f=>f.ch===c.n&&S.camp[f.id]));return fresh?`Hai sconfitto ${done} nemici su ${FOES.length}. ${fresh.name}: ci sono ${FOES.filter(f=>f.ch===fresh.n).length} avversari che non hai ancora sfidato. Andiamo?`:`Hai sconfitto ${done} nemici su ${FOES.length}. Chi sfidiamo adesso?`;})(),{act:'point',en:'The kingdom is full of monsters that steal words! To cast a spell you must answer correctly.'});
   const node=(f,i)=>{const lock=foeLocked(i),st=S.camp[f.id]||0;return `<button class="node ${lock?'lock':''}" data-i="${i}" ${lock?'disabled':''} style="--c1:${f.c1};--c2:${f.c2}">
      <span class="med">${lock?icon('lock'):`<b style="font:700 28px var(--ft);color:#fff;text-shadow:0 2px 4px #000">${esc(f.name[0])}</b>`}</span><b>${esc(f.name)}</b><small class="mut">${esc(f.sk.map(k=>QG.SK[k].name).join(' · '))}</small>
      <span class="stars">${'★'.repeat(st)}${'☆'.repeat(3-st)}</span>${f.boss?'<span class="pill">Boss</span>':''}</button>`;};
   const stars=fs=>fs.reduce((a,f)=>a+(S.camp[f.id]||0),0);
   m.innerHTML=`<section class="card"><div class="row sb"><h3 style="margin:0">Duello Magico</h3><span class="pill">${icon('star')} ${stars(FOES)} / ${FOES.length*3}</span></div>
-    <p class="mut" style="margin-bottom:0">Ogni nemico conosce un argomento. In ogni capitolo, batti un nemico per sbloccare il successivo. I due capitoli sono aperti fin dall'inizio.</p></section>
-   ${CHAPTERS.map(c=>{const fs=FOES.map((f,i)=>[f,i]).filter(([f])=>f.ch===c.n);return `<section class="card"><div class="row sb"><h3 style="margin:0">Capitolo ${c.n===1?'I':'II'} · ${esc(c.name)}</h3><span class="pill">${icon('star')} ${stars(fs.map(x=>x[0]))} / ${fs.length*3}</span></div>
+    <p class="mut" style="margin-bottom:0">Ogni nemico conosce un argomento. In ogni capitolo, batti un nemico per sbloccare il successivo. Tutti i capitoli sono aperti fin dall'inizio: il terzo è per apprendisti esperti.</p></section>
+   ${CHAPTERS.map(c=>{const fs=FOES.map((f,i)=>[f,i]).filter(([f])=>f.ch===c.n);return `<section class="card"><div class="row sb"><h3 style="margin:0">Capitolo ${['I','II','III','IV','V'][c.n-1]||c.n} · ${esc(c.name)}</h3><span class="pill">${icon('star')} ${stars(fs.map(x=>x[0]))} / ${fs.length*3}</span></div>
     <p class="mut">${esc(c.desc)}</p><div class="camp">${fs.map(([f,i])=>node(f,i)).join('')}</div></section>`;}).join('')}
    <section class="card"><div class="camp"><button class="node" data-arena style="--c1:#8a1f3a;--c2:#ff9a6a"><span class="med">${icon('sword')}</span><b>Arena infinita</b><small class="mut">Ondate infinite con tutti i ${FOES.length} mostri, sempre più forti</small><span class="pill">Record: ${S.st.arena||0}</span></button></div></section>`;
   $$('[data-i]',m).forEach(b=>b.onclick=()=>go('battaglia',{i:+b.dataset.i}));$('[data-arena]',m).onclick=()=>go('battaglia',{arena:true,wave:1});}};
@@ -3275,7 +3333,7 @@ SCR.battaglia={lay:'battle',title:'',music:'battle',pose:'ready',yaw:0.38,magic:
       hud();Tm.set(cb,500);},{arc:0.2,size:15});},280);}
   function win(){Stage.enemyAct('die');Snd.fx('win');FX.confetti(140);Stage.act('cheer');Snd.play('hub');S.st.duels++;
     const stars=st.php>=70?3:st.php>=35?2:1,xp=20+(arena?wave*4:idx*6),gems=8+(arena?wave*2:idx*3);addXP(xp);addGems(gems);ev('duel',1);
-    if(!arena){S.camp[f.id]=Math.max(S.camp[f.id]||0,stars);if(f.id==='drago')award('drago');if(f.id==='arcimago')award('arcimago');if(f.id==='dragoombra')award('terre');if(FOES.every(x=>S.camp[x.id]))award('mostri21');
+    if(!arena){S.camp[f.id]=Math.max(S.camp[f.id]||0,stars);if(f.id==='drago')award('drago');if(f.id==='arcimago')award('arcimago');if(f.id==='dragoombra')award('terre');if(f.id==='tempesta')award('cap3');if(FOES.every(x=>S.camp[x.id]))award('mostri21');
       const nf=FOES[idx+1];if(nf)Stage.precompile(0,[nf.type]);}else{S.st.arena=Math.max(S.st.arena||0,wave);if(wave>=10)award('arena10');}save();
     Genie.say(rnd(['Vittoria! Le parole sono di nuovo libere!','Che incantesimi! Sei un vero mago della lingua!','Evviva! Il nemico è sparito in una nuvola di fumo!']),{act:null});
     area.innerHTML=`<section class="card res"><h2>Vittoria!</h2><div class="stars3">${[0,1,2].map(i=>i<stars?'★':'<span class="off">★</span>').join('')}</div>
@@ -3366,7 +3424,7 @@ const AKQ=[['animale','È un animale?','Categoria'],['persona','È una persona?'
  ['arancione','Di solito è arancione?','Colori'],['blu','Di solito è blu o azzurro?','Colori'],['rosa','Di solito è rosa?','Colori'],['grigio','Di solito è grigio?','Colori']];
 const AKQM={};AKQ.forEach(q=>AKQM[q[0]]=q);
 const Aki=(()=>{
-  function words(){return LEX.concat((S.aki.extra||[]).map(x=>({it:x.it,g:'m',em:'',en:'',lv:1,th:'extra',tags:new Set(),extra:x})));}
+  function words(){return LEX.filter(w=>!w.tags.has('astratto')).concat((S.aki.extra||[]).map(x=>({it:x.it,g:'m',em:'',en:'',lv:1,th:'extra',tags:new Set(),extra:x})));}
   function p0(w,t){const T=w.tags;if(w.extra){const c=w.extra.t[t];return c?(c[0]+0.5)/(c[0]+c[1]+1):0.3;}
     let has=t==='sport'?T.has('sport')||T.has('gioco'):t==='persona'?T.has('persona')||T.has('mestiere'):T.has(t);if(has)return 0.93;
     if(t==='oggetto'&&T.has('vestito'))return 0.55;if(t==='natura'&&(T.has('animale')&&T.has('selvatico')||T.has('frutta')||T.has('verdura')))return 0.55;if(t==='casa'&&T.has('domestico'))return 0.45;
@@ -3386,7 +3444,7 @@ const Aki=(()=>{
 function akiSentence(q,yes){const s=q.replace(/\?$/,'');const low=s.charAt(0).toLowerCase()+s.slice(1);if(yes)return 'Sì, '+low+'.';if(/^Di solito /.test(s))return 'No, di solito non '+s.slice(10)+'.';return 'No, non '+low+'.';}
 SCR.indovino={lay:'aki',title:'Genio Indovino',music:'aki',pose:'magic',magic:'#b98cff',enter(m){Genie.show(true);Stage.base('magic');
   Genie.say('Guarda nella mia sfera di cristallo... Vuoi che io indovini la parola che pensi, o vuoi provare tu a indovinare la mia?',{act:null,en:'Look into my crystal ball... Shall I guess the word you are thinking of, or will you try to guess mine?'});
-  const ex=sample(LEX.filter(w=>w.em&&w.lv<=2),12);
+  const ex=sample(LEX.filter(w=>w.em&&w.lv<=2&&!w.tags.has('astratto')),12);
   m.innerHTML=`<section class="card"><h3>Il Genio legge nel pensiero</h3><p>Pensa a una cosa, un animale, una persona o un luogo. Gennaro ti farà domande in italiano: rispondi <b>sì</b> o <b>no</b>. Riuscirà a indovinare?</p>
     <p class="mut">Per esempio:</p><div class="row" style="font-size:30px;gap:12px">${ex.map(w=>`<span title="${esc(Art.full(w,false))}">${w.em}</span>`).join('')}</div>
     <div class="row" style="margin-top:14px"><button class="btn gold big" data-a>${icon('ball')}<span>Indovina tu, Genio!</span></button><button class="btn big" data-b>${icon('eye')}<span>Indovino io!</span></button></div></section>
@@ -3412,7 +3470,7 @@ function akiGuess(m){const g=Aki.newGame();Snd.fx('sparkle');Stage.act('magic');
       <div class="answers" style="margin-top:10px"><button class="ans y" data-y>Sì, esatto!</button><button class="ans n" data-n>No</button></div></section>`;
     $('[data-y]',m).onclick=()=>{Aki.learn(w.it,g.hist);S.st.aki++;S.st.akiWon++;award('aki1');ev('aki',1);addXP(10);Snd.fx('win');FX.confetti(80);Stage.base('idle');Stage.act('cheer');
       Genie.say(rnd(['Lo sapevo! Il Genio non sbaglia mai... quasi mai!','Evviva! La mia sfera non mente!']),{act:null});wordCard(m,w,`Indovinato in ${g.n} domande!`);};
-    $('[data-n]',m).onclick=()=>{g.rej.add(w.it);Snd.fx('ko');Stage.act('shrug');if(g.guesses>=3||g.n>=30)return giveUp();Genie.say('Hmm, allora continuo a cercare…',{act:'think'});setTimeout(ask,900);};}
+    $('[data-n]',m).onclick=()=>{g.rej.add(w.it);Snd.fx('ko');Stage.act('shrug');if(g.guesses>=3||g.n>=30)return giveUp();Genie.say('Hmm, allora continuo a cercare…',{act:'think'});Tm.set(ask,900);};}
   function giveUp(){Stage.base('idle');Stage.act('shrug');Snd.fx('lose');S.st.aki++;S.st.akiLost++;award('akiwin');ev('aki',1);addXP(8);save();
     Genie.say('Mi arrendo! Sei più furbo del Genio. A che cosa pensavi? Scrivilo e io lo imparerò.',{act:null});
     m.innerHTML=`<section class="card parch q"><h3>Il Genio si arrende!</h3><p>A che cosa pensavi? Scrivi la parola (senza articolo).</p>
@@ -3425,14 +3483,14 @@ function akiGuess(m){const g=Aki.newGame();Snd.fx('sparkle');Stage.act('magic');
         m.innerHTML=`<section class="card res"><h2>${esc(v)}</h2><p>Gennaro ha aggiunto questa parola alla sua sfera di cristallo.</p><div class="row c"><button class="btn gold" data-again>${icon('refresh')}<span>Gioca ancora</span></button><button class="btn" data-h>${icon('home')}<span>Mappa</span></button></div></section>`;
         $('[data-again]',m).onclick=()=>akiGuess(m);$('[data-h]',m).onclick=()=>go('hub');}};
     setTimeout(()=>$('.inp',m).focus(),200);}
-  Genie.say('Pensa a una parola... Pronto? Cominciamo!',{act:'magic'});setTimeout(ask,1600);
+  Genie.say('Pensa a una parola... Pronto? Cominciamo!',{act:'magic'});Tm.set(ask,1600);
   m.innerHTML=`<section class="card parch q" style="text-align:center"><div class="akiq">Pensa a una parola…</div><p class="mut">La sfera si sta accendendo</p></section>`;}
 function wordCard(m,w,note){const ex=SENTS.find(s=>new RegExp('\\b'+w.it+'\\b','i').test(s.it));
   m.innerHTML=`<section class="card parch q guess"><div class="akin">${esc(note)}</div>${w.em?`<div class="qpic">${w.em}</div>`:''}<div class="w">${esc(Art.full(w,false))}</div>
     <p>${w.pl?`Plurale: <b>${esc(Art.full(w,true))}</b>`:'Non ha il plurale'}${w.en?` <span class="en">· ${esc(w.en)}</span>`:''}</p>${ex?`<p class="mut"><i>«${esc(ex.it)}»</i></p>`:''}
     <div class="row c"><button class="btn ghost" data-l>${icon('speaker')}<span>Ascolta</span></button><button class="btn gold" data-again>${icon('refresh')}<span>Gioca ancora</span></button><button class="btn" data-h>${icon('home')}<span>Mappa</span></button></div></section>`;
   srsSeen(w.it,true);save();$('[data-l]',m).onclick=()=>Snd.Voice.speak(Art.full(w,false)+(ex?'. '+ex.it:''),{force:true});$('[data-again]',m).onclick=()=>go('indovino');$('[data-h]',m).onclick=()=>go('hub');}
-function akiReverse(m){const pool=LEX.filter(w=>w.lv<=Math.min(4,S.set.lv+1)&&w.em);const w=rnd(pool);const asked=[];let hints=0,done=false;Stage.base('magic');
+function akiReverse(m){const pool=LEX.filter(w=>w.lv<=Math.min(4,S.set.lv+1)&&w.em&&!w.tags.has('astratto'));const w=rnd(pool);const asked=[];let hints=0,done=false;Stage.base('magic');
   Genie.say('Ho scelto una parola e l\'ho nascosta nella sfera. Fammi delle domande: risponderò sì o no. Quando hai un\'idea, prova a indovinare!',{act:'magic'});
   const groups=[...new Set(AKQ.map(q=>q[2]))];
   function draw(){m.innerHTML=`<section class="card parch q"><div class="row sb"><span class="akin">Domande: ${asked.length} / 20</span><span class="pill">Lettere: ${hints>1?w.it.length:'?'}</span></div>
@@ -3469,10 +3527,10 @@ SCR.memoria={lay:'side',title:'Memoria delle Rune',music:'game',enter(m,arg){Gen
   $$('[data-t]',m).forEach(b=>b.onclick=()=>go('memoria',{t:b.dataset.t}));
   $$('.mc',m).forEach(b=>b.onclick=()=>{if(st.lock)return;const i=+b.dataset.i,c=cards[i];if(b.classList.contains('open')||b.classList.contains('done'))return;Snd.fx('flip');b.classList.add('open');st.open.push([b,c]);
     if(st.open.length<2)return;st.moves++;$('#mv').textContent='Mosse: '+st.moves;const [[b1,c1],[b2,c2]]=st.open;st.open=[];
-    if(c1.k===c2.k){st.done++;setTimeout(()=>{b1.classList.add('done');b2.classList.add('done');Snd.fx('ok');const r=b2.getBoundingClientRect();FX.spark(r.left+r.width/2,r.top+r.height/2,24,'gold',150,0.8,6);
+    if(c1.k===c2.k){st.done++;Tm.set(()=>{b1.classList.add('done');b2.classList.add('done');Snd.fx('ok');const r=b2.getBoundingClientRect();FX.spark(r.left+r.width/2,r.top+r.height/2,24,'gold',150,0.8,6);
         Snd.Voice.speak([c1,c2].filter(x=>!x.e&&!x.en).map(x=>x.t).join(', '));if(c1.w)srsSeen(c1.w,true);Stage.act('nod',{dur:0.8});
         if(st.done===pairs.length)finish();},350);}
-    else{st.lock=true;st.miss++;setTimeout(()=>{b1.classList.remove('open');b2.classList.remove('open');st.lock=false;},950);}});
+    else{st.lock=true;st.miss++;Tm.set(()=>{b1.classList.remove('open');b2.classList.remove('open');st.lock=false;},950);}});
   function finish(){const secs=Math.round((Date.now()-st.t0)/1000),perfect=st.moves<=pairs.length+4;S.st.mem++;ev('mem',1);if(perfect)award('mem');const gems=perfect?15:8;addGems(gems);addXP(12);save();
     Snd.fx('win');FX.confetti(100);Stage.act('cheer');Genie.say(perfect?'Che memoria! Neanche un elefante ricorda così bene!':'Tutte le coppie trovate! Bravissimo!',{act:null});
     const r=document.createElement('section');r.className='card res';r.style.marginTop='12px';r.innerHTML=`<h2>Completata!</h2><p>${st.moves} mosse · ${secs} secondi · +${gems} gemme</p><div class="row c"><button class="btn gold" data-re>${icon('refresh')}<span>Nuova partita</span></button><button class="btn" data-h>${icon('home')}<span>Mappa</span></button></div>`;
@@ -3518,7 +3576,7 @@ SCR.parola={lay:'side',title:'Parola Magica',music:'game',pose:'think',enter(m,a
     if(k==='⌫'||k==='Backspace'){st.cur=st.cur.slice(0,-1);Snd.fx('tap');drawGrid();return;}
     if(k==='⏎'||k==='Enter'){if(st.cur.length<5){FX.shake($('#wg'),6);return;}if(!W5.valid.has(st.cur)){toast(`${icon('rune')}<div>«${esc(st.cur)}»: non la conosco! Prova un'altra parola.</div>`,'bad');FX.shake($('#wg'),6);Snd.fx('ko');return;}
       const c=score(st.cur);st.rows.push({w:st.cur,c});[...st.cur].forEach((ch,i)=>{const prev=st.keys[ch];if(c[i]==='g'||(c[i]==='y'&&prev!=='g')||(!prev))st.keys[ch]=c[i];});
-      const win=st.cur===word;st.cur='';drawGrid(st.rows.length-1);Snd.fx('flip');setTimeout(()=>{drawKb();if(win)finish(true);else if(st.rows.length>=6)finish(false);else if(c.some(x=>x!=='x'))Stage.act('nod');},900);return;}
+      const win=st.cur===word;st.cur='';drawGrid(st.rows.length-1);Snd.fx('flip');Tm.set(()=>{drawKb();if(win)finish(true);else if(st.rows.length>=6)finish(false);else if(c.some(x=>x!=='x'))Stage.act('nod');},900);return;}
     k=k.toLowerCase();if(/^[a-zàèéìòù]$/.test(k)&&st.cur.length<5){st.cur+=Txt.deacc(k);Snd.fx('tap');drawGrid();}}
   const kh=e=>{if(!m.isConnected){removeEventListener('keydown',kh);return;}if(e.ctrlKey||e.metaKey||e.altKey)return;if(/^[a-zA-Zàèéìòù]$/.test(e.key)||e.key==='Enter'||e.key==='Backspace'){e.preventDefault();key(e.key);}};addEventListener('keydown',kh);
   function finish(win){st.over=true;const n=st.rows.length;if(daily){wst.p++;wst.last=d;if(win){wst.w++;wst.s++;wst.best=Math.max(wst.best,wst.s);}else wst.s=0;}
@@ -3545,9 +3603,9 @@ SCR.quiz={lay:'side',title:'Quiz Magico',music:'game',enter(m){Genie.show(true);
    <section class="card"><p class="mut"><small>Record a tempo: ${S.st.blitz||0} · Record sopravvivenza: ${S.st.surv||0}</small></p></section>`;
    $$('[data-g]',m).forEach(b=>b.onclick=()=>{c.g=b.dataset.g;c.sk=null;draw();});$$('[data-sk]',m).forEach(b=>b.onclick=()=>{c.sk=c.sk===b.dataset.sk?null:b.dataset.sk;draw();});
    $$('[data-m]',m).forEach(b=>b.onclick=()=>{c.mode=b.dataset.m;draw();});$$('[data-f]',m).forEach(b=>b.onclick=()=>{c.fmt=b.dataset.f;draw();});
-   $('[data-go]',m).onclick=()=>{save();go('quizgioco',{sk:c.sk?[c.sk]:skillsOf(c.g),mode:c.mode,fmt:c.fmt,label:c.sk?QG.SK[c.sk].name:c.g});};};draw();}};
+   $('[data-go]',m).onclick=()=>{save();go('quizgioco',{sk:c.sk?[c.sk]:skillsOf(c.g),mode:c.mode,fmt:c.fmt,label:c.sk?QG.SK[c.sk].name:c.g});};quizExtras(m);};draw();}};
 SCR.quizgioco={lay:'side',title:'Quiz Magico',music:'game',back(){go('quiz');},enter(m,cfg){Genie.show(true);
-  const st={n:0,ok:0,score:0,streak:0,lives:3,miss:[],pw:{half:2,skip:2,freeze:1,hint:1},left:60,frozen:0,over:false,api:null};const N=cfg.mode==='classic'?10:999;
+  const st={n:0,ok:0,score:0,streak:0,lives:3,miss:[],pw:{half:2,skip:2,freeze:1,hint:1},left:60,frozen:0,over:false,api:null};const N=cfg.errs?cfg.errs.length:cfg.mode==='classic'?10:999;
   m.innerHTML=`<section class="card"><div class="row sb"><span class="cnt" id="qn"></span><div class="row"><span class="pill" id="qs"></span><span class="pill" id="qx"></span></div></div>
    <div class="row" style="margin-top:8px"><button class="btn sm ghost" data-p="half">${icon('half')}<span>50/50</span></button><button class="btn sm ghost" data-p="skip">${icon('skip')}<span>Salta</span></button>
    ${cfg.mode==='blitz'?`<button class="btn sm ghost" data-p="freeze">${icon('snow')}<span>Ferma il tempo</span></button>`:''}<button class="btn sm ghost" data-p="hint">${icon('bulb')}<span>Chiedi al Genio</span></button></div>
@@ -3556,7 +3614,7 @@ SCR.quizgioco={lay:'side',title:'Quiz Magico',music:'game',back(){go('quiz');},e
     $('#qs').innerHTML=`${icon('star')} ${st.score}`;$('#qx').innerHTML=`${icon('flame')} ${st.streak}`;
     $$('[data-p]',m).forEach(b=>{const k=b.dataset.p;b.disabled=st.pw[k]<=0;b.querySelector('span').textContent=({half:'50/50',skip:'Salta',freeze:'Ferma il tempo',hint:'Chiedi al Genio'})[k]+` (${st.pw[k]})`;});};
   if(cfg.mode==='blitz')Tm.int(()=>{if(st.over)return;if(st.frozen>0){st.frozen-=0.1;return;}st.left-=0.1;const tb=$('#tb');if(tb)tb.style.setProperty('--p',Math.max(0,st.left/60*100)+'%');if(Math.floor(st.left*10)%10===0)hud();if(st.left<=0)end();},100);
-  function next(){if(st.over)return;if(st.n>=N||st.lives<=0)return end();st.n++;hud();const q=QG.make(rnd(cfg.sk),cfg.fmt);const box=$('#qa');
+  function next(){if(st.over)return;if(st.n>=N||st.lives<=0)return end();st.n++;hud();const q=cfg.errs?JSON.parse(JSON.stringify(cfg.errs[st.n-1])):QG.make(rnd(cfg.sk),cfg.fmt);const box=$('#qa');
     st.api=QUI.render(box,q,{label:cfg.label,onDone:res=>{if(st.over)return;
       if(res.ok){st.ok++;st.streak++;const pts=10+Math.min(st.streak-1,5)*2;st.score+=pts;addXP(2);const r=box.getBoundingClientRect();FX.text(r.left+r.width/2,r.top+40,'+'+pts,'#ffe17a',30);
         if(st.streak%5===0){Stage.act('cheer');Genie.say(`${st.streak} di fila! Sei una scintilla!`,{act:null});FX.confetti(40);}else Stage.act(rnd(['nod','happy']),{dur:1});}
@@ -3572,7 +3630,7 @@ SCR.quizgioco={lay:'side',title:'Quiz Magico',music:'game',back(){go('quiz');},e
     Genie.say(acc>=90?'Perfetto! La lampada brilla per te!':acc>=60?'Molto bene! Ancora un po\' di pratica e sarai un mago.':'Non è andata male: ripassa le risposte giuste e riprova!',{act:acc>=60?'cheer':'shrug'});
     $('#qa').innerHTML=`<section class="card res"><h2>${cfg.mode==='classic'?`${st.ok} / ${N}`:st.ok+' risposte giuste'}</h2><div class="big">${st.score}</div><p>punti · ${acc}% di precisione · +${gems} gemme</p>${missList(st.miss)}
      <div class="row c" style="margin-top:12px"><button class="btn gold" data-re>${icon('refresh')}<span>Gioca ancora</span></button><button class="btn" data-q>${icon('scroll')}<span>Cambia argomento</span></button></div></section>`;
-    $('[data-re]').onclick=()=>go('quizgioco',cfg);$('[data-q]').onclick=()=>go('quiz');}
+    $('[data-re]').onclick=()=>{if(cfg.errs){const c2=errCfg();if(c2)go('quizgioco',c2);else go('quiz');}else go('quizgioco',cfg);};$('[data-q]').onclick=()=>go('quiz');}
   hud();next();}};
 
 /* ===== Lo Scriba: scrittura guidata con analisi offline ===== */
@@ -3703,7 +3761,7 @@ SCR.dettato={lay:'side',title:'Dettato Incantato',music:'calm',pose:'listen',ent
       <textarea class="ta" style="min-height:120px" placeholder="Scrivi qui quello che senti…" aria-label="La tua frase"></textarea>
       <div class="acc">${['à','è','é','ì','ò','ù',"'"].map(a=>`<button type="button" class="key" data-k="${a}">${a}</button>`).join('')}</div><div class="row c"><button class="btn gold" data-ck>${icon('check')}<span>Controlla</span></button></div><div class="qfb"></div></section>`;
     const ta=$('.ta',box);const play=r=>{Snd.init();Snd.Voice.speak(s.it,{force:true,rate:r});};
-    if(voice){setTimeout(()=>play(0.85),400);$('[data-p]',box).onclick=()=>play(0.85);$('[data-s]',box).onclick=()=>play(0.6);}
+    if(voice){Tm.set(()=>play(0.85),400);$('[data-p]',box).onclick=()=>play(0.85);$('[data-s]',box).onclick=()=>play(0.6);}
     else $('[data-show]',box).onclick=e=>{e.currentTarget.disabled=true;const f=$('#flashs');f.textContent=s.it;Tm.set(()=>{f.textContent='…';},1800+s.it.length*90);};
     $$('.key',box).forEach(k=>k.onclick=()=>{const p=ta.selectionStart||ta.value.length;ta.value=ta.value.slice(0,p)+k.dataset.k+ta.value.slice(p);ta.focus();ta.setSelectionRange(p+1,p+1);});
     $('[data-ck]',box).onclick=e=>{if(!ta.value.trim()){FX.shake(ta,5);return;}e.currentTarget.disabled=true;ta.disabled=true;const r=dictDiff(s.it,ta.value);st.sum+=r.score;ev('dict',1);
@@ -3932,10 +3990,10 @@ function escPuzzle(kind){const L=S.set.lv;
   const LOWLV={v_cg:['v_pp','mc'],v_co:['v_pr','mc'],pa:['prep','mc']};if(LOWLV[kind]&&L<2){const [sk,f]=LOWLV[kind];return QG.make(sk,f);}
   const map={rid:['rid','type'],ord:['ord'],ip:['v_ip','type'],num:['num','type'],comp:['comp','mc'],opp:['opp','type'],err:['err'],idi:['idi'],ore:['ore'],pp:['v_pp','type'],im:['v_im','mc'],fu:['v_fu','type'],
     art:['art','mc'],plur:['plur','type'],adj:['adj','mc'],irr:['irr','type'],prep:['prep','mc'],gen:['gen'],v_co:['v_co','type'],rifl:['rifl','type'],v_cg:['v_cg','mc'],pa:['pa','type'],dia:['dia'],aux:['aux']};
-  const [sk,f]=map[kind]||['pic','mc'];return QG.make(sk,f);}
+  const [sk,f]=map[kind]||(QG.G[kind]?[kind]:['pic','mc']);return QG.make(sk,f);}
 SCR.torre={lay:'side',title:'Torre Incantata',music:'escape',enter(m){Genie.show(true);const n=ROOMS.filter(r=>S.escB[r.id]).length;
-  Genie.say(n?`Sei già fuggito da ${n} stanze su ${ROOMS.length}. Quale porta apriamo adesso?`:'La Torre Incantata ha otto stanze chiuse a chiave. Risolvi gli enigmi per uscire: più sei veloce, più stelle guadagni!',{act:'point'});
-  m.innerHTML=`<section class="card"><div class="row sb"><h3 style="margin:0">Scegli una stanza</h3><span class="pill">${icon('door')} ${n} / ${ROOMS.length}</span></div><p class="mut">Ogni stanza ha un livello: A1 per cominciare, A2 e B1 per chi vuole una sfida.</p><div class="camp">${ROOMS.map((r,i)=>{const b=S.escB[r.id];return `<button class="node" data-r="${i}" style="--c1:${r.wall[0]};--c2:#e8c15a"><span class="med">${icon(RICON[r.id]||'door')}</span><b>${esc(r.name)}</b>
+  Genie.say(n?`Sei già fuggito da ${n} stanze su ${ROOMS.length}. Quale porta apriamo adesso?`:`La Torre Incantata ha ${ROOMS.length} stanze chiuse a chiave. Risolvi gli enigmi per uscire: più sei veloce, più stelle guadagni!`,{act:'point'});
+  m.innerHTML=`<section class="card"><div class="row sb"><h3 style="margin:0">Scegli una stanza</h3><span class="pill">${icon('door')} ${n} / ${ROOMS.length}</span></div><p class="mut">Ogni stanza ha un livello: A1 per cominciare, A2, B1 e B2 per chi vuole una sfida.</p><div class="camp">${ROOMS.map((r,i)=>{const b=S.escB[r.id];return `<button class="node" data-r="${i}" style="--c1:${r.wall[0]};--c2:#e8c15a"><span class="med">${icon(RICON[r.id]||'door')}</span><b>${esc(r.name)}</b>
     <span class="row" style="gap:6px;justify-content:center"><span class="lvp">${RLV[r.id]||'A1'}</span><span class="stars">${b?'★'.repeat(b.s)+'☆'.repeat(3-b.s):'☆☆☆'}</span></span><small class="mut">${b?'Record: '+fmtT(b.t):'Mai risolta'}</small></button>`;}).join('')}</div></section>`;
   $$('[data-r]',m).forEach(b=>b.onclick=()=>go('stanza',+b.dataset.r));}};
 const fmtT=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
@@ -4009,6 +4067,848 @@ SCR.stanza={lay:'side',title:'',music:'escape',pose:'idle',back(){go('torre');},
     else{const miss=st.done.findIndex(d=>!d);if(miss<0){if(PH){if(!spend(5))return;st.hints++;Genie.say(`Ti aiuto: la formula comincia con «${clues[0]}»…`,{act:'wink'});}else Genie.say(r.code==='colors'?'Hai tutti i colori: dai a ogni fiore il suo, nell\'ordine dei numeri romani!':'Hai tutti i pezzi: mettili in ordine con i numeri romani!',{act:'point'});return;}
       if(!spend(5))return;st.hints++;st.done[miss]=true;drawRoom();drawInv();Genie.say(PH?'Ecco una parola in regalo dalla mia lampada!':'Ecco un pezzo in regalo dalla mia lampada!',{act:'cast'});}};}};
 
+/* ===== Nuovi contenuti: parole B1-B2, sinonimi, connettivi, terzo capitolo del Duello, nona stanza della Torre ===== */
+/* stesso formato del vocabolario: parola|genere|plurale|immagine|inglese|livello|tratti ('astratto' = esclusa dal Genio Indovino) */
+const LEX_EXTRA=`
+#animali|Animali
+riccio|m|ricci|🦔|hedgehog|3|animale,zampe4,piccolo,selvatico,natura,marrone
+castoro|m|castori|🦫|beaver|4|animale,zampe4,selvatico,acqua,natura,marrone,coda
+scoiattolo|m|scoiattoli|🐿️|squirrel|3|animale,zampe4,piccolo,selvatico,natura,coda,marrone
+cervo|m|cervi|🦌|deer|3|animale,zampe4,selvatico,natura,marrone,grande
+cigno|m|cigni|🦢|swan|3|animale,piume,vola,acqua,bianco
+fenicottero|m|fenicotteri|🦩|flamingo|4|animale,piume,vola,acqua,rosa,selvatico
+pavone|m|pavoni|🦚|peacock|3|animale,piume,blu,verde,coda
+gamberetto|m|gamberetti|🦐|shrimp|3|animale,acqua,piccolo,cibo,rosa
+bruco|m|bruchi|🐛|caterpillar|3|animale,piccolo,verde,natura
+zanzara|f|zanzare|🦟|mosquito|3|animale,piccolo,vola,notte
+gorilla|m|gorilla|🦍|gorilla|3|animale,grande,selvatico,nero
+rinoceronte|m|rinoceronti|🦏|rhinoceros|3|animale,zampe4,grande,selvatico,grigio,pericoloso
+ippopotamo|m|ippopotami|🦛|hippopotamus|3|animale,zampe4,grande,selvatico,acqua,grigio
+lontra|f|lontre|🦦|otter|4|animale,zampe4,selvatico,acqua,coda,marrone
+#cibo|Cibo e bevande
+cornetto|m|cornetti|🥐|croissant|2|cibo,dolce,italiano
+peperoncino|m|peperoncini|🌶️|chilli pepper|3|cibo,verdura,rosso,italiano,cucina
+castagna|f|castagne|🌰|chestnut|3|cibo,frutta,marrone,natura
+cocco|m|cocchi|🥥|coconut|3|cibo,frutta,marrone,rotondo
+avocado|m|avocado|🥑|avocado|3|cibo,frutta,verde
+arachide|f|arachidi|🥜|peanut|4|cibo,piccolo,marrone
+frittata|f|frittate||omelette|3|cibo,cucina,giallo,caldo,italiano
+tramezzino|m|tramezzini||sandwich|3|cibo,italiano
+spiedino|m|spiedini|🍢|skewer|4|cibo,lungo
+lenticchia|f|lenticchie||lentil|3|cibo,verdura,piccolo,marrone
+basilico|m|-||basil|3|cibo,pianta,verde,italiano,cucina
+farina|f|-||flour|3|cibo,cucina,bianco
+lievito|m|-||yeast|4|cibo,cucina
+#casa|Casa e oggetti
+pentola|f|pentole||pot|3|oggetto,cucina,metallo,casa
+lavatrice|f|lavatrici||washing machine|3|oggetto,casa,elettrico,grande,bianco,acqua
+aspirapolvere|m|aspirapolvere||vacuum cleaner|3|oggetto,casa,elettrico,musica
+ventilatore|m|ventilatori||fan|3|oggetto,casa,elettrico,freddo
+termometro|m|termometri|🌡️|thermometer|3|oggetto,vetro,piccolo,casa
+bilancia|f|bilance|⚖️|scales|3|oggetto,metallo,cucina
+lucchetto|m|lucchetti|🔒|padlock|3|oggetto,metallo,piccolo
+batteria|f|batterie|🔋|battery|3|oggetto,elettrico,piccolo
+calamita|f|calamite|🧲|magnet|3|oggetto,metallo,piccolo,rosso
+clessidra|f|clessidre|⏳|hourglass|3|oggetto,vetro,piccolo,magico
+microscopio|m|microscopi|🔬|microscope|3|oggetto,metallo,scuola
+telescopio|m|telescopi|🔭|telescope|3|oggetto,metallo,notte,cielo,lungo
+bussola|f|bussole|🧭|compass|3|oggetto,metallo,piccolo,rotondo
+catena|f|catene|⛓️|chain|4|oggetto,metallo,lungo
+ingranaggio|m|ingranaggi|⚙️|gear|4|oggetto,metallo,rotondo
+spugna|f|spugne|🧽|sponge|3|oggetto,casa,cucina,giallo,morbido,acqua
+secchio|m|secchi|🪣|bucket|3|oggetto,acqua,casa
+cestino|m|cestini|🗑️|bin|3|oggetto,casa,scuola
+busta|f|buste||envelope|3|oggetto,carta,leggere
+francobollo|m|francobolli||stamp|3|oggetto,carta,piccolo
+passaporto|m|passaporti||passport|3|oggetto,carta,leggere,piccolo
+portafoglio|m|portafogli|👛|wallet|3|oggetto,piccolo
+martello|m|martelli|🔨|hammer|3|oggetto,metallo,legno
+scala|f|scale|🪜|ladder|3|oggetto,legno,lungo,casa
+coperta|f|coperte||blanket|3|oggetto,casa,morbido,caldo
+lenzuolo|m|lenzuola@f||sheet|4|oggetto,casa,bianco,morbido
+rubinetto|m|rubinetti|🚰|tap|3|oggetto,metallo,acqua,casa,cucina
+#corpo|Il corpo
+gomito|m|gomiti||elbow|3|corpo
+polso|m|polsi||wrist|3|corpo
+caviglia|f|caviglie||ankle|3|corpo
+unghia|f|unghie|💅|nail|3|corpo,piccolo
+sopracciglio|m|sopracciglia@f||eyebrow|4|corpo,piccolo
+polmone|m|polmoni|🫁|lung|4|corpo,rosa
+pelle|f|pelli||skin|3|corpo
+sangue|m|-|🩸|blood|3|corpo,rosso
+fronte|f|fronti||forehead|3|corpo
+mento|m|menti||chin|3|corpo
+guancia|f|guance||cheek|3|corpo,rosa
+muscolo|m|muscoli||muscle|3|corpo
+#vestiti|Vestiti
+cintura|f|cinture||belt|3|vestito,lungo
+ciabatta|f|ciabatte|🩴|slipper|3|vestito,casa
+orecchino|m|orecchini||earring|3|vestito,metallo,piccolo
+collana|f|collane||necklace|3|vestito,piccolo
+impermeabile|m|impermeabili||raincoat|4|vestito,acqua
+grembiule|m|grembiuli||apron|4|vestito,cucina
+tuta|f|tute||tracksuit|3|vestito,sport
+casco|m|caschi|⛑️|helmet|3|vestito,sport,rotondo
+#citta|Città e luoghi
+municipio|m|municipi||town hall|3|luogo,citta,grande
+tribunale|m|tribunali||court|4|luogo,citta,grande
+grattacielo|m|grattacieli||skyscraper|3|luogo,citta,grande
+incrocio|m|incroci||crossroads|3|luogo,citta
+marciapiede|m|marciapiedi||pavement|3|luogo,citta
+parcheggio|m|parcheggi|🅿️|car park|3|luogo,citta
+edicola|f|edicole||newsstand|3|luogo,citta,leggere,italiano
+palestra|f|palestre|🏋️|gym|3|luogo,citta,sport
+stadio|m|stadi|🏟️|stadium|3|luogo,citta,grande,sport
+fabbrica|f|fabbriche|🏭|factory|3|luogo,citta,grande
+porto|m|porti||harbour|3|luogo,citta,acqua
+università|f|università|🎓|university|3|luogo,citta,scuola,leggere
+rifugio|m|rifugi|🛖|mountain hut|4|luogo,natura,legno,freddo
+faro|m|fari||lighthouse|3|luogo,acqua,notte,grande
+condominio|m|condomini||block of flats|4|luogo,citta,grande,casa
+#trasporti|Trasporti
+traghetto|m|traghetti|⛴️|ferry|3|mezzo,acqua,motore,grande
+funivia|f|funivie|🚡|cable car|3|mezzo,elettrico,cielo
+tram|m|tram|🚋|tram|3|mezzo,elettrico,citta,ruote
+ambulanza|f|ambulanze|🚑|ambulance|3|mezzo,motore,ruote,citta,bianco
+trattore|m|trattori|🚜|tractor|3|mezzo,motore,ruote,grande
+sottomarino|m|sottomarini||submarine|4|mezzo,acqua,motore,metallo
+mongolfiera|f|mongolfiere||hot-air balloon|4|mezzo,cielo,vola,grande
+slitta|f|slitte|🛷|sled|3|mezzo,freddo,legno
+canoa|f|canoe|🛶|canoe|3|mezzo,acqua,legno,sport
+paracadute|m|paracadute|🪂|parachute|4|oggetto,cielo,vola,sport
+#persone|Persone e famiglia
+marito|m|mariti|🤵|husband|2|persona,famiglia
+moglie|f|mogli|👰|wife|2|persona,famiglia,donna
+nipote|c|nipoti||grandchild, nephew, niece|3|persona,famiglia
+avvocato|m|avvocati||lawyer|3|persona,mestiere
+scienziato|m|scienziati|🧑‍🔬|scientist|3|persona,mestiere
+giornalista|c|giornalisti||journalist|3|persona,mestiere,leggere
+architetto|m|architetti||architect|3|persona,mestiere
+ingegnere|m|ingegneri||engineer|3|persona,mestiere
+falegname|m|falegnami||carpenter|3|persona,mestiere,legno
+farmacista|c|farmacisti||pharmacist|3|persona,mestiere
+commesso|m|commessi||shop assistant|3|persona,mestiere
+panettiere|m|panettieri||baker|3|persona,mestiere,cibo
+ospite|c|ospiti||guest|3|persona,casa
+turista|c|turisti||tourist|3|persona,citta
+giudice|c|giudici|🧑‍⚖️|judge|4|persona,mestiere
+idraulico|m|idraulici||plumber|4|persona,mestiere,acqua
+sindaco|m|sindaci||mayor|4|persona,mestiere,citta
+investigatore|m|investigatori|🕵️|detective|4|persona,mestiere
+traduttore|m|traduttori||translator|4|persona,mestiere,leggere
+#natura|Natura e tempo
+terremoto|m|terremoti||earthquake|3|natura,pericoloso,grande
+nebbia|f|nebbie|🌫️|fog|3|natura,cielo,bianco,freddo
+cascata|f|cascate||waterfall|3|natura,acqua,luogo
+cometa|f|comete|☄️|comet|3|cielo,notte,natura
+pianeta|m|pianeti|🪐|planet|3|cielo,notte,rotondo,grande
+tramonto|m|tramonti|🌅|sunset|3|cielo,natura,arancione,rosso
+alba|f|albe|🌄|dawn|3|cielo,natura,rosa,arancione
+quercia|f|querce||oak|3|pianta,natura,grande,legno,verde
+palma|f|palme|🌴|palm tree|3|pianta,natura,grande,verde,caldo
+seme|m|semi|🌱|seed|3|pianta,natura,piccolo,verde
+grotta|f|grotte||cave|3|natura,luogo
+valle|f|valli||valley|3|natura,luogo,verde
+collina|f|colline||hill|3|natura,luogo,verde
+ambiente|m|ambienti||environment|3|natura,astratto
+uragano|m|uragani|🌀|hurricane|4|natura,pericoloso,cielo,grande
+tornado|m|tornado|🌪️|tornado|4|natura,pericoloso,cielo
+grandine|f|-||hail|4|natura,cielo,freddo,bianco
+ghiacciaio|m|ghiacciai|🏔️|glacier|4|natura,freddo,bianco,grande,luogo
+galassia|f|galassie|🌌|galaxy|4|cielo,notte,grande
+radice|f|radici||root|4|pianta,natura,marrone
+fango|m|-||mud|4|natura,marrone,acqua
+clima|m|climi||climate|4|natura,astratto
+#fantasia|Fantasia e fiabe
+incantesimo|m|incantesimi|✨|spell|3|fantasia,magico
+labirinto|m|labirinti||labyrinth|3|fantasia,luogo,grande
+giullare|m|giullari|🃏|jester|3|fantasia,persona,musica
+trono|m|troni||throne|3|oggetto,fantasia,grande,legno
+fenice|f|fenici||phoenix|3|fantasia,animale,vola,piume,rosso
+maledizione|f|maledizioni||curse|4|fantasia,magico,pericoloso,astratto
+elmo|m|elmi|🪖|knight's helmet|4|oggetto,metallo,vestito,fantasia
+armatura|f|armature||armour|4|oggetto,metallo,vestito,fantasia
+grifone|m|grifoni||griffin|4|fantasia,animale,vola,piume
+scettro|m|scettri||sceptre|4|oggetto,metallo,fantasia,lungo
+profezia|f|profezie||prophecy|4|fantasia,magico,astratto
+#mondo|Società e idee
+idea|f|idee|💡|idea|2|astratto
+sogno|m|sogni|💭|dream|2|astratto
+problema|m|problemi||problem|2|astratto
+domanda|f|domande|❓|question|2|astratto
+risposta|f|risposte||answer|2|astratto
+paura|f|paure|😨|fear|2|astratto
+viaggio|m|viaggi||journey|2|astratto
+vacanza|f|vacanze||holiday|2|astratto
+festa|f|feste|🎉|party|2|astratto
+compleanno|m|compleanni||birthday|2|astratto
+premio|m|premi|🏆|prize|3|astratto
+segreto|m|segreti|🤫|secret|3|astratto
+successo|m|successi||success|3|astratto
+soluzione|f|soluzioni||solution|3|astratto
+ricordo|m|ricordi||memory|3|astratto
+futuro|m|-||future|3|astratto
+tradizione|f|tradizioni||tradition|3|astratto,italiano
+cultura|f|culture||culture|3|astratto
+coraggio|m|-||courage|3|astratto
+felicità|f|-|😊|happiness|3|astratto
+tristezza|f|-|😢|sadness|3|astratto
+salute|f|-||health|3|astratto
+scelta|f|scelte||choice|3|astratto
+consiglio|m|consigli||advice|3|astratto
+matrimonio|m|matrimoni|💒|wedding|3|astratto
+notizia|f|notizie||news|3|astratto
+pace|f|-||peace|3|astratto
+esperienza|f|esperienze||experience|4|astratto
+opinione|f|opinioni||opinion|4|astratto
+società|f|società||society|4|astratto
+ricerca|f|ricerche||research|4|astratto
+elezione|f|elezioni|🗳️|election|4|astratto
+diritto|m|diritti||right|4|astratto
+fiducia|f|-||trust|4|astratto
+pazienza|f|-||patience|4|astratto
+abitudine|f|abitudini||habit|4|astratto
+stress|m|-||stress|4|astratto
+crisi|f|crisi||crisis|4|astratto
+sciopero|m|scioperi||strike|4|astratto
+inquinamento|m|-||pollution|4|astratto
+rifiuto|m|rifiuti||waste, refusal|4|astratto`;
+(function(){let th=null;
+  for(const line of LEX_EXTRA.trim().split('\n')){
+    if(line[0]==='#'){const [id,name]=line.slice(1).split('|');th=LEX_THEMES.find(t=>t.id===id);if(!th){th={id,name,n:0};LEX_THEMES.push(th);}continue;}
+    const [it,g,pl,em,en,lv,tg]=line.split('|');if(!it||LEXM[it])continue;let plf=pl,plg=g;if(pl.endsWith('@f')){plf=pl.slice(0,-2);plg='f';}
+    const w={it,g,pl:pl==='-'||pl===''?null:plf,plg:g==='c'?'m':plg,em,en,lv:+lv,th:th.id,tags:new Set(tg.split(',').filter(Boolean))};LEX.push(w);LEXM[it]=w;th.n++;}
+})();
+/* Sinonimi: parola|sinonimi (/)|livello|tipo (a aggettivo, v verbo, n nome, x avverbio) */
+const SYNQ=`veloce|rapido|1|a
+felice|contento/allegro|1|a
+facile|semplice|1|a
+difficile|complicato/arduo|2|a
+tranquillo|calmo/sereno|2|a
+magnifico|splendido/meraviglioso/stupendo|2|a
+stanco|affaticato/esausto|3|a
+spaventato|impaurito/terrorizzato|3|a
+arrabbiato|furioso/irritato|3|a
+famoso|celebre/noto|3|a
+intelligente|brillante/sveglio|3|a
+strano|bizzarro/insolito|3|a
+terribile|tremendo/orribile|3|a
+ricco|benestante|4|a
+coraggioso|audace/valoroso|4|a
+pigro|svogliato|4|a
+sporco|sudicio/lurido|4|a
+abitare|vivere|1|v
+iniziare|cominciare|2|v
+finire|terminare/concludere|2|v
+capire|comprendere|2|v
+chiedere|domandare|2|v
+guardare|osservare|2|v
+tornare|ritornare/rientrare|2|v
+aiutare|dare una mano|2|v
+mostrare|far vedere|3|v
+rompere|spezzare|3|v
+buttare|gettare|3|v
+ricordare|rammentare|4|v
+raccontare|narrare|4|v
+macchina|auto/automobile|1|n
+bambino|bimbo|1|n
+strada|via|1|n
+regalo|dono|2|n
+faccia|viso/volto|2|n
+gioia|allegria/felicità|2|n
+errore|sbaglio|2|n
+casa|abitazione|3|n
+lavoro|impiego/occupazione|3|n
+paura|timore/spavento|3|n
+problema|difficoltà/guaio|3|n
+subito|immediatamente|2|x
+velocemente|rapidamente|2|x
+spesso|frequentemente|3|x`.split('\n').map(l=>{const [w,s,lv,t]=l.split('|');return {w,s:s.split('/'),lv:+lv,t};});
+/* Connettivi: frase con ___|risposte giuste (/)|risposte sbagliate (/)|livello|spiegazione */
+const CONNQ=`Resto a casa ___ piove.|perché/poiché|quindi/però/oppure|1|Perché introduce la causa.
+Studio l'italiano ___ voglio vivere a Roma.|perché/poiché|però/oppure/anzi|1|Perché introduce la causa.
+Ho studiato molto, ___ non ho passato l'esame.|ma/però/tuttavia|perché/quindi/infatti|1|Ma e però introducono un contrasto.
+Ho chiamato Luca, ___ non ha risposto.|ma/però/tuttavia|perché/quindi/infatti|1|Ma introduce un risultato diverso da quello che ci aspettavamo.
+La casa è piccola, ___ molto luminosa.|ma/però|perché/quindi/oppure|1|Ma unisce due idee in contrasto.
+Vuoi un tè ___ un caffè?|o/oppure|ma/perché/quindi|1|O e oppure presentano un'alternativa.
+Prima faccio i compiti, ___ guardo la televisione.|poi/dopo/e poi|perché/però/anzi|1|Poi indica che cosa viene dopo.
+___ ho fame, mangio un panino.|Quando/Se/Siccome|Però/Invece/Anzi|1|Se e quando introducono una condizione o un momento.
+Piove, ___ resto a casa.|quindi/perciò/allora/così|perché/però/mentre|2|Quindi introduce la conseguenza.
+Non ho tempo, ___ non vengo al cinema.|quindi/perciò/così/allora|perché/mentre/anzi|2|Quindi introduce la conseguenza.
+Il ristorante era pieno, ___ siamo andati in pizzeria.|così/quindi/perciò/allora|perché/mentre/anche se|2|Così e quindi introducono una conseguenza.
+Leggo un libro ___ aspetto il treno.|mentre|anzi/quindi/infatti|2|Mentre indica due azioni nello stesso momento.
+Non bevo il caffè: preferisco ___ il tè.|invece|anche se/perché/mentre|2|Invece indica un'alternativa o un contrasto.
+___ arrivi a casa, chiamami!|Appena/Quando/Non appena/Se|Perché/Però/Anche se|2|Appena significa «nel momento in cui».
+Esco ___ smette di piovere.|appena/quando/non appena|però/oppure/anzi|2|Appena indica il momento esatto.
+Sono molto stanco: ___, ieri ho lavorato dodici ore.|infatti|però/invece/oppure|3|Infatti conferma e spiega quello che hai appena detto.
+Lui parla inglese e francese; ___ parla un po' di tedesco.|inoltre/in più|invece/infatti/anzi|3|Inoltre aggiunge un'informazione.
+___ era stanco, Marco è uscito con gli amici.|Anche se|Perché/Quindi/Infatti|3|Anche se introduce una concessione e vuole l'indicativo.
+___ non ho la macchina, vengo in treno.|Siccome/Dato che/Poiché/Visto che|Però/Invece/Anzi|3|Siccome introduce la causa all'inizio della frase.
+In primo luogo voglio ringraziarvi; ___, vorrei presentarvi il progetto.|in secondo luogo/poi/inoltre|invece/anzi/perché|3|Per ordinare le idee: in primo luogo, in secondo luogo, infine.
+Abbiamo discusso per ore. ___, abbiamo trovato una soluzione.|Alla fine/Infine/Finalmente|Invece/Anzi/Perché|3|Alla fine e infine introducono la conclusione.
+Prendi l'ombrello, ___ ti bagni!|altrimenti/sennò/se no|mentre/anzi/infatti|3|Altrimenti significa «se no».
+Non è antipatico, ___: è gentilissimo!|anzi|quindi/perché/mentre|4|Anzi corregge e rafforza quello che hai appena detto.
+___ sia tardi, voglio finire il capitolo.|Sebbene/Benché/Nonostante|Perché/Siccome/Quando|4|Sebbene, benché e nonostante vogliono il congiuntivo.
+___ fosse stanchissima, Anna ha finito la gara.|Benché/Sebbene/Nonostante|Siccome/Perché/Mentre|4|Benché, sebbene e nonostante vogliono il congiuntivo.
+Ti presto la bici, ___ tu me la restituisca domani.|purché/a patto che|siccome/mentre/anche se|4|Purché e a patto che indicano una condizione e vogliono il congiuntivo.`.split('\n').map(l=>{const [s,a,d,lv,n]=l.split('|');return {s,a:a.split('/'),d:d.split('/'),lv:+lv,n:n||''};});
+const fmtOf=(f,al)=>f&&al.includes(f)?f:(f==='any'||!f?rnd(al):al[0]);
+QG.G.sin=f=>{const pool=SYNQ.filter(x=>x.lv<=Math.max(1,S.set.lv)+1);const it=rnd(pool),rev=Math.random()<0.3&&it.s.length===1&&!/\s/.test(it.s[0]);
+  const w=rev?it.s[0]:it.w,ans=rev?[it.w]:it.s,k=fmtOf(f,['mc','type']);
+  const base={skill:'sin',prompt:`<span class="big">${esc(w)}</span>`,sub:'Scegli un sinonimo: una parola che vuol dire la stessa cosa',full:`${w} = ${ans.join(' / ')}`,word:null};
+  if(k==='mc'){const bad=new Set([it.w,...it.s]);const c=shuffle(SYNQ.filter(x=>x!==it&&x.t===it.t&&!bad.has(x.w)&&!x.s.some(y=>bad.has(y)))).slice(0,3).map(x=>Math.random()<0.5?x.w:x.s[0]);
+    const o=shuffle([ans[0]].concat(c));return Object.assign(base,{kind:'mc',opts:o,ans:o.indexOf(ans[0])});}
+  return Object.assign(base,{kind:'type',ans,sub:'Scrivi un sinonimo'});};
+QG.G.conn=f=>{const it=rnd(CONNQ.filter(x=>x.lv<=Math.max(1,S.set.lv)+1)),k=fmtOf(f,['mc','type']);const html=esc(it.s).replace('___','<span class="gap">___</span>');
+  const base={skill:'conn',prompt:html,sub:'Completa con il connettivo giusto',full:it.s.replace('___',it.a[0]),exp:esc(it.n)};
+  if(k==='mc'){const o=shuffle([it.a[0]].concat(it.d.slice(0,3)));return Object.assign(base,{kind:'mc',opts:o,ans:o.indexOf(it.a[0])});}
+  return Object.assign(base,{kind:'type',ans:it.a});};
+QG.SKILLS.push(['sin','Sinonimi',2,'Parole'],['conn','Connettivi',2,'Frasi']);
+QG.SK.sin={id:'sin',name:'Sinonimi',lv:2,grp:'Parole'};QG.SK.conn={id:'conn',name:'Connettivi',lv:2,grp:'Frasi'};
+QG.SK.lett={id:'lett',name:'Lettura',lv:1,grp:'Frasi'};QG.SK.eco={id:'eco',name:'Pronuncia',lv:1,grp:'Parole'};if(!QG.SK.dettato)QG.SK.dettato={id:'dettato',name:'Dettato',lv:1,grp:'Frasi'};
+/* Duello Magico: terzo capitolo */
+FOES.push(
+ {id:'medusa',ch:3,vp:1.4,name:'Medusa Fantasma',type:2,c1:'#ff9ad8',c2:'#9af0ff',hp:90,atk:14,sk:['sin','opp'],reg:'Laguna Luminosa',say:'Bloop… Io confondo le parole che si somigliano. Conosci i sinonimi, o ti pungo con i miei tentacoli?'},
+ {id:'nebbia',ch:3,vp:1.1,name:'Spirito della Nebbia',type:13,c1:'#9ab8ff',c2:'#eaf4ff',hp:100,atk:15,sk:['conn','dia'],reg:'Scogliera delle Nebbie',say:'Ssshhh… nella mia nebbia le frasi si spezzano. Sai collegarle con il connettivo giusto?'},
+ {id:'corsaro',ch:3,vp:0.7,name:'Slime Corsaro',type:1,c1:'#3a8ad8',c2:'#ffd84a',crown:1,hp:110,atk:16,sk:['pa','prep'],reg:'Spiaggia delle Preposizioni',say:'Arrr! Ho rubato tutte le preposizioni del porto: del, sul, nel, dal… Riprenditele, se ci riesci!'},
+ {id:'navigatore',ch:3,vp:1.6,name:'Folletto Navigatore',type:3,c1:'#d8a24a',c2:'#2a5a8a',hp:120,atk:17,sk:['sin','idi'],reg:'Porto dei Sinonimi',say:'Ih ih! Per navigare nel mare delle parole servono sinonimi e modi di dire. Tu li conosci?'},
+ {id:'pirata',ch:3,vp:0.8,name:'Teschio del Pirata',type:11,c1:'#d8c8a8',c2:'#ff5a3a',hp:130,atk:18,sk:['err','conn'],reg:'Relitto del Galeone',say:'Ah ah ah! Nel mio diario di bordo ci sono mille errori. Riesci a trovarli tutti?'},
+ {id:'forziere',ch:3,vp:0.9,name:'Forziere Ingordo',type:12,c1:'#4a3a2a',c2:'#5ad8a0',hp:140,atk:19,sk:['v_cg','pron'],reg:'Isola del Tesoro',say:'Gnam! Voglio che tu mi dia tutte le tue gemme… a meno che tu non sappia il congiuntivo!'},
+ {id:'cristallo2',ch:3,vp:0.6,name:'Ragno di Cristallo',type:10,c1:'#7ad8f0',c2:'#ffffff',hp:150,atk:20,sk:['v_co','v_cg'],reg:'Grotte di Cristallo',say:'Se fossi più veloce, ti avrei già preso nella mia tela. Conosci il condizionale e il congiuntivo?'},
+ {id:'kraken',ch:3,vp:0.4,name:'Kraken Gentiluomo',type:14,c1:'#7a2a5a',c2:'#ffd86a',hp:165,atk:21,sk:['idi','sin','comp'],reg:'Fossa degli Abissi',say:'Mi scusi… Prima di affondare la sua nave, vorrei sapere se conosce i modi di dire. È una questione di stile!'},
+ {id:'tempesta',ch:3,vp:0.3,name:'Drago della Tempesta',type:5,c1:'#1f4a8a',c2:'#6fe3ff',hp:230,atk:25,sk:['v_cg','conn','sin'],sk2:['err','pron','pa','v_co'],boss:1,reg:'Occhio della Tempesta',say:'ROOOAR! Io sono la tempesta che spazza via le parole. Benché tu sia arrivato fin qui, non passerai!'});
+CHAPTERS.push({n:3,name:'L\'Arcipelago delle Tempeste',desc:'Nove avversari per apprendisti esperti (B1 e B2): sinonimi, connettivi, congiuntivo, condizionale e modi di dire.'});
+/* Torre Incantata: nona stanza */
+ROOMS.push({id:'osserv',name:'L\'Osservatorio delle Stelle',wall:['#101a3a','#04081a'],code:'word',exit:['portal',1160,280,1,'Il portale delle stelle'],win:[640,40,1.05],
+ intro:'Siamo in cima alla torre, nell\'Osservatorio delle Stelle. Il portale si apre solo con una parola segreta: le quattro lettere sono nascoste tra le stelle. Qui gli enigmi sono per veri maghi della lingua!',
+ deco:()=>{const st=[[110,90],[250,60],[410,120],[540,70],[290,190],[990,80],[1110,140],[1250,70],[1390,130],[1510,60],[880,50],[1470,250],[160,260],[1030,230]];
+  return `<g fill="#fff">${st.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i%3?2.2:3.6}" opacity="${i%2?0.6:0.95}"/>`).join('')}</g>
+   <g stroke="#9ab8ff" stroke-opacity=".4" stroke-width="2" fill="none"><path d="M110 90L250 60L410 120L540 70M250 60L290 190L160 260"/><path d="M990 80L1110 140L1250 70L1390 130L1510 60M1110 140L1030 230"/></g>
+   <g transform="translate(1040 420)"><circle r="40" fill="#7a5ad8" opacity=".6"/><circle r="40" fill="none" stroke="#c8b0ff" stroke-opacity=".55" stroke-width="3"/><ellipse rx="74" ry="20" fill="none" stroke="#e8c15a" stroke-opacity=".5" stroke-width="4" transform="rotate(-18)"/></g>`;},
+ objs:[['globe',60,420,1,'Il globo celeste','sin','Ogni stella del globo ha un nome gemello: trova il sinonimo.'],['lectern',420,500,1,'L\'atlante delle stelle','conn','Nell\'atlante delle stelle mancano le parole che collegano le frasi.'],
+  ['owl',860,150,0.9,'La civetta astronoma','v_cg','La civetta astronoma pensa che tu sappia il congiuntivo… ha ragione?'],['diary',760,600,1,'Il diario dell\'astronomo','err','Nel diario dell\'astronomo c\'è una frase con un errore.']]});
+RLV.osserv='B2';RICON.osserv='star';
+/* trofei, missioni e nuove porte della mappa */
+ACH.push(['eco1','Prima eco','Pronuncia bene una parola con l\'Eco del Genio'],['eco50','Voce d\'oro','50 parole e frasi pronunciate bene'],['lingua','Lingua sciolta','Pronuncia bene uno scioglilingua'],
+ ['storia1','Topo di biblioteca','Leggi la prima storia della Biblioteca'],['storie','Gran lettore','Leggi tutte le storie della Biblioteca'],['goal7','Costanza magica','Raggiungi l\'obiettivo del giorno 7 volte'],
+ ['goal30','Fiamma della costanza','Raggiungi l\'obiettivo del giorno 30 volte'],['cap3','Domatore di tempeste','Sconfiggi il Drago della Tempesta']);
+(ACH.find(a=>a[0]==='mostri21')||[])[2]='Sconfiggi tutti i mostri della campagna del Duello';(ACH.find(a=>a[0]==='torre4')||[])[2]='Fuggi da tutte le stanze della Torre';
+MIS_T.push({id:'eco',n:[5,8],t:n=>`Pronuncia bene ${n} parole con l'Eco del Genio`,g:20},{id:'read',n:[1,2],t:n=>n>1?`Leggi ${n} storie della Biblioteca`:'Leggi una storia della Biblioteca',g:20});
+ACTS[2][1].unshift(['biblioteca','library','Biblioteca delle Storie','Racconti dal livello A1 al B2: leggi, ascolta e rispondi','rgba(111,227,255,.25)'],['eco','mic','Eco del Genio','Pronuncia parole e frasi: Gennaro ti ascolta','rgba(255,154,74,.3)']);
+
+/* ===== Potenziamenti: app installabile, obiettivo e parola del giorno, backup, allenamento mirato ===== */
+function buzz(p){try{if(S.set.haptic!==false&&navigator.vibrate)navigator.vibrate(p);}catch(e){}}
+/* ---------- il libro degli errori: le domande sbagliate tornano finché non le risolvi ---------- */
+function noteMiss(q,ok,o){if(!q||(o&&o.noMiss))return;if(!Array.isArray(S.miss))S.miss=[];const key=(q.prompt||'')+'|'+(q.full||'')+'|'+(q.sub||'');const i=S.miss.findIndex(x=>x.key===key);
+  if(ok){if(i>=0){S.miss.splice(i,1);save();}return;}
+  let c;try{c=JSON.parse(JSON.stringify(q));}catch(e){return;}c.key=key;c.t=Date.now();if(i>=0)S.miss.splice(i,1);S.miss.push(c);while(S.miss.length>40)S.miss.shift();save();}
+function errCfg(){const l=(S.miss||[]).slice(-10).reverse();if(!l.length)return null;return {errs:shuffle(l),sk:[],mode:'classic',fmt:'any',label:'Ripasso degli errori'};}
+function weakSkills(n){return Object.entries(S.st.sk).filter(([k,v])=>QG.SK[k]&&QG.G[k]&&v.q>=3).map(([k,v])=>[k,v.ok/v.q]).filter(x=>x[1]<0.85).sort((a,b)=>a[1]-b[1]).slice(0,n||4);}
+function weakCard(){const w=weakSkills(4),ne=(S.miss||[]).length;if(!w.length&&!ne)return '';
+  return `<section class="card" id="weakc"><h3>${icon('target')} Allenamento mirato</h3>${w.length?`<p class="mut" style="margin-bottom:4px">Il Genio ha notato dove sbagli più spesso. Allenati proprio lì:</p><div class="weak">${w.map(([k,p])=>`<span class="pill">${esc(QG.SK[k].name)} · ${Math.round(p*100)}%</span>`).join('')}</div>`:''}
+   ${ne?`<p class="mut" style="margin:6px 0 0">Nel libro degli errori ${ne===1?'c\'è <b>1</b> domanda':`ci sono <b>${ne}</b> domande`} da ripassare: quando rispondi bene, spariscono.</p>`:''}
+   <div class="row" style="margin-top:10px">${w.length?`<button class="btn gold" data-weak>${icon('target')}<span>Allenati sui punti deboli</span></button>`:''}${ne?`<button class="btn" data-errs>${icon('refresh')}<span>Ripassa gli errori (${Math.min(10,ne)})</span></button>`:''}</div></section>`;}
+function weakBind(m){const w=$('[data-weak]',m);if(w)w.onclick=()=>go('quizgioco',{sk:weakSkills(4).map(x=>x[0]),mode:'classic',fmt:'any',label:'Allenamento mirato'});
+  const e=$('[data-errs]',m);if(e)e.onclick=()=>{const c=errCfg();if(c)go('quizgioco',c);};}
+function quizExtras(m){if($('#weakc',m))return;const h=weakCard();if(h){m.insertAdjacentHTML('afterbegin',h);weakBind(m);}}
+const _statsEnter=SCR.stats.enter;SCR.stats.enter=function(m){_statsEnter.call(this,m);const first=$('section.card',m);if(first){first.insertAdjacentHTML('afterend',weakCard());weakBind(m);}};
+
+/* ---------- app installabile e senza connessione ---------- */
+const PWA=(()=>{let deferred=null,reg=null,updShown=false;
+  const web=/^https?:$/.test(location.protocol),local=/^(localhost|127\.|\[::1\])/.test(location.hostname);
+  const ua=navigator.userAgent||'',ios=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),android=/android/i.test(ua);
+  function standalone(){try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: minimal-ui)').matches||navigator.standalone===true;}catch(e){return false;}}
+  function state(){if(standalone())return 'installed';if(!web)return 'file';if(deferred)return 'prompt';return ios?'ios':'manual';}
+  function ready(){return !!(navigator.serviceWorker&&navigator.serviceWorker.controller);}
+  function statusText(){const st=state(),off=ready()?' Funziona anche senza internet.':'';
+    return st==='installed'?'La Lampada è installata su questo dispositivo.'+off:st==='prompt'?'Puoi installare la Lampada come un\'app: si aprirà a schermo intero, con la sua icona.'+off:
+      st==='ios'?'Su iPhone e iPad puoi aggiungere la Lampada alla schermata Home da Safari.'+off:st==='manual'?'Puoi installare la Lampada dal menu del browser.'+off:
+      'In questo momento la Lampada è aperta come file: per installarla e usarla senza internet, aprila dal sito in cui è pubblicata.';}
+  function refresh(){const st=state();$$('[data-install]').forEach(b=>{b.hidden=!(st==='prompt'||st==='ios'||(b.dataset.install==='always'&&st!=='installed'));});const t=$('#appst');if(t)t.textContent=statusText();}
+  function init(){
+    addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;refresh();});
+    addEventListener('appinstalled',()=>{deferred=null;persist();refresh();toast(`${icon('lamp')}<div><b>App installata!</b><br><small>Ora trovi la Lampada tra le tue app.</small></div>`,'gold',4200);});
+    addEventListener('offline',()=>toast(`${icon('wifi-off')}<div><b>Sei offline</b><br><small>La Lampada funziona lo stesso: solo la pronuncia e alcune voci hanno bisogno di internet.</small></div>`,'',5000));
+    addEventListener('online',()=>toast(`${icon('check')}<div>Di nuovo online!</div>`));
+    if(web&&'serviceWorker' in navigator&&(location.protocol==='https:'||local)){let had=!!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.type==='lampada-update')offerUpdate();});
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)offerUpdate();had=true;refresh();});
+      const doReg=()=>navigator.serviceWorker.register('sw.js').then(r=>{reg=r;}).catch(e=>console.warn('Service worker non registrato:',e));
+      if(document.readyState==='complete')doReg();else addEventListener('load',doReg);}
+    if(standalone())persist();}
+  function offerUpdate(){if(updShown)return;updShown=true;const d=$('#upd');if(!d)return;
+    d.innerHTML=`${icon('sun')}<span>È pronta una nuova versione della Lampada!</span><button class="btn sm gold" data-u>Aggiorna</button><button class="x2" data-x aria-label="Più tardi">${icon('x')}</button>`;d.hidden=false;
+    $('[data-u]',d).onclick=()=>{saveNow();location.reload();};$('[data-x]',d).onclick=()=>{d.hidden=true;};}
+  async function persisted(){try{return !!(navigator.storage&&navigator.storage.persisted&&await navigator.storage.persisted());}catch(e){return false;}}
+  async function persist(){try{if(!navigator.storage||!navigator.storage.persist)return false;if(await navigator.storage.persisted())return true;return await navigator.storage.persist();}catch(e){return false;}}
+  function guide(){const st=state(),steps=a=>`<ol style="line-height:1.75;padding-left:22px;margin:0 0 12px">${a.map(x=>`<li>${x}</li>`).join('')}</ol>`;
+    const h=st==='file'?`<p>In questo momento la Lampada è aperta come <b>file</b>. Per installarla come un'app vera, pubblicala su un sito (per esempio <b>GitHub Pages</b>, gratuito) e aprila da lì: comparirà il pulsante <b>Installa</b>.</p>`:
+      ios?steps(['Apri questa pagina con <b>Safari</b>.','Tocca il pulsante <b>Condividi</b> (il quadrato con la freccia verso l\'alto).','Scegli <b>Aggiungi alla schermata Home</b> e poi <b>Aggiungi</b>.']):
+      android?steps(['Apri il menu del browser (i tre puntini <b>⋮</b>).','Scegli <b>Installa app</b> oppure <b>Aggiungi a schermata Home</b>.']):
+      steps(['Apri la Lampada con <b>Chrome</b> o <b>Edge</b>.','Clicca l\'icona di installazione nella barra dell\'indirizzo, oppure apri il menu <b>⋮</b> e scegli <b>Installa La Lampada delle Parole</b>.']);
+    const b=Modal.open(`<h3>Installa la Lampada</h3>${h}<p class="mut"><small>Una volta installata, la Lampada si apre a schermo intero e funziona anche senza internet.</small></p><div class="row end"><button class="btn gold" data-ok>Ho capito</button></div>`);$('[data-ok]',b).onclick=()=>Modal.close();}
+  async function install(){if(deferred){const d=deferred;deferred=null;try{await d.prompt();const r=await d.userChoice;if(r&&r.outcome==='accepted')persist();}catch(e){}refresh();return;}guide();}
+  function check(){return reg?reg.update().then(()=>true).catch(()=>false):Promise.resolve(false);}
+  return {init,install,state,refresh,persist,persisted,check,offerUpdate,get web(){return web}};
+})();
+
+/* ---------- obiettivo del giorno ---------- */
+const GOALS=[[20,'Tranquillo'],[50,'Normale'],[100,'Impegnato'],[150,'Intenso']];
+function goalInfo(){const g=S.set.goal||50,x=(S.days[today()]||{}).xp||0;return {g,x,pct:Math.min(1,x/g),done:x>=g};}
+function goalHTML(){const gi=goalInfo();return `${icon('target')}<div class="bar" title="Obiettivo del giorno"><i style="--p:${Math.round(gi.pct*100)}%"></i></div><small>${gi.done?'Obiettivo di oggi raggiunto!':`Obiettivo di oggi: ${gi.x} / ${gi.g} XP`}</small>`;}
+function goalCheck(){const gi=goalInfo(),el=$('#goalbar');if(el){el.innerHTML=goalHTML();el.classList.toggle('done',gi.done);}
+  if(gi.done&&S.goalDay!==today()){S.goalDay=today();S.st.goals=(S.st.goals||0)+1;addGems(10,true);Snd.fx('level');buzz([20,40,20]);
+    toast(`${icon('target')}<div><b>Obiettivo del giorno raggiunto!</b><br><small>${gi.g} XP oggi · +10 gemme</small></div>`,'gold',4500);if(S.st.goals>=7)award('goal7');if(S.st.goals>=30)award('goal30');save();}}
+
+/* ---------- parola del giorno ---------- */
+function exampleFor(it){const re=new RegExp('(^|[^a-zà-ù])'+it.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-zà-ù]|$)','i');return SENTS.find(s=>re.test(s.it))||null;}
+function wordOfDay(){const pool=LEX.filter(w=>w.em&&w.lv<=Math.max(1,S.set.lv));const seed=[...(today()+S.name)].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,17);return pool[seed%pool.length];}
+function wodCard(){const w=wordOfDay();if(!w)return '';const ex=exampleFor(w.it),known=!!S.srs[w.it];
+  const info=[w.pl?(w.pl===w.it?'uguale al plurale':'plurale: '+esc(Art.full(w,true))):'',S.set.en?`<span class="en">${esc(w.en)}</span>`:''].filter(Boolean).join(' · ');
+  return `<section class="card" id="wodc"><div class="wod"><div class="e" aria-hidden="true">${w.em}</div><div class="d"><div class="lab">${icon('sun')} Parola del giorno</div><div class="w">${esc(Art.full(w,false))}</div>
+   ${info?`<small class="mut">${info}</small>`:''}${ex?`<p class="x">«${esc(ex.it)}»</p>`:''}</div>
+   <div class="row"><button class="btn sm" data-wl>${icon('speaker')}<span>Ascolta</span></button><button class="btn sm" data-wp>${icon('mic')}<span>Pronuncia</span></button><button class="btn sm ${known?'ghost':'gold'}" data-wg ${known?'disabled':''}>${icon('grimoire')}<span>${known?'È nel Grimorio':'Mettila nel Grimorio'}</span></button></div></div></section>`;}
+function wodBind(m){const c=$('#wodc',m);if(!c)return;const w=wordOfDay(),ex=exampleFor(w.it);
+  $('[data-wl]',c).onclick=()=>{Snd.init();Snd.Voice.speak(Art.full(w,false)+(ex?'. '+ex.it:''),{force:true});Stage.act('talk',{dur:1.5});};
+  $('[data-wp]',c).onclick=()=>go('ecogioco',{mode:'parole',items:[w.it],label:'Parola del giorno'});
+  $('[data-wg]',c).onclick=e=>{if(!S.srs[w.it])S.srs[w.it]={b:0,due:Date.now(),ok:0,ko:0,seen:Date.now()};save();const b=e.currentTarget;b.disabled=true;b.classList.remove('gold');b.classList.add('ghost');$('span',b).textContent='È nel Grimorio';Snd.fx('sparkle');
+    toast(`${icon('grimoire')}<div><b>${esc(Art.full(w,false))}</b> è nel tuo Grimorio.</div>`);};}
+
+/* ---------- mappa: obiettivo, installazione, parola del giorno ---------- */
+const _hubEnter=SCR.hub.enter;SCR.hub.enter=function(m,arg){const du=ACTS[0][1].find(x=>x[0]==='duello');if(du)du[3]=`${FOES.length} mostri in ${CHAPTERS.length} capitoli, più l'arena infinita`;
+  const to=ACTS[0][1].find(x=>x[0]==='torre');if(to)to[3]=`${ROOMS.length} escape room: risolvi gli enigmi e fuggi dalle stanze`;
+  _hubEnter.call(this,m,arg);const hello=$('.hello',m);if(!hello)return;
+  const gl=document.createElement('div');gl.className='goal'+(goalInfo().done?' done':'');gl.id='goalbar';gl.innerHTML=goalHTML();hello.insertBefore(gl,$('.mis',hello));
+  const row=$('.row',hello);if(row){row.insertAdjacentHTML('beforeend',`<button class="btn sm" data-install hidden>${icon('phone')}<span>Installa l'app</span></button>`);$('[data-install]',row).onclick=()=>PWA.install();}
+  hello.insertAdjacentHTML('afterend',wodCard());wodBind(m);PWA.refresh();};
+
+/* ---------- backup su file e gestione degli apprendisti ---------- */
+function backupData(){saveNow();const data={};PROF.list.forEach(p=>{data[p.id]=p.id===PROF.cur?S:Store.get('lampada.v1.p.'+p.id,null);});
+  return {app:'lampada-delle-parole',kind:'backup',v:1,date:new Date().toISOString(),cur:PROF.cur,profiles:PROF.list.map(p=>({id:p.id,name:(data[p.id]&&data[p.id].name)||p.name})),data};}
+function downloadFile(name,text,type){const blob=new Blob([text],{type:type||'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},3000);}
+function pickFile(accept,cb){const i=document.createElement('input');i.type='file';i.accept=accept;i.style.display='none';document.body.appendChild(i);
+  i.onchange=()=>{const f=i.files&&i.files[0];i.remove();if(!f)return;const r=new FileReader();r.onload=()=>cb(String(r.result),f);r.onerror=()=>toast(`${icon('x')}<div>Non riesco a leggere il file.</div>`,'bad');r.readAsText(f);};i.click();}
+function loadProfile(id){S=deepDef(Object.assign(DEF(),Store.get('lampada.v1.p.'+id,{})),DEF());applySettings();refreshTop();}
+function restoreBackup(txt){let o=null;try{o=JSON.parse(txt);}catch(e){}
+  const okB=o&&o.kind==='backup'&&o.data&&typeof o.data==='object'&&Array.isArray(o.profiles)&&o.profiles.filter(p=>p&&typeof p.id==='string'&&o.data[p.id]&&typeof o.data[p.id]==='object').length;
+  if(okB){const list=o.profiles.filter(p=>p&&typeof p.id==='string'&&o.data[p.id]&&typeof o.data[p.id]==='object').map(p=>({id:p.id,name:String(o.data[p.id].name||p.name||'Apprendista').slice(0,24)}));const d=new Date(o.date);
+    const b=Modal.open(`<h3>Ripristinare il backup?</h3><p>Il file contiene ${list.length===1?'un apprendista':`<b>${list.length}</b> apprendisti`}: <b>${esc(list.map(p=>p.name).join(', '))}</b>${isNaN(d)?'':`, salvati il ${esc(d.toLocaleDateString('it-IT'))}`}.</p><p class="mut">I progressi che ci sono adesso su questo dispositivo verranno sostituiti.</p><div class="row end"><button class="btn ghost" data-no>Annulla</button><button class="btn gold" data-ok>${icon('upload')}<span>Ripristina</span></button></div>`);
+    $('[data-no]',b).onclick=()=>Modal.close();
+    $('[data-ok]',b).onclick=()=>{clearTimeout(saveT);PROF.list.forEach(p=>Store.del('lampada.v1.p.'+p.id));list.forEach(p=>Store.set('lampada.v1.p.'+p.id,o.data[p.id]));
+      PROF={list,cur:list.some(p=>p.id===o.cur)?o.cur:list[0].id,lastBackup:PROF.lastBackup};Store.set('lampada.v1.profiles',PROF);loadProfile(PROF.cur);Modal.close();go('hub');toast(`${icon('check')}<div><b>Backup ripristinato!</b></div>`,'gold');};return;}
+  if(o&&o.v===1&&typeof o.xp==='number'&&o.st){S=deepDef(o,DEF());const p=PROF.list.find(x=>x.id===PROF.cur);if(p)p.name=S.name;Store.set('lampada.v1.profiles',PROF);saveNow();applySettings();refreshTop();go('hub');toast(`${icon('check')}<div>Progressi caricati!</div>`);return;}
+  toast(`${icon('x')}<div>Questo file non è un backup della Lampada.</div>`,'bad');}
+async function saveBackup(){const data=backupData(),name=`lampada-backup-${today()}.json`,txt=JSON.stringify(data);let shared=false;
+  try{const f=new File([txt],name,{type:'application/json'});if(/android|iphone|ipad/i.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Backup della Lampada delle Parole'});shared=true;}}catch(e){if(e&&e.name==='AbortError')return;}
+  if(!shared)downloadFile(name,txt);PROF.lastBackup=Date.now();Store.set('lampada.v1.profiles',PROF);toast(`${icon('check')}<div><b>Backup salvato</b><br><small>${esc(name)}</small></div>`,'gold');}
+
+/* ---------- impostazioni: vibrazione, obiettivo, app, apprendisti, backup ---------- */
+const _impEnter=SCR.impostazioni.enter;SCR.impostazioni.enter=function(m){_impEnter.call(this,m);const s=S.set;
+  const card=t=>$$('section.card',m).find(c=>{const h=$('h3',c);return h&&h.textContent.trim()===t;});
+  const snd=card('Suoni e voce');if(snd){snd.insertAdjacentHTML('beforeend',`<div class="sw2" style="margin-top:6px"><span>${icon('phone')} Vibrazione sul telefono</span><div class="seg"><button data-hp="1" class="${s.haptic!==false?'on':''}">Sì</button><button data-hp="0" class="${s.haptic===false?'on':''}">No</button></div></div>`);
+    $$('[data-hp]',snd).forEach(b=>b.onclick=()=>{s.haptic=b.dataset.hp==='1';save();$$('[data-hp]',snd).forEach(x=>x.classList.toggle('on',x===b));buzz(25);});}
+  const lv=card('Livello e lingua');if(lv){lv.insertAdjacentHTML('beforeend',`<div style="margin-top:14px"><p class="mut" style="margin-bottom:8px">${icon('target')} Obiettivo del giorno: quanti punti esperienza (XP) vuoi guadagnare ogni giorno?</p><div class="seg">${GOALS.map(([n,t])=>`<button data-gl="${n}" class="${(s.goal||50)===n?'on':''}">${t} · ${n}</button>`).join('')}</div></div>`);
+    $$('[data-gl]',lv).forEach(b=>b.onclick=()=>{s.goal=+b.dataset.gl;save();$$('[data-gl]',lv).forEach(x=>x.classList.toggle('on',x===b));Snd.fx('tap');});}
+  const prof=card('Apprendisti'),app=document.createElement('section');app.className='card';
+  app.innerHTML=`<h3>App sul telefono e sul computer</h3><p class="mut" id="appst"></p><div class="row"><button class="btn sm gold" data-install="always">${icon('phone')}<span>Installa l'app</span></button><button class="btn sm ghost" data-persist>${icon('shield')}<span>Proteggi i progressi</span></button>${PWA.web?`<button class="btn sm ghost" data-upd>${icon('refresh')}<span>Cerca aggiornamenti</span></button>`:''}</div><p class="mut" id="persst" style="margin:8px 0 0"><small></small></p>`;
+  if(prof)prof.before(app);else m.appendChild(app);$('[data-install]',app).onclick=()=>PWA.install();
+  const ps=async()=>{const ok=await PWA.persisted(),el=$('#persst small',app);if(el)el.textContent=ok?'I progressi sono protetti: il browser non li cancellerà per fare spazio.':'Se lo spazio sul dispositivo finisce, il browser potrebbe cancellare i dati: tocca «Proteggi i progressi» e salva ogni tanto un backup.';};ps();
+  $('[data-persist]',app).onclick=async()=>{const ok=await PWA.persist();ps();toast(ok?`${icon('shield')}<div>Progressi protetti!</div>`:`${icon('shield')}<div>Il browser non ha concesso la protezione: ricordati di salvare un backup.</div>`,ok?'gold':'');};
+  const up=$('[data-upd]',app);if(up)up.onclick=async()=>{up.disabled=true;await PWA.check();setTimeout(()=>{up.disabled=false;toast(`${icon('check')}<div>Controllo fatto: se c'è una nuova versione, comparirà il pulsante «Aggiorna».</div>`);},1200);};
+  PWA.refresh();
+  if(prof&&PROF.list.length>1){prof.insertAdjacentHTML('beforeend',`<div class="row" style="margin-top:12px"><button class="btn sm ghost" data-delp>${icon('trash')}<span>Elimina ${esc(S.name)}</span></button></div>`);
+    $('[data-delp]',prof).onclick=()=>{const b=Modal.open(`<h3>Eliminare ${esc(S.name)}?</h3><p>Tutti i progressi di <b>${esc(S.name)}</b> spariranno da questo dispositivo. Non si può annullare.</p><div class="row end"><button class="btn ghost" data-no>Annulla</button><button class="btn red" data-ok>${icon('trash')}<span>Elimina</span></button></div>`);
+      $('[data-no]',b).onclick=()=>Modal.close();$('[data-ok]',b).onclick=()=>{clearTimeout(saveT);const id=PROF.cur;PROF.list=PROF.list.filter(p=>p.id!==id);Store.del('lampada.v1.p.'+id);PROF.cur=PROF.list[0].id;Store.set('lampada.v1.profiles',PROF);loadProfile(PROF.cur);Modal.close();go('impostazioni');toast(`${icon('trash')}<div>Apprendista eliminato.</div>`);};};}
+  const dati=card('Dati');if(dati){const row=$('.row',dati);row.insertAdjacentHTML('afterbegin',`<button class="btn sm gold" data-bk>${icon('download')}<span>Salva un backup</span></button><button class="btn sm" data-rs>${icon('upload')}<span>Ripristina da file</span></button>`);
+    const lb=PROF.lastBackup;dati.insertAdjacentHTML('beforeend',`<p class="mut" style="margin:10px 0 0"><small>Il backup contiene tutti gli apprendisti di questo dispositivo: conservalo per non perdere niente o per passare a un altro telefono o computer. ${lb?'Ultimo backup: '+esc(new Date(lb).toLocaleDateString('it-IT'))+'.':'Non hai ancora salvato nessun backup.'}</small></p>`);
+    $('[data-bk]',dati).onclick=()=>saveBackup();$('[data-rs]',dati).onclick=()=>pickFile('.json,application/json',txt=>restoreBackup(txt));}};
+
+/* ---------- Modalità Classe: schermo sempre acceso e schermo intero ---------- */
+const Wake=(()=>{let lock=null,want=false;async function req(){if(!want||!('wakeLock' in navigator)||document.hidden||lock)return;try{lock=await navigator.wakeLock.request('screen');lock.addEventListener('release',()=>{lock=null;});}catch(e){lock=null;}}
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)req();});
+  return {on(){want=true;req();},off(){want=false;if(lock){lock.release().catch(()=>{});lock=null;}}};})();
+function toggleFull(){try{if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen({navigationUI:'hide'}).catch(()=>{});}catch(e){}}
+const _cgEnter=SCR.classegioco.enter;SCR.classegioco.enter=function(m,c){_cgEnter.call(this,m,c);Wake.on();const card=$('section.card',m);
+  if(card&&document.documentElement.requestFullscreen){card.insertAdjacentHTML('beforeend',`<div class="row end" style="margin-top:10px"><button class="btn sm ghost" data-fs>${icon('expand')}<span>Schermo intero</span></button></div>`);$('[data-fs]',card).onclick=toggleFull;}};
+SCR.classegioco.leave=function(){Wake.off();};
+
+/* ---------- Pannello Insegnante: condividere e importare le liste ---------- */
+const b64e=str=>{const b=new TextEncoder().encode(str);let s='';for(let i=0;i<b.length;i+=0x8000)s+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');};
+const b64d=str=>{str=str.replace(/-/g,'+').replace(/_/g,'/');while(str.length%4)str+='=';const s=atob(str);const b=new Uint8Array(s.length);for(let i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return new TextDecoder().decode(b);};
+function listCode(l){return b64e(JSON.stringify({n:l.name,i:l.items.map(x=>x.en?[x.it,x.en]:[x.it])}));}
+function listFromCode(txt){txt=String(txt||'').trim();const m=/[#&?]lista=([A-Za-z0-9_-]+)/.exec(txt);const code=m?m[1]:txt;if(!/^[A-Za-z0-9_-]{8,}$/.test(code))return null;
+  try{const o=JSON.parse(b64d(code));if(!o||!Array.isArray(o.i))return null;const items=o.i.filter(x=>Array.isArray(x)&&x[0]).map(x=>({it:String(x[0]).slice(0,60),en:x[1]?String(x[1]).slice(0,60):''})).slice(0,400);
+    return items.length>=4?{name:String(o.n||'Lista condivisa').slice(0,60),items}:null;}catch(e){return null;}}
+function listFromText(t){return String(t).split(/\r?\n/).map(l=>l.trim()).filter(l=>l&&!/^#/.test(l)).map(l=>{const sep=['=',';','\t',','].find(c=>l.includes(c));const [it,en]=sep?[l.slice(0,l.indexOf(sep)),l.slice(l.indexOf(sep)+1)]:[l,''];
+  return {it:it.trim().replace(/^"|"$/g,'').slice(0,60),en:(en||'').trim().replace(/^"|"$/g,'').slice(0,60)};}).filter(x=>x.it);}
+function addList(l,from){const id='l'+Date.now();S.lists.push({id,name:l.name,items:l.items});S.curList=id;save();toast(`${icon('book')}<div><b>Lista aggiunta: ${esc(l.name)}</b><br><small>${l.items.length} parole · ora è la lista attiva${from?' · '+esc(from):''}</small></div>`,'gold',4500);}
+function offerSharedList(l){const b=Modal.open(`<h3>Una lista di parole per te!</h3><p>Hai ricevuto la lista <b>${esc(l.name)}</b> con <b>${l.items.length}</b> parole, per esempio: <i>${esc(l.items.slice(0,4).map(x=>x.it).join(', '))}</i>…</p><p class="mut">Il Genio la userà nei quiz, nella memoria, nel grimorio e nella pronuncia.</p><div class="row end"><button class="btn ghost" data-no>No, grazie</button><button class="btn gold" data-ok>${icon('plus')}<span>Aggiungi la lista</span></button></div>`);
+  $('[data-no]',b).onclick=()=>Modal.close();$('[data-ok]',b).onclick=()=>{addList(l);Modal.close();};}
+function teachExtras(m){if($('#sharec',m))return;const sec=document.createElement('section');sec.className='card';sec.id='sharec';
+  sec.innerHTML=`<h3>${icon('share')} Condividi e importa</h3><p class="mut">Manda una lista agli studenti: con il link la aprono direttamente nella Lampada; il codice si può incollare qui sotto. Puoi anche caricare un file di testo o un CSV (una parola per riga, con la traduzione dopo <b>=</b>, <b>;</b> o la virgola).</p>
+   ${S.lists.length?`<label class="f">Lista da condividere<select id="shl">${S.lists.map(l=>`<option value="${l.id}" ${l.id===S.curList?'selected':''}>${esc(l.name)} (${l.items.length})</option>`).join('')}</select></label>
+   <div class="row" style="margin-top:10px">${PWA.web?`<button class="btn sm gold" data-shl>${icon('share')}<span>Copia il link</span></button>`:''}<button class="btn sm" data-shc>${icon('copy')}<span>Copia il codice</span></button><button class="btn sm ghost" data-shf>${icon('download')}<span>Scarica come file</span></button></div>`:'<p class="mut"><small>Crea prima una lista per poterla condividere.</small></p>'}
+   <label class="f" style="margin-top:14px">Incolla un link o un codice ricevuto<textarea id="shin" style="min-height:70px" placeholder="https://…#lista=… oppure il codice"></textarea></label>
+   <div class="row" style="margin-top:10px"><button class="btn sm gold" data-shi>${icon('plus')}<span>Importa</span></button><button class="btn sm" data-shu>${icon('upload')}<span>Carica un file (.txt, .csv)</span></button></div>`;
+  m.querySelector('section.card').after(sec);
+  const cur=()=>S.lists.find(l=>l.id===($('#shl',sec)||{}).value);
+  const copy=(t,what)=>{const done=()=>toast(`${icon('check')}<div>${what} copiato!</div>`);if(navigator.clipboard)navigator.clipboard.writeText(t).then(done,()=>Modal.open(`<h3>Copia questo testo</h3><label class="f"><textarea readonly>${esc(t)}</textarea></label>`));else Modal.open(`<h3>Copia questo testo</h3><label class="f"><textarea readonly>${esc(t)}</textarea></label>`);};
+  const L=$('[data-shl]',sec);if(L)L.onclick=async()=>{const l=cur();if(!l)return;const url=location.origin+location.pathname+'#lista='+listCode(l);
+    if(navigator.share&&/android|iphone|ipad/i.test(navigator.userAgent)){try{await navigator.share({title:'Lista di parole: '+l.name,text:'Apri questa lista nella Lampada delle Parole:',url});return;}catch(e){if(e&&e.name==='AbortError')return;}}copy(url,'Link');};
+  const C=$('[data-shc]',sec);if(C)C.onclick=()=>{const l=cur();if(l)copy(listCode(l),'Codice');};
+  const F=$('[data-shf]',sec);if(F)F.onclick=()=>{const l=cur();if(l)downloadFile(l.name.replace(/[^\p{L}\p{N} _-]/gu,'').trim().replace(/\s+/g,'-')+'.txt',l.items.map(x=>x.it+(x.en?' = '+x.en:'')).join('\n'),'text/plain');};
+  $('[data-shi]',sec).onclick=()=>{const v=$('#shin',sec).value;const l=listFromCode(v)||(()=>{const it=listFromText(v);return it.length>=4?{name:'Lista importata',items:it}:null;})();
+    if(!l){toast(`${icon('x')}<div>Non riconosco né un link né un codice valido (servono almeno 4 parole).</div>`,'bad');return;}addList(l);go('insegnante');};
+  $('[data-shu]',sec).onclick=()=>pickFile('.txt,.csv,text/plain,text/csv',(t,f)=>{const it=listFromText(t);if(it.length<4){toast(`${icon('x')}<div>Nel file servono almeno 4 parole, una per riga.</div>`,'bad');return;}
+    addList({name:f.name.replace(/\.[^.]+$/,'').slice(0,60)||'Lista importata',items:it.slice(0,400)},'dal file');go('insegnante');});}
+
+/* ===== Eco del Genio: pronuncia con il riconoscimento vocale (Chrome, Edge, Safari) ===== */
+const TWISTERS=[['Trentatré trentini entrarono a Trento, tutti e trentatré trotterellando.','TR'],['Sopra la panca la capra campa, sotto la panca la capra crepa.','P e C'],
+ ['Apelle, figlio di Apollo, fece una palla di pelle di pollo.','P, L e LL'],['Tre tigri contro tre tigri.','TR e GR'],['Stanno stretti sotto i letti sette spettri a denti stretti.','ST e TT'],
+ ['Una rara rana nera nella rena errò una sera.','R e RR'],['Sereno è, sereno sarà, se non sarà sereno si rasserenerà.','S e R'],
+ ['Dietro il palazzo c\'è un povero cane pazzo: date un pezzo di pane al povero pazzo cane.','Z e ZZ'],
+ ['Sul tagliere l\'aglio taglia, non tagliare la tovaglia: la tovaglia non è aglio, se la tagli fai uno sbaglio.','GLI'],['Porta aperta per chi porta, chi non porta parta pure: poco importa.','P e RT']];
+const SOUNDS=[['doppie','Le doppie','Una consonante doppia si pronuncia più lunga e più forte: pala ≠ palla.',['pala','palla','caro','carro','nono','nonno','pena','penna','sete','sette','capello','cappello','casa','cassa','note','notte','fato','fatto','copia','coppia']],
+ ['gli','Il suono GLI','La lingua tocca il palato: è un suono morbido, come in «famiglia».',['famiglia','figlio','aglio','foglia','maglia','conigli','meraviglia','sveglia','biglietto','bottiglia']],
+ ['gn','Il suono GN','Come in «lasagna»: un suono nasale e morbido.',['bagno','sogno','ragno','lavagna','montagna','cigno','legno','compagno','gnomo','signora']],
+ ['sc','SC dolce e duro','Davanti a E e I si dice «sce, sci»; davanti ad A, O, U e H è duro: «sca, sco, scu, schi».',['pesce','scena','uscita','scimmia','sciarpa','piscina','ascensore','scuola','scarpa','schiena']],
+ ['r','La R','La R italiana vibra sulla punta della lingua. Due R vibrano più a lungo.',['rana','treno','carro','birra','ferro','prato','primavera','terra','raro','orologio']],
+ ['chgh','CH e GH','CH e GH sono sempre duri: «chiave» si dice /kiave/, «ghiaccio» /ghiaccio/.',['chiave','chiesa','ghiaccio','funghi','occhio','orecchio','laghi','banchi','chitarra','spaghetti']],
+ ['z','La Z','La Z italiana può essere sorda (pizza) o sonora (zero).',['pizza','zucchero','piazza','zaino','ragazzo','grazie','stazione','zio','pazienza','mezzo']]];
+/* riconoscimento vocale */
+const Rec=(()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let cur=null;
+  function ok(){return !!SR;}
+  function listen(o){abort();let r;try{r=new SR();}catch(e){if(o.onError)o.onError('init');return null;}
+    r.lang='it-IT';r.interimResults=true;r.maxAlternatives=5;r.continuous=false;const F=[];
+    r.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal){const a=[];for(let k=0;k<res.length;k++)if(res[k].transcript)a.push(res[k].transcript);F[i]=a;}else interim+=res[0].transcript;}
+      if(o.onInterim)o.onInterim(interim||F.filter(Boolean).map(a=>a[0]).join(' '));};
+    r.onerror=e=>{if(o.onError)o.onError(e.error||'error');};r.onaudiostart=()=>{if(o.onStart)o.onStart();};
+    r.onend=()=>{if(cur===r)cur=null;const fin=F.filter(Boolean);if(o.onEnd)o.onEnd(fin.length===1?fin[0]:fin.length?[fin.map(a=>a[0]).join(' ')]:[]);};
+    try{r.start();cur=r;}catch(e){if(o.onError)o.onError('busy');return null;}return r;}
+  function stop(){if(cur){try{cur.stop();}catch(e){}}}
+  function abort(){if(cur){const c=cur;cur=null;try{c.abort();}catch(e){}}}
+  return {ok,listen,stop,abort,get busy(){return !!cur}};})();
+/* registratore (per i browser che non riconoscono la voce) */
+const Rec2=(()=>{let mr=null,chunks=[],stream=null,url=null;
+  function ok(){return !!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);}
+  async function start(){off();stream=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];mr=new MediaRecorder(stream);mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};mr.start();}
+  function stop(){return new Promise(res=>{if(!mr||mr.state==='inactive'){res(null);return;}mr.onstop=()=>{const b=new Blob(chunks,{type:mr.mimeType||'audio/webm'});if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(b);off();res(url);};try{mr.stop();}catch(e){res(null);}});}
+  function off(){try{if(mr&&mr.state!=='inactive')mr.stop();}catch(e){}if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;}
+  function play(){if(url){const a=new Audio(url);a.play().catch(()=>{});}}
+  return {ok,start,stop,off,play,get rec(){return !!(mr&&mr.state==='recording')},get has(){return !!url}};})();
+/* confronto tra la frase giusta e quella sentita */
+function ecoNorm(s){s=String(s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/\d+/g,d=>{const n=+d;return n<10000?Num.words(n):d;});return Txt.deacc(s).replace(/(\w)'(?=\w)/g,'$1').replace(/'/g,' ').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();}
+function ecoScore(target,heard,strict){const T=ecoNorm(target).split(' ').filter(Boolean),H=ecoNorm(heard).split(' ').filter(Boolean),m=T.length,n=H.length;if(!m)return {score:0,marks:[]};
+  const sim=(a,b)=>{if(a===b)return 1;if(strict)return 0;const d=Txt.lev(a,b);return Math.max(0,1-d/Math.max(a.length,b.length));};
+  const D=[...Array(m+1)].map(()=>new Float64Array(n+1));for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--){const s=sim(T[i],H[j]);D[i][j]=Math.max(D[i+1][j],D[i][j+1],(s>=0.5?s:0)+D[i+1][j+1]);}
+  const marks=new Array(m).fill(0);let i=0,j=0;while(i<m&&j<n){const s=sim(T[i],H[j]);if(s>=0.5&&Math.abs(D[i][j]-(s+D[i+1][j+1]))<1e-9){marks[i]=s;i++;j++;}else if(D[i+1][j]>=D[i][j+1])i++;else j++;}
+  let score=marks.reduce((a,x)=>a+x,0)/m;score*=Math.max(0.75,1-Math.max(0,n-m-1)*0.05);return {score,marks};}
+function ecoWords(target,marks){const words=target.split(/\s+/).filter(Boolean),map=[];words.forEach((w,wi)=>ecoNorm(w).split(' ').filter(Boolean).forEach(()=>map.push(wi)));
+  return words.map((w,wi)=>{const ms=marks.filter((_,k)=>map[k]===wi);const v=ms.length?Math.min(...ms):1;return `<span class="${v>=0.85?'ok':'ko'}">${esc(w)}</span>`;}).join(' ');}
+function ecoItems(cfg){const L=Math.max(1,S.set.lv);
+  if(cfg.items)return cfg.items.map(it=>{const w=LEXM[it];return w?{t:w.it,em:w.em,sub:Art.full(w,false),en:w.en,word:w.it}:{t:it,word:null};});
+  if(cfg.mode==='frasi')return sample(SENTS.filter(s=>s.lv<=L),6).map(s=>({t:s.it,en:s.en,sent:true}));
+  if(cfg.mode==='lingua')return sample(TWISTERS,5).map(([t,h])=>({t,sent:true,tw:true,sub:'Suoni da allenare: '+h}));
+  if(cfg.mode==='suoni'){const gs=cfg.snd&&cfg.snd!=='mix'?SOUNDS.filter(g=>g[0]===cfg.snd):SOUNDS;const out=[];
+    for(let k=0;k<8;k++){const g=gs[k%gs.length];const i=rint(0,g[3].length-1),w=g[3][i];if(out.some(x=>x.t===w)){k--;if(out.length>=g[3].length*gs.length)break;continue;}
+      const pair=g[0]==='doppie'?g[3][i^1]:null;const lw=LEXM[w];out.push({t:w,em:lw?lw.em:'',sub:pair?`Attenzione: non «${pair}»!`:g[1],strict:!!pair,word:lw?w:null});}return out;}
+  if(cfg.mode==='lista'){const l=S.lists.find(x=>x.id===S.curList);if(l)return sample(l.items,Math.min(8,l.items.length)).map(x=>({t:x.it,en:x.en,sent:/\s/.test(x.it)&&x.it.split(' ').length>3,word:null}));}
+  return sample(LEX.filter(w=>w.em&&w.lv<=L),8).map(w=>({t:w.it,em:w.em,sub:Art.full(w,false),en:w.en,word:w.it}));}
+SCR.eco={lay:'side',title:'Eco del Genio',music:'silenzio',pose:'listen',magic:'#ffb35a',enter(m){Genie.show(true);Stage.base('listen');const sup=Rec.ok();
+  Genie.say(sup?'Io dico una parola e tu la ripeti: le mie orecchie magiche ti ascoltano! Scegli un esercizio.':'Il tuo browser non mi permette di ascoltarti, ma possiamo allenarci lo stesso: ascolta la mia voce, registra la tua e confrontale.',{act:'present',en:sup?'I say a word and you repeat it: my magic ears are listening! Choose an exercise.':''});
+  const c=S.ecoCfg||(S.ecoCfg={mode:'parole',snd:'mix'});const cu=S.lists.find(x=>x.id===S.curList);if(c.mode==='lista'&&!cu)c.mode='parole';
+  const MODES=[['parole','mic','Parole','Le parole del tuo livello, con le figure'],['frasi','scroll','Frasi','Frasi intere: ritmo e intonazione'],['suoni','ear','Suoni difficili','Doppie, GLI, GN, SC, R, Z…'],['lingua','flame','Scioglilingua','Per veri maghi della lingua!']].concat(cu?[['lista','book','Lista attiva',cu.name]]:[]);
+  const draw=()=>{m.innerHTML=`<section class="card"><h3>Che cosa vuoi pronunciare?</h3><div class="spells">${MODES.map(([k,ic,t,d])=>`<button class="spell" data-m="${k}" aria-pressed="${c.mode===k}" style="${c.mode===k?'border-color:#e8c15a;box-shadow:0 0 16px rgba(232,193,90,.4)':''}">${icon(ic)}<b>${esc(t)}</b><small>${esc(d)}</small></button>`).join('')}</div>
+    ${c.mode==='suoni'?`<p class="mut" style="margin-top:12px">Quale suono?</p><div class="seg">${[['mix','Tutti']].concat(SOUNDS.map(g=>[g[0],g[1].replace(/^(Il suono |La |Le )/,'')])).map(([k,t])=>`<button data-sd="${k}" class="${c.snd===k?'on':''}">${esc(t)}</button>`).join('')}</div>`:''}
+    <div class="row end" style="margin-top:14px"><button class="btn gold big" data-go>${icon('mic')}<span>Comincia</span></button></div></section>
+   <section class="card"><p class="mut" style="margin:0"><small>${sup?'Quando tocchi il microfono, il browser ti chiederà il permesso di usarlo. Il riconoscimento della voce funziona con internet attivo.':'Per farti ascoltare dal Genio usa Chrome, Edge o Safari. Qui puoi comunque ascoltare, registrarti e riascoltarti.'}
+    · Parole dette bene finora: <b>${S.st.eco||0}</b></small></p></section>`;
+   $$('[data-m]',m).forEach(b=>b.onclick=()=>{c.mode=b.dataset.m;save();Snd.fx('tap');draw();});$$('[data-sd]',m).forEach(b=>b.onclick=()=>{c.snd=b.dataset.sd;save();draw();});
+   $('[data-go]',m).onclick=()=>go('ecogioco',{mode:c.mode,snd:c.snd});};draw();}};
+SCR.ecogioco={lay:'side',title:'Eco del Genio',music:'silenzio',pose:'listen',magic:'#ffb35a',back(){go('eco');},leave(){Rec.abort();Rec2.off();Snd.Voice.stop();},
+ enter(m,cfg){cfg=cfg||{mode:'parole'};Genie.show(true);Stage.base('listen');const items=ecoItems(cfg);if(!items.length){go('eco');return;}
+  Genie.say(Rec.ok()?'Ascolta come lo dico io, poi tocca il microfono e ripeti. Ti ascolto con le mie orecchie magiche!':'Ascolta come lo dico io, poi ripeti ad alta voce: se vuoi, registrati e confronta la tua voce con la mia.',{act:'present',tts:false});
+  const st={i:0,best:items.map(()=>0),heard:items.map(()=>''),tried:items.map(()=>false),good:0,fallback:!Rec.ok(),why:''};const voice=Snd.Voice.avail();
+  m.innerHTML=`<section class="card"><div class="row sb"><span class="cnt" id="en"></span><span class="pill" id="es"></span></div></section><div id="ea" style="margin-top:12px"></div>`;
+  const hud=()=>{$('#en').textContent=`${cfg.label||'Pronuncia'} · ${Math.min(st.i+1,items.length)} di ${items.length}`;$('#es').innerHTML=`${icon('mic')} ${st.good} ${st.good===1?'detta bene':'dette bene'}`;};
+  function say(it,slow){Snd.init();Snd.Voice.speak(it.t,{force:true,rate:slow?0.62:0.88});Stage.act('talk',{dur:1.2});}
+  function show(){if(st.i>=items.length)return end();hud();const it=items[st.i];const box=$('#ea');Rec.abort();
+    box.innerHTML=`<section class="parch q"><div class="qtop"><span class="qskill">${it.tw?'Scioglilingua':it.sent?'Frase':'Parola'}</span><span class="qsub">${st.fallback?'Ascolta, registrati e confronta':'Ascolta, poi tocca il microfono e ripeti'}</span></div>
+      ${it.em?`<div class="qpic" aria-hidden="true">${it.em}</div>`:''}<div class="${it.sent?'eco-sent':'eco-word'}">${esc(it.t)}</div>
+      ${it.sub?`<p class="mut" style="text-align:center;margin:0">${esc(it.sub)}</p>`:''}${it.en&&S.set.en?`<p class="en" style="text-align:center;margin:0;color:#5a4a7a">${esc(it.en)}</p>`:''}
+      ${voice?`<div class="row c"><button class="btn" data-l>${icon('speaker')}<span>Ascolta</span></button><button class="btn ghost" data-ls>${icon('ear')}<span>Più lento</span></button></div>`:`<p class="note" style="margin:0">Su questo dispositivo non c'è una voce italiana: leggi con calma e prova lo stesso.</p>`}
+      <div id="ez"></div><div class="eco-heard" id="eh" aria-live="polite"></div><div id="er"></div></section>`;
+    if(voice){$('[data-l]',box).onclick=()=>say(it);$('[data-ls]',box).onclick=()=>say(it,true);setTimeout(()=>{if(box.isConnected&&!Rec.busy)say(it);},450);}
+    zone();}
+  function zone(){const it=items[st.i],z=$('#ez');if(!z)return;
+    if(!st.fallback){z.innerHTML=`<button class="mic" data-mic aria-label="Tocca e parla">${icon('mic')}</button><div class="miclab" id="ml">Tocca e parla</div>`;$('[data-mic]',z).onclick=()=>listen(it);return;}
+    const can=Rec2.ok();z.innerHTML=`${st.why?`<p class="note" style="margin:0 0 10px">${st.why}</p>`:''}${can?`<div class="row c"><button class="btn gold" data-rec>${icon('mic')}<span>Registra</span></button><button class="btn" data-pl ${Rec2.has?'':'disabled'}>${icon('play')}<span>Riascoltati</span></button></div>`:''}
+      <p class="mut" style="text-align:center;margin:10px 0 6px">${can?'Confronta la tua voce con quella del Genio. Com\'è andata?':'Ripeti ad alta voce dopo il Genio. Com\'è andata?'}</p><div class="row c"><button class="btn red" data-sr="0">${icon('refresh')}<span>Da rifare</span></button><button class="btn green" data-sr="1">${icon('check')}<span>Detta bene!</span></button></div>`;
+    const rb=$('[data-rec]',z);if(rb)rb.onclick=async()=>{if(Rec2.rec){await Rec2.stop();Snd.duck(false);zone();Rec2.play();return;}
+      try{Snd.Voice.stop();await Rec2.start();Snd.duck(true);rb.classList.remove('gold');rb.classList.add('red');$('span',rb).textContent='Ferma';Stage.act('listen');}catch(e){toast(`${icon('mic')}<div>Non posso usare il microfono: controlla i permessi del browser.</div>`,'bad',4000);}};
+    const pb=$('[data-pl]',z);if(pb)pb.onclick=()=>Rec2.play();
+    $$('[data-sr]',z).forEach(b=>b.onclick=()=>{if(Rec2.rec){Rec2.stop();Snd.duck(false);}const ok=b.dataset.sr==='1';result(ok?0.9:0.3,null,ok?'self':'selfko');});}
+  let lt=0,st2=0;const reset=()=>{clearTimeout(lt);clearTimeout(st2);Snd.duck(false);const mic=$('[data-mic]'),ml=$('#ml');if(mic){mic.classList.remove('on');mic.setAttribute('aria-label','Tocca e parla');}if(ml)ml.textContent='Tocca e parla';};
+  function listen(it){if(Rec.busy){Rec.stop();clearTimeout(st2);st2=setTimeout(()=>{if(Rec.busy){Rec.abort();}reset();},1500);return;}Snd.Voice.stop();const mic=$('[data-mic]'),ml=$('#ml'),eh=$('#eh');clearTimeout(lt);
+    const quiet=()=>{clearTimeout(lt);lt=setTimeout(()=>{if(!Rec.busy)return;Rec.abort();reset();toast(`${icon('ear')}<div>Non ti ho sentito: avvicinati al microfono e riprova.</div>`,'',3200);},10000);};
+    let started=false;clearTimeout(st2);st2=setTimeout(()=>{if(started||!Rec.busy)return;Rec.abort();reset();st.why='Il microfono non risponde. Possiamo allenarci così:';st.fallback=true;zone();},15000);
+    const r=Rec.listen({onStart:()=>{started=true;clearTimeout(st2);quiet();},onInterim:t=>{started=true;clearTimeout(st2);clearTimeout(lt);if(eh)eh.textContent=t?'«'+t+'…»':'';},
+      onError:code=>{clearTimeout(lt);if(code==='aborted')return;if(code==='no-speech'){toast(`${icon('ear')}<div>Non ti ho sentito: avvicinati al microfono e riprova.</div>`,'',3200);return;}
+        st.why=code==='not-allowed'||code==='service-not-allowed'?'Il Genio non ha il permesso di usare il microfono. Puoi darglielo nelle impostazioni del sito, oppure continuare così:':code==='network'?'Per riconoscere la voce serve internet. Senza connessione possiamo allenarci così:':code==='audio-capture'?'Non trovo nessun microfono. Possiamo allenarci così:':'Il riconoscimento della voce non è disponibile. Possiamo allenarci così:';
+        st.fallback=true;zone();},
+      onEnd:alts=>{reset();if(!alts.length||st.fallback)return;
+        let best={score:-1};for(const a of alts){const r2=ecoScore(it.t,a,it.strict);if(r2.score>best.score)best=Object.assign(r2,{heard:a});}result(best.score,best);}});
+    if(r){Snd.duck(true);if(mic){mic.classList.add('on');mic.setAttribute('aria-label','Ferma l\'ascolto');}if(ml)ml.textContent='Ti ascolto… tocca per fermare';if(eh)eh.textContent='';Stage.act('listen');}}
+  function result(score,r,self){const it=items[st.i],first=st.best[st.i]<0.9;st.best[st.i]=Math.max(st.best[st.i],score);if(r)st.heard[st.i]=r.heard;const er=$('#er');if(!er)return;
+    const lvl=score>=0.9?'ok':score>=0.6?'mid':'ko';const pct=Math.round(score*100);
+    const msg=self==='self'?'Bravissimo! Continua così.':self==='selfko'?'Nessun problema: riascolta e riprova!':lvl==='ok'?rnd(['Perfetto!','Pronuncia magnifica!','Sembri un vero italiano!','Bravissimo!']):lvl==='mid'?'Quasi! Ascolta di nuovo e riprova.':'Non ho capito bene… riproviamo insieme!';
+    let h=self?`<div class="eco-score ${self==='self'?'ok':'ko'}">${msg}</div>`:`<div class="meter"><i style="--p:${pct}%"></i></div><div class="eco-score ${lvl}">${pct}% · ${msg}</div>`;
+    if(r){h+=`<div class="eco-words" style="margin-top:6px">${ecoWords(it.t,r.marks)}</div><p class="mut" style="text-align:center;margin:6px 0 0"><small>Ho sentito: «${esc(r.heard)}»</small></p>`;
+      if(it.strict&&score<0.9){const pair=SOUNDS[0][3][SOUNDS[0][3].indexOf(it.t)^1];if(pair&&ecoNorm(r.heard).split(' ').includes(ecoNorm(pair)))h+=`<p class="fbexp">Ho capito «${esc(pair)}»: ${it.t.length>pair.length?'allunga e rinforza la doppia!':'qui la consonante è semplice, non doppia!'}</p>`;}}
+    h+=`<div class="row c" style="margin-top:10px">${self?'':`<button class="btn ghost" data-again>${icon('refresh')}<span>Riprova</span></button>`}<button class="btn gold" data-n>${icon('next')}<span>${st.i+1>=items.length?'Fine':'Avanti'}</span></button></div>`;er.innerHTML=h;
+    if(score>=0.9&&first){st.good++;addXP(it.tw?6:3);S.st.eco=(S.st.eco||0)+1;award('eco1');if(S.st.eco>=50)award('eco50');if(it.tw)award('lingua');ev('eco',1);Snd.fx('ok');FX.confetti(it.tw?60:20);Stage.act(rnd(['cheer','happy','nod']),{dur:1.2});buzz(15);
+      answered(true,'eco',it.word);hud();}
+    else if(score<0.9){Snd.fx(score>=0.6?'tap':'ko');Stage.act(score>=0.6?'think':'shrug',{dur:1});if(!st.tried[st.i]&&!self)answered(false,'eco',it.word);}
+    st.tried[st.i]=true;
+    const ag=$('[data-again]',er);if(ag)ag.onclick=()=>{er.innerHTML='';listen(it);};$('[data-n]',er).onclick=()=>{st.i++;show();};
+    if(!self)Genie.say(msg,{act:null});}
+  function end(){Rec.abort();Rec2.off();const avg=st.best.reduce((a,x)=>a+x,0)/items.length,pct=Math.round(avg*100),gems=Math.round(avg*12);addGems(gems);addXP(8);award('primo');save();
+    Snd.fx(pct>=60?'win':'lose');if(pct>=80)FX.confetti(90);Genie.say(pct>=90?'Che pronuncia! Potresti fare l\'attore a Cinecittà!':pct>=60?'Bravo! La tua voce diventa sempre più italiana.':'Pronunciare bene richiede tempo: ascolta, ripeti e vedrai che migliori!',{act:pct>=60?'cheer':'shrug'});
+    $('#ea').innerHTML=`<section class="card res"><h2>${pct}%</h2><p>${st.good} su ${items.length} dette bene · +${gems} gemme</p><div class="miss">${items.map((it,i)=>`<div><b style="color:${st.best[i]>=0.9?'#7cf0b0':st.best[i]>=0.6?'#ffe17a':'#ff9a8a'}">${Math.round(st.best[i]*100)}%</b> · ${esc(it.t)}${st.heard[i]&&st.best[i]<0.9?` <small class="mut">(ho sentito «${esc(st.heard[i])}»)</small>`:''}</div>`).join('')}</div>
+     <div class="row c" style="margin-top:14px"><button class="btn gold" data-re>${icon('refresh')}<span>Ancora</span></button><button class="btn" data-ch>${icon('mic')}<span>Cambia esercizio</span></button><button class="btn ghost" data-h>${icon('home')}<span>Mappa</span></button></div></section>`;
+    $('[data-re]').onclick=()=>go('ecogioco',cfg.items?{mode:'parole'}:cfg);$('[data-ch]').onclick=()=>go('eco');$('[data-h]').onclick=()=>go('hub');}
+  show();}};
+
+/* ===== Biblioteca delle Storie: racconti A1-B2 con lettura ad alta voce, parole da toccare e domande ===== */
+/* p: paragrafi (frasi); en: traduzione di ogni paragrafo; g: glossario; q: domanda, risposta giusta, tre risposte sbagliate */
+const STORIES=[
+{id:'pallino',lv:1,em:'🐈',bc:'#7a3a8a',t:'Il gatto Pallino',d:'Un gatto pigro, un armadio e una sorpresa.',
+ p:[["Pallino è un gatto grigio e bianco.","Abita a Napoli con la famiglia Esposito.","La casa è piccola, ma ha un balcone pieno di fiori."],
+  ["Pallino è molto pigro.","La mattina dorme sul divano, il pomeriggio dorme sul letto e la sera dorme vicino alla finestra."],
+  ["Un giorno Pallino non è sul divano.","Non è sul letto e non è vicino alla finestra.","Dov'è Pallino?","Tutta la famiglia lo cerca."],
+  ["Alla fine Marta, la bambina, apre l'armadio.","Pallino è lì, sopra i maglioni, con tre gattini piccoli piccoli!","Pallino non è un gatto: è una gatta!"]],
+ en:["Pallino is a grey and white cat. He lives in Naples with the Esposito family. The house is small, but it has a balcony full of flowers.",
+  "Pallino is very lazy. In the morning he sleeps on the sofa, in the afternoon he sleeps on the bed and in the evening he sleeps near the window.",
+  "One day Pallino is not on the sofa. He is not on the bed and he is not near the window. Where is Pallino? The whole family looks for him.",
+  "In the end Marta, the little girl, opens the wardrobe. Pallino is there, on top of the jumpers, with three tiny kittens! Pallino is not a tomcat: she is a female cat!"],
+ g:{pigro:'lazy',balcone:'balcony',pieno:'full',"dov'è":'where is',lo:'him, it',cerca:'looks for',"alla fine":'in the end',apre:'opens',armadio:'wardrobe',lì:'there',sopra:'on top of',maglioni:'jumpers, sweaters',gattini:'kittens',gatta:'female cat'},
+ q:[["Dove abita Pallino?","A Napoli","A Roma","A Milano","A Venezia"],["Che cosa fa Pallino la mattina?","Dorme sul divano","Mangia in cucina","Gioca sul balcone","Guarda la televisione"],
+  ["Dove trova Pallino la famiglia?","Nell'armadio","Sotto il letto","Sul balcone","In cucina"],["Che cosa scopre la famiglia alla fine?","Pallino è una gatta","Pallino è malato","Pallino ha fame","Pallino è un cane"]]},
+{id:'mercato',lv:1,em:'🍎',bc:'#2f7a4a',t:'Al mercato con la nonna',d:'Frutta, formaggio e una torta speciale.',
+ p:[["Ogni sabato Luca va al mercato con la nonna Rosa.","Il mercato è in piazza, vicino alla chiesa.","C'è tanta gente e c'è tanto rumore."],
+  ["La nonna compra la frutta e la verdura.","«Un chilo di mele e mezzo chilo di pomodori, per favore», dice al signor Franco.","«Ecco qua, signora. Sono quattro euro e cinquanta.»"],
+  ["Luca guarda il banco del formaggio.","«Nonna, posso assaggiare?»","Il formaggiaio sorride e gli dà un pezzetto di pecorino.","È buonissimo!"],
+  ["Alla fine la borsa è pesante.","Luca porta la borsa a casa e la nonna, per ringraziarlo, prepara la sua torta di mele preferita."]],
+ en:["Every Saturday Luca goes to the market with Grandma Rosa. The market is in the square, near the church. There are lots of people and there is lots of noise.",
+  "Grandma buys fruit and vegetables. «A kilo of apples and half a kilo of tomatoes, please», she says to Mr Franco. «Here you are, madam. That's four euros fifty.»",
+  "Luca looks at the cheese stall. «Grandma, can I taste some?» The cheese seller smiles and gives him a little piece of pecorino. It's delicious!",
+  "In the end the bag is heavy. Luca carries the bag home and Grandma, to thank him, makes his favourite apple cake."],
+ g:{"c'è":'there is',tanta:'a lot of',tanto:'a lot of',gente:'people',rumore:'noise',chilo:'kilo',mezzo:'half',"ecco qua":'here you are',banco:'stall',assaggiare:'to taste',formaggiaio:'cheese seller',sorride:'smiles',gli:'to him',dà:'gives',pezzetto:'small piece',pecorino:'pecorino (sheep cheese)',buonissimo:'delicious',pesante:'heavy',porta:'carries',ringraziarlo:'to thank him',preferita:'favourite'},
+ q:[["Quando va al mercato Luca?","Ogni sabato","Ogni domenica","Ogni lunedì","Ogni sera"],["Quanto costano le mele e i pomodori?","Quattro euro e cinquanta","Due euro","Cinque euro e quaranta","Dieci euro"],
+  ["Che cosa assaggia Luca?","Un pezzetto di pecorino","Una mela","Un pomodoro","Una fetta di torta"],["Che cosa prepara la nonna alla fine?","Una torta di mele","Una pizza","Una zuppa","Un'insalata"]]},
+{id:'soffitta',lv:1,em:'🪔',bc:'#b8862b',t:'La lampada in soffitta',d:'Come Sofia ha conosciuto Gennaro.',
+ p:[["Sofia ha dieci anni e abita in una vecchia casa in campagna.","Un giorno piove e Sofia sale in soffitta.","In soffitta ci sono scatole, libri vecchi e tanta polvere."],
+  ["In una scatola c'è una lampada d'oro.","È sporca, così Sofia prende un panno e la pulisce.","All'improvviso esce un fumo azzurro e… appare un genio!"],
+  ["«Ciao! Io sono Gennaro, il Genio della Lampada», dice il genio.","«Grazie! Puoi esaudire tre desideri?» chiede Sofia.","«No, mi dispiace», risponde Gennaro.","«Io non esaudisco desideri: insegno l'italiano!»"],
+  ["Sofia ride.","«Va bene, allora insegnami una parola nuova ogni giorno!»","Da quel giorno Sofia e Gennaro sono amici."]],
+ en:["Sofia is ten years old and lives in an old house in the countryside. One day it rains and Sofia goes up to the attic. In the attic there are boxes, old books and lots of dust.",
+  "In a box there is a golden lamp. It is dirty, so Sofia takes a cloth and cleans it. Suddenly some blue smoke comes out and… a genie appears!",
+  "«Hello! I am Gennaro, the Genie of the Lamp», says the genie. «Thank you! Can you grant three wishes?» asks Sofia. «No, I'm sorry», answers Gennaro. «I don't grant wishes: I teach Italian!»",
+  "Sofia laughs. «All right, then teach me a new word every day!» From that day on, Sofia and Gennaro are friends."],
+ g:{soffitta:'attic',sale:'goes up',scatole:'boxes',scatola:'box',polvere:'dust',"d'oro":'golden',sporca:'dirty',così:'so',panno:'cloth',pulisce:'cleans',"all'improvviso":'suddenly',esce:'comes out',fumo:'smoke',azzurro:'light blue',appare:'appears',esaudire:'to grant',esaudisco:'I grant',desideri:'wishes',"mi dispiace":"I'm sorry",insegno:'I teach',insegnami:'teach me',ride:'laughs',"va bene":'all right',allora:'then',"da quel giorno":'from that day on'},
+ q:[["Dove abita Sofia?","In una vecchia casa in campagna","In un appartamento in città","In un castello","Vicino al mare"],["Perché Sofia sale in soffitta?","Perché piove","Perché ha fame","Perché cerca il gatto","Perché è stanca"],
+  ["Che cosa trova Sofia nella scatola?","Una lampada d'oro","Un libro magico","Una chiave","Un vestito"],["Che cosa fa Gennaro?","Insegna l'italiano","Esaudisce tre desideri","Cucina la pizza","Canta canzoni"]]},
+{id:'venezia',lv:2,em:'🎭',bc:'#1f5a8a',t:'Una gita a Venezia',d:'Due amici, una mappa che non funziona e un caffè carissimo.',
+ p:[["La settimana scorsa Giulia e il suo amico Tom, uno studente inglese, sono andati a Venezia in treno.","Sono partiti da Bologna alle otto e sono arrivati alla stazione di Santa Lucia due ore dopo."],
+  ["Prima hanno visitato Piazza San Marco e hanno visto la basilica e il campanile.","Poi hanno preso un caffè in un bar storico della piazza, ma hanno pagato dodici euro: carissimo!"],
+  ["Nel pomeriggio si sono persi tra le calli, le strette strade di Venezia.","Ogni strada sembrava uguale e la mappa sul telefono non funzionava.","Alla fine una signora anziana li ha aiutati: «Seguite le frecce gialle per Rialto!»"],
+  ["La sera hanno fatto un giro in gondola.","Tom ha detto: «Venezia è la città più bella del mondo».","Giulia ha risposto: «Lo so. Ma la prossima volta il caffè lo prendiamo in piedi, al banco!»"]],
+ en:["Last week Giulia and her friend Tom, an English student, went to Venice by train. They left Bologna at eight and arrived at Santa Lucia station two hours later.",
+  "First they visited St Mark's Square and saw the basilica and the bell tower. Then they had a coffee in a historic café in the square, but they paid twelve euros: very expensive!",
+  "In the afternoon they got lost in the calli, the narrow streets of Venice. Every street looked the same and the map on the phone didn't work. In the end an elderly lady helped them: «Follow the yellow arrows to Rialto!»",
+  "In the evening they took a gondola ride. Tom said: «Venice is the most beautiful city in the world». Giulia answered: «I know. But next time we'll have our coffee standing at the counter!» (In Italy, coffee at the counter costs much less.)"],
+ g:{scorsa:'last',partiti:'left',arrivati:'arrived',dopo:'later',prima:'first',basilica:'basilica',campanile:'bell tower',storico:'historic',carissimo:'very expensive',"si sono persi":'they got lost',calli:'Venetian streets',strette:'narrow',sembrava:'seemed',uguale:'the same',funzionava:'worked',anziana:'elderly',li:'them',seguite:'follow',frecce:'arrows',gialle:'yellow',giro:'ride, tour',"lo so":'I know',prossima:'next',"in piedi":'standing',banco:'counter'},
+ q:[["Come sono andati a Venezia Giulia e Tom?","In treno","In aereo","In macchina","In autobus"],["Perché il caffè è stato una sorpresa?","Perché è costato dodici euro","Perché era freddo","Perché era gratis","Perché non c'era lo zucchero"],
+  ["Chi li ha aiutati quando si sono persi?","Una signora anziana","Un poliziotto","Un gondoliere","Un cameriere"],["Che cosa hanno fatto la sera?","Un giro in gondola","Una passeggiata in montagna","Una cena a Bologna","Un bagno al mare"]]},
+{id:'pizza',lv:2,em:'🍕',bc:'#c8402a',t:'La pizza del nonno',d:"Farina, pazienza e cinquant'anni di pratica.",
+ p:[["Il nonno di Marco faceva il pizzaiolo a Napoli.","Oggi ha ottant'anni, ma la domenica prepara ancora la pizza per tutta la famiglia.","Questa volta Marco vuole imparare."],
+  ["«Prima di tutto, lavati le mani!» dice il nonno.","«Poi metti la farina sul tavolo, fai un buco al centro e versa l'acqua tiepida con il lievito e un po' di sale.»"],
+  ["Marco impasta per dieci minuti.","«Nonno, sono stanco!»","«Non fermarti! L'impasto deve diventare liscio e morbido.","Adesso lo copriamo e aspettiamo: deve riposare almeno sei ore.»"],
+  ["La sera stendono l'impasto con le mani, mai con il mattarello.","Mettono il pomodoro, la mozzarella e una foglia di basilico.","Il forno è caldissimo: dopo novanta secondi la pizza è pronta."],
+  ["Marco assaggia la sua prima pizza.","«È buona, ma la tua è più buona, nonno!»","Il nonno ride: «Il segreto è la pazienza. E cinquant'anni di pratica!»"]],
+ en:["Marco's grandfather used to be a pizza maker in Naples. Today he is eighty, but on Sundays he still makes pizza for the whole family. This time Marco wants to learn.",
+  "«First of all, wash your hands!» says Grandpa. «Then put the flour on the table, make a hole in the middle and pour in the lukewarm water with the yeast and a little salt.»",
+  "Marco kneads for ten minutes. «Grandpa, I'm tired!» «Don't stop! The dough must become smooth and soft. Now we cover it and wait: it has to rest for at least six hours.»",
+  "In the evening they stretch the dough with their hands, never with a rolling pin. They add tomato, mozzarella and a basil leaf. The oven is very hot: after ninety seconds the pizza is ready.",
+  "Marco tastes his first pizza. «It's good, but yours is better, Grandpa!» Grandpa laughs: «The secret is patience. And fifty years of practice!»"],
+ g:{faceva:'used to work as',pizzaiolo:'pizza maker',"ottant'anni":'eighty years old',ancora:'still',imparare:'to learn',"prima di tutto":'first of all',lavati:'wash',farina:'flour',buco:'hole',centro:'middle',versa:'pour',tiepida:'lukewarm',lievito:'yeast',"un po'":'a little',impasta:'kneads',fermarti:'stop',impasto:'dough',liscio:'smooth',copriamo:'we cover',riposare:'to rest',almeno:'at least',stendono:'they stretch out',mattarello:'rolling pin',basilico:'basil',caldissimo:'very hot',pronta:'ready',tua:'yours',segreto:'secret',pazienza:'patience',"cinquant'anni":'fifty years',pratica:'practice'},
+ q:[["Che lavoro faceva il nonno?","Il pizzaiolo","Il cuoco in un albergo","Il panettiere","Il cameriere"],["Quanto tempo deve riposare l'impasto?","Almeno sei ore","Dieci minuti","Novanta secondi","Due giorni"],
+  ["Con che cosa stendono l'impasto?","Con le mani","Con il mattarello","Con un coltello","Con una bottiglia"],["Qual è il segreto del nonno?","La pazienza","Il forno nuovo","La farina americana","Tanto sale"]]},
+{id:'firenze',lv:2,em:'🚆',bc:'#8a5d17',t:'Un biglietto per Firenze',d:'Una sveglia che non suona e un viaggio tra le colline.',
+ p:[["Ahmed vive in Italia da tre mesi.","Sabato vuole visitare Firenze con la sua amica Chiara, così venerdì sera va alla stazione per comprare i biglietti."],
+  ["«Buonasera. Due biglietti per Firenze, per favore.»","«Andata e ritorno?» chiede l'impiegata.","«Sì, andata e ritorno. A che ora parte il primo treno?»","«Alle sette e venti, dal binario quattro. Arriva a Firenze alle nove meno un quarto.»"],
+  ["Sabato mattina la sveglia di Ahmed non suona e lui arriva in ritardo: il treno delle sette e venti è già partito!","Chiara lo aspetta sul binario.","«Non preoccuparti», dice.","«Prendiamo il treno delle otto. Ma prima facciamo colazione al bar!»"],
+  ["Il viaggio è tranquillo.","Ahmed guarda dal finestrino le colline della Toscana, piene di ulivi e di cipressi.","«Che bello!» dice.","«La prossima volta metto due sveglie!»"]],
+ en:["Ahmed has been living in Italy for three months. On Saturday he wants to visit Florence with his friend Chiara, so on Friday evening he goes to the station to buy the tickets.",
+  "«Good evening. Two tickets to Florence, please.» «Return?» asks the clerk. «Yes, return. What time does the first train leave?» «At twenty past seven, from platform four. It arrives in Florence at a quarter to nine.»",
+  "On Saturday morning Ahmed's alarm doesn't go off and he arrives late: the 7:20 train has already left! Chiara is waiting for him on the platform. «Don't worry», she says. «Let's take the eight o'clock train. But first let's have breakfast at the café!»",
+  "The journey is peaceful. Ahmed looks out of the window at the hills of Tuscany, full of olive trees and cypresses. «How beautiful!» he says. «Next time I'll set two alarms!»"],
+ g:{"da tre mesi":'for three months',biglietti:'tickets',"andata e ritorno":'return ticket',impiegata:'clerk',parte:'leaves',binario:'platform',"meno un quarto":'a quarter to',sveglia:'alarm clock',sveglie:'alarm clocks',suona:'rings, goes off',"in ritardo":'late',già:'already',aspetta:'waits for',preoccuparti:'worry',colazione:'breakfast',viaggio:'journey',tranquillo:'peaceful',finestrino:'(train) window',colline:'hills',piene:'full',ulivi:'olive trees',cipressi:'cypresses',metto:'I set'},
+ q:[["Da quanto tempo Ahmed vive in Italia?","Da tre mesi","Da tre anni","Da una settimana","Da sempre"],["Che biglietti compra Ahmed?","Andata e ritorno","Solo andata","Biglietti per l'autobus","Biglietti per il cinema"],
+  ["Perché Ahmed perde il primo treno?","Perché la sveglia non suona","Perché il treno è cancellato","Perché non trova il binario","Perché Chiara è malata"],["Che cosa vede Ahmed dal finestrino?","Colline con ulivi e cipressi","Il mare e le spiagge","Montagne piene di neve","Grattacieli e fabbriche"]]},
+{id:'topolino',lv:3,em:'🐭',bc:'#4a2a6a',t:'Il mistero della biblioteca',d:'Ogni notte sparisce un libro. Chi è il ladro?',
+ p:[["Nella biblioteca della torre succedeva una cosa strana: ogni notte spariva un libro.","Il bibliotecario, il vecchio signor Ugo, era molto preoccupato.","«Prima è sparito un dizionario, poi un libro di poesie, ieri addirittura un'enciclopedia!»"],
+  ["Gennaro ha deciso di indagare.","Una sera si è nascosto dietro uno scaffale e ha aspettato in silenzio.","Verso mezzanotte ha sentito un rumore leggero, come un fruscio di pagine.","Ha acceso la sua lampada e ha visto… un topolino che trascinava un libro verso un buco nel muro!"],
+  ["Il genio l'ha seguito e ha scoperto una piccola stanza segreta.","Dentro c'erano tutti i libri scomparsi, sistemati con cura uno accanto all'altro.","In mezzo, il topolino leggeva con un paio di occhiali minuscoli sul naso."],
+  ["«Scusate», ha detto il topolino, tutto rosso.","«Mi chiamo Bartolo. Volevo imparare a leggere, ma nessuno presta i libri ai topi.»","Il signor Ugo, invece di arrabbiarsi, è scoppiato a ridere."],
+  ["Da quel giorno Bartolo ha una tessera della biblioteca tutta sua.","La usa ogni sera e, quando trova una parola difficile, chiede aiuto a Gennaro."]],
+ en:["In the tower library something strange was happening: every night a book disappeared. The librarian, old Mr Ugo, was very worried. «First a dictionary disappeared, then a book of poems, yesterday even an encyclopedia!»",
+  "Gennaro decided to investigate. One evening he hid behind a bookshelf and waited in silence. Around midnight he heard a faint noise, like a rustle of pages. He lit his lamp and saw… a little mouse dragging a book towards a hole in the wall!",
+  "The genie followed it and discovered a small secret room. Inside were all the missing books, carefully arranged side by side. In the middle, the little mouse was reading with a pair of tiny glasses on its nose.",
+  "«Sorry», said the mouse, blushing all over. «My name is Bartolo. I wanted to learn to read, but nobody lends books to mice.» Mr Ugo, instead of getting angry, burst out laughing.",
+  "Since that day Bartolo has a library card all of his own. He uses it every evening and, when he finds a difficult word, he asks Gennaro for help."],
+ g:{succedeva:'was happening',strana:'strange',spariva:'disappeared',bibliotecario:'librarian',preoccupato:'worried',sparito:'disappeared',dizionario:'dictionary',poesie:'poems',addirittura:'even',enciclopedia:'encyclopedia',deciso:'decided',indagare:'to investigate',"si è nascosto":'hid',scaffale:'bookshelf',silenzio:'silence',verso:'around, towards',mezzanotte:'midnight',leggero:'faint',fruscio:'rustle',pagine:'pages',acceso:'lit',topolino:'little mouse',trascinava:'was dragging',buco:'hole',muro:'wall',seguito:'followed',scoperto:'discovered',segreta:'secret',dentro:'inside',scomparsi:'missing',sistemati:'arranged',"con cura":'carefully',accanto:'next to',"in mezzo":'in the middle',paio:'pair',occhiali:'glasses',minuscoli:'tiny',scusate:'sorry',nessuno:'nobody',presta:'lends',topi:'mice',"invece di":'instead of',arrabbiarsi:'to get angry',"è scoppiato a ridere":'burst out laughing',tessera:'(library) card',"tutta sua":'all of his own',aiuto:'help'},
+ q:[["Che cosa succedeva ogni notte nella biblioteca?","Spariva un libro","Si spegnevano le luci","Entrava un ladro dalla finestra","Cadevano gli scaffali"],["Dove si è nascosto Gennaro?","Dietro uno scaffale","Sotto un tavolo","Dentro la lampada","Fuori dalla porta"],
+  ["Chi prendeva i libri?","Un topolino","Il signor Ugo","Un gatto","Uno studente"],["Perché Bartolo prendeva i libri?","Voleva imparare a leggere","Voleva venderli","Voleva costruirsi una casa","Voleva mangiarli"],
+  ["Come ha reagito il signor Ugo?","È scoppiato a ridere","Si è arrabbiato moltissimo","Ha chiamato la polizia","Ha chiuso la biblioteca"]]},
+{id:'lettera',lv:3,em:'✉️',bc:'#a8243a',t:'Lettera da Bologna',d:'Uno studente racconta i suoi primi mesi in Italia.',
+ p:[["Cara Emma,","ti scrivo da Bologna, dove studio ormai da sei mesi.","Scusami se non ti ho risposto prima, ma qui le giornate volano!"],
+  ["All'inizio è stato difficile: capivo poco quando la gente parlava velocemente.","Una volta, al supermercato, ho chiesto «un chilo di prosciutto» invece di un etto, e il commesso mi ha guardato come se fossi matto!"],
+  ["Adesso va molto meglio.","Abito con due ragazze, Giada e Irene, che mi correggono sempre con pazienza.","La sera cuciniamo insieme: loro mi hanno insegnato a fare i tortellini, io ho insegnato loro a fare il curry."],
+  ["Bologna è una città stupenda.","Ha chilometri di portici, così puoi camminare all'asciutto anche quando piove.","E poi si mangia benissimo: non per niente la chiamano «la Grassa»!"],
+  ["Mi piacerebbe tanto che tu venissi a trovarmi in primavera.","Potremmo fare una gita a Ravenna per vedere i mosaici, oppure salire sulla Torre degli Asinelli: dicono che dalla cima, quando il cielo è limpido, si vedano le Alpi.","Scrivimi presto!","Un abbraccio, Daniel"]],
+ en:["Dear Emma, I'm writing to you from Bologna, where I've been studying for six months now. Sorry I didn't answer you sooner, but here the days fly by!",
+  "At the beginning it was hard: I understood little when people spoke quickly. Once, at the supermarket, I asked for «a kilo of ham» instead of a hundred grams, and the shop assistant looked at me as if I were crazy!",
+  "Now it's much better. I live with two girls, Giada and Irene, who always correct me patiently. In the evening we cook together: they taught me how to make tortellini, I taught them how to make curry.",
+  "Bologna is a wonderful city. It has kilometres of porticoes, so you can walk without getting wet even when it rains. And the food is excellent: it's not for nothing that they call it «the Fat One»!",
+  "I would really love you to come and visit me in spring. We could take a trip to Ravenna to see the mosaics, or climb the Asinelli Tower: they say that from the top, when the sky is clear, you can see the Alps. Write to me soon! A hug, Daniel"],
+ g:{cara:'dear',ormai:'by now',scusami:'forgive me',risposto:'answered',giornate:'days',volano:'fly by',"all'inizio":'at the beginning',capivo:'I understood',velocemente:'quickly',etto:'100 grams',commesso:'shop assistant',"come se fossi matto":'as if I were crazy',meglio:'better',correggono:'correct',pazienza:'patience',cuciniamo:'we cook',insegnato:'taught',loro:'them, they',stupenda:'wonderful',portici:'porticoes, arcades',"all'asciutto":'without getting wet',"non per niente":'not for nothing',grassa:'fat',piacerebbe:'would like',venissi:'(that you) came',trovarmi:'visit me',potremmo:'we could',mosaici:'mosaics',salire:'to climb',dicono:'they say',cima:'top',limpido:'clear',vedano:'can be seen',scrivimi:'write to me',abbraccio:'hug'},
+ q:[["Da quanto tempo Daniel studia a Bologna?","Da sei mesi","Da un anno","Da due settimane","Da tre anni"],["Che errore ha fatto Daniel al supermercato?","Ha chiesto un chilo di prosciutto invece di un etto","Ha pagato con i soldi sbagliati","Ha parlato in inglese","Ha dimenticato la borsa"],
+  ["Che cosa hanno insegnato a Daniel Giada e Irene?","A fare i tortellini","A fare il curry","A guidare la macchina","A suonare la chitarra"],["Perché a Bologna si può camminare all'asciutto quando piove?","Perché ci sono chilometri di portici","Perché non piove quasi mai","Perché ci sono molti autobus","Perché tutti hanno l'ombrello"],
+  ["Che cosa propone Daniel a Emma?","Di andarlo a trovare in primavera","Di studiare a Bologna con lui","Di scrivere un libro insieme","Di andare in vacanza al mare"]]},
+{id:'sagra',lv:3,em:'🎆',bc:'#2a4fb0',t:'La festa del paese',d:'Una sagra, un vecchio amico e le radici che non si dimenticano.',
+ p:[["Ogni anno, il primo sabato di settembre, il piccolo paese di Roccalta festeggia la sagra della lenticchia.","Quando Elena era bambina, la aspettava per mesi: c'erano le giostre, la banda musicale e i fuochi d'artificio sopra la valle."],
+  ["Poi Elena è andata a lavorare a Milano e per molti anni non è più tornata.","Quest'anno, però, sua madre l'ha chiamata: «Il comitato della sagra cerca volontari. Perché non vieni a darci una mano?»"],
+  ["Elena ha accettato quasi senza pensarci.","Il venerdì ha aiutato a montare i tavoli in piazza; il sabato ha servito più di trecento piatti di zuppa di lenticchie.","Alla fine della serata era stanchissima, ma felice."],
+  ["Mentre guardava i fuochi d'artificio, ha incontrato Paolo, il suo vecchio compagno di banco.","«Ti ricordi quando abbiamo rotto la finestra della scuola con il pallone?» le ha chiesto ridendo.","«Come potrei dimenticarlo? L'abbiamo ripagata con la nostra paghetta per tre mesi!»"],
+  ["Quella notte Elena ha capito una cosa: si può vivere lontano, ma le radici restano sempre lì, ad aspettarti."]],
+ en:["Every year, on the first Saturday of September, the small village of Roccalta celebrates its lentil festival. When Elena was a child, she looked forward to it for months: there were fairground rides, the brass band and fireworks over the valley.",
+  "Then Elena went to work in Milan and for many years she never went back. This year, however, her mother called her: «The festival committee is looking for volunteers. Why don't you come and give us a hand?»",
+  "Elena accepted almost without thinking. On Friday she helped set up the tables in the square; on Saturday she served more than three hundred bowls of lentil soup. At the end of the evening she was exhausted, but happy.",
+  "While she was watching the fireworks, she met Paolo, her old deskmate. «Do you remember when we broke the school window with the ball?» he asked her, laughing. «How could I forget? We paid for it with our pocket money for three months!»",
+  "That night Elena understood something: you can live far away, but your roots always stay there, waiting for you."],
+ g:{paese:'village',festeggia:'celebrates',sagra:'local food festival',lenticchia:'lentil',lenticchie:'lentils',aspettava:'looked forward to',giostre:'fairground rides',banda:'band',"fuochi d'artificio":'fireworks',valle:'valley',tornata:'gone back',però:'however',comitato:'committee',volontari:'volunteers',"darci una mano":'give us a hand',accettato:'accepted',"senza pensarci":'without thinking about it',montare:'to set up',servito:'served',serata:'evening',stanchissima:'exhausted',mentre:'while',incontrato:'met',"compagno di banco":'deskmate',rotto:'broken',ridendo:'laughing',potrei:'could I',dimenticarlo:'forget it',ripagata:'paid back',paghetta:'pocket money',radici:'roots',restano:'remain',aspettarti:'wait for you'},
+ q:[["Che cosa si festeggia a Roccalta?","La sagra della lenticchia","Il compleanno del sindaco","La fine della scuola","Il Natale"],["Che cosa c'era alla festa quando Elena era bambina?","Giostre, banda e fuochi d'artificio","Un concerto rock","Una gara di cavalli","Un mercato di libri"],
+  ["Perché Elena è tornata al paese quest'anno?","Sua madre le ha chiesto di fare la volontaria","Ha perso il lavoro a Milano","Voleva vendere la casa","Doveva sposarsi"],["Chi è Paolo?","Il suo vecchio compagno di banco","Suo fratello","Il sindaco del paese","Un turista"],
+  ["Che cosa ha capito Elena alla fine?","Che le radici restano sempre","Che Milano è più bella","Che non vuole più lavorare","Che non le piacciono le lenticchie"]]},
+{id:'genio',lv:4,em:'🧞',bc:'#5b2a92',t:'Il genio che non voleva esaudire desideri',d:'La vera storia di Gennaro, raccontata come una fiaba.',
+ p:[["Tanto tempo fa, in una città d'Oriente, viveva un genio di nome Gennaro.","Come tutti i geni, avrebbe dovuto esaudire tre desideri a chiunque strofinasse la sua lampada.","Eppure, ogni volta che qualcuno lo liberava, Gennaro si sentiva profondamente insoddisfatto."],
+  ["Il primo padrone gli chiese un palazzo d'oro, e lo ottenne; ma vi si annoiò dopo una settimana.","Il secondo volle diventare l'uomo più ricco del regno, e lo diventò; ma da quel momento non si fidò più di nessuno.","Il terzo desiderò che tutti lo ammirassero, e così fu; ma nessuno, in realtà, gli voleva bene."],
+  ["«Se avessi dato loro qualcosa di diverso», pensava Gennaro, «forse sarebbero stati più felici.»","Così, un giorno, prese una decisione che nessun genio aveva mai preso prima: smise di esaudire desideri."],
+  ["Da allora, a chi strofina la lampada, Gennaro offre un dono diverso: una parola nuova al giorno.","«Le parole», spiega, «non si consumano come l'oro e non fanno invidia a nessuno. Al contrario: più le regali, più ne hai.»"],
+  ["C'è chi resta deluso e chi, invece, comincia ad ascoltarlo.","E pare che questi ultimi, dopo qualche tempo, non sentano più il bisogno di chiedere nient'altro."]],
+ en:["Long ago, in a city of the East, there lived a genie called Gennaro. Like all genies, he was supposed to grant three wishes to anyone who rubbed his lamp. And yet, every time someone set him free, Gennaro felt deeply dissatisfied.",
+  "His first master asked him for a golden palace, and he got it; but he grew bored there within a week. The second wanted to become the richest man in the kingdom, and he did; but from that moment on he never trusted anyone again. The third wished that everyone would admire him, and so it was; but nobody truly loved him.",
+  "«If I had given them something different», Gennaro thought, «perhaps they would have been happier.» So, one day, he made a decision that no genie had ever made before: he stopped granting wishes.",
+  "Since then, to whoever rubs the lamp, Gennaro offers a different gift: one new word a day. «Words», he explains, «don't wear out like gold and make nobody envious. On the contrary: the more you give them away, the more you have.»",
+  "Some people are disappointed, and some, instead, begin to listen to him. And it seems that the latter, after a while, no longer feel the need to ask for anything else."],
+ g:{"tanto tempo fa":'long ago',"d'oriente":'of the East',viveva:'lived',"di nome":'called',geni:'genies',"avrebbe dovuto":'was supposed to',chiunque:'anyone',strofinasse:'rubbed',eppure:'and yet',liberava:'set free',profondamente:'deeply',insoddisfatto:'dissatisfied',padrone:'master',chiese:'asked (for)',palazzo:'palace',"d'oro":'golden',ottenne:'got',vi:'there',"si annoiò":'got bored',volle:'wanted',regno:'kingdom',diventò:'became',"si fidò":'trusted',desiderò:'wished',ammirassero:'admired',fu:'was',"in realtà":'actually',"gli voleva bene":'loved him',avessi:'I had',sarebbero:'they would have',prese:'made, took',decisione:'decision',smise:'stopped',strofina:'rubs',dono:'gift',spiega:'explains',consumano:'wear out',invidia:'envy',"al contrario":'on the contrary',regali:'you give away',ne:'of them',deluso:'disappointed',invece:'instead',pare:'it seems',ultimi:'the latter',sentano:'feel',bisogno:'need',"nient'altro":'anything else'},
+ q:[["Che cosa avrebbe dovuto fare Gennaro, come tutti i geni?","Esaudire tre desideri","Proteggere la città","Custodire un tesoro","Insegnare la magia"],["Che cosa successe al secondo padrone?","Diventò ricchissimo, ma non si fidò più di nessuno","Si annoiò nel suo palazzo","Diventò il re della città","Perse tutti i suoi soldi"],
+  ["Perché Gennaro smise di esaudire desideri?","Perché i desideri non rendevano felici le persone","Perché era stanco e malato","Perché un re glielo aveva vietato","Perché aveva perso i suoi poteri"],["Che cosa offre oggi Gennaro a chi strofina la lampada?","Una parola nuova al giorno","Tre desideri più piccoli","Un palazzo di cristallo","Una lampada nuova"],
+  ["Secondo Gennaro, perché le parole sono un dono speciale?","Più le regali, più ne hai","Valgono più dell'oro","Si possono vendere al mercato","Fanno diventare famosi"]]},
+{id:'borgo',lv:4,em:'🏘️',bc:'#6a4a1a',t:'Il borgo che rinasce',d:"Un paese quasi vuoto, un frantoio e un'idea coraggiosa.",
+ p:[["Fino a pochi anni fa, Castelvento sembrava destinato a scomparire.","I giovani se n'erano andati in città per cercare lavoro, la scuola aveva chiuso per mancanza di bambini e nelle strade si sentiva soltanto il rumore del vento."],
+  ["Poi è tornata Marta, ingegnera informatica di trentadue anni, nata proprio lì.","Durante la pandemia aveva scoperto di poter lavorare a distanza e aveva cominciato a chiedersi che senso avesse pagare un affitto altissimo a Milano."],
+  ["Con un gruppo di amici ha ristrutturato l'antico frantoio e l'ha trasformato in uno spazio di coworking, con una connessione velocissima e una vista sulle colline.","Il comune, entusiasta, ha messo a disposizione alcune case abbandonate con affitti molto bassi."],
+  ["Oggi a Castelvento vivono quaranta nuovi abitanti: grafici, traduttori, programmatori, ma anche un panettiere e una maestra.","La scuola ha riaperto e il bar della piazza è tornato a riempirsi la sera."],
+  ["Non tutti, però, sono d'accordo.","Alcuni anziani temono che il paese perda la sua identità.","«Ben vengano i giovani», dice nonno Aldo, «purché imparino anche a fare l'olio come si deve!»","Marta sorride: è proprio quello che ha in programma per il prossimo autunno."]],
+ en:["Until a few years ago, Castelvento seemed destined to disappear. The young people had left for the city to look for work, the school had closed for lack of children and in the streets you could only hear the sound of the wind.",
+  "Then Marta came back, a thirty-two-year-old computer engineer born right there. During the pandemic she had discovered that she could work remotely, and she had started to wonder what the point was of paying a sky-high rent in Milan.",
+  "With a group of friends she renovated the old olive mill and turned it into a coworking space, with a super-fast connection and a view over the hills. The town council, enthusiastic, made some abandoned houses available at very low rents.",
+  "Today forty new inhabitants live in Castelvento: designers, translators, programmers, but also a baker and a primary school teacher. The school has reopened and the bar in the square fills up again in the evenings.",
+  "Not everyone agrees, though. Some elderly people fear that the village will lose its identity. «Young people are welcome», says Grandpa Aldo, «as long as they also learn to make olive oil properly!» Marta smiles: that's exactly what she has planned for next autumn."],
+ g:{borgo:'village',rinasce:'is reborn',"fino a":'until',pochi:'a few',sembrava:'seemed',destinato:'destined',scomparire:'to disappear',"se n'erano andati":'had left',mancanza:'lack',soltanto:'only',ingegnera:'engineer (woman)',informatica:'computer science',nata:'born',proprio:'right, exactly',durante:'during',pandemia:'pandemic',"a distanza":'remotely',chiedersi:'to wonder',senso:'sense, point',avesse:'had',affitto:'rent',affitti:'rents',altissimo:'very high',ristrutturato:'renovated',antico:'old',frantoio:'olive mill',trasformato:'transformed',spazio:'space',connessione:'connection',velocissima:'very fast',vista:'view',comune:'town council',entusiasta:'enthusiastic',"a disposizione":'available',abbandonate:'abandoned',abitanti:'inhabitants',grafici:'graphic designers',traduttori:'translators',programmatori:'programmers',maestra:'primary school teacher',riaperto:'reopened',riempirsi:'to fill up',"d'accordo":'in agreement',anziani:'elderly people',temono:'fear',perda:'(may) lose',identità:'identity',"ben vengano":'they are welcome',purché:'as long as',imparino:'they learn',"come si deve":'properly',"in programma":'planned',autunno:'autumn'},
+ q:[["Perché Castelvento rischiava di scomparire?","I giovani erano andati via e la scuola aveva chiuso","C'era stato un terremoto","Il comune voleva costruire una diga","Non c'era più acqua"],["Che cosa aveva scoperto Marta durante la pandemia?","Che poteva lavorare a distanza","Che voleva fare la maestra","Che a Milano gli affitti erano bassi","Che non le piaceva l'informatica"],
+  ["Che cosa è diventato l'antico frantoio?","Uno spazio di coworking","Un museo dell'olio","Un ristorante","Una scuola"],["Come ha aiutato il comune?","Ha offerto case abbandonate con affitti bassi","Ha chiuso il bar della piazza","Ha venduto il frantoio","Ha costruito un'autostrada"],
+  ["Di che cosa hanno paura alcuni anziani?","Che il paese perda la sua identità","Che i giovani se ne vadano di nuovo","Che il bar chiuda","Che i prezzi aumentino"]]},
+{id:'telefono',lv:4,em:'📵',bc:'#2a3a5a',t:'Una settimana senza telefono',d:"Una sfida impossibile e l'«ora della lampada».",
+ p:[["Quando la professoressa di italiano ha proposto alla classe una sfida, una settimana intera senza smartphone, Luca è scoppiato a ridere.","«Impossibile», ha pensato.","«Come farei a sapere a che ora passa l'autobus o se domani pioverà?»"],
+  ["I primi due giorni sono stati terribili.","Prendeva in mano il telefono spento almeno venti volte all'ora, come se fosse un riflesso automatico.","Si sentiva tagliato fuori da tutto: e se gli amici avessero organizzato qualcosa senza di lui?"],
+  ["Il terzo giorno, però, è successo qualcosa di strano.","Sull'autobus, invece di scorrere lo schermo, ha guardato fuori dal finestrino e ha notato un murale che non aveva mai visto, anche se faceva quella strada da anni.","La sera ha finito un romanzo che aveva lasciato a metà da mesi."],
+  ["Alla fine della settimana Luca ha scritto un tema per la professoressa.","«Non credo che rinuncerò al telefono per sempre», ha concluso, «ma ho capito che, se non lo controllassi ogni cinque minuti, avrei molto più tempo per le cose che contano davvero.»"],
+  ["Oggi Luca lascia il telefono in un cassetto per un'ora ogni sera.","La chiama «l'ora della lampada»: niente schermi, solo un libro, una conversazione o, semplicemente, il silenzio."]],
+ en:["When the Italian teacher proposed a challenge to the class, a whole week without smartphones, Luca burst out laughing. «Impossible», he thought. «How would I know what time the bus comes or whether it'll rain tomorrow?»",
+  "The first two days were terrible. He picked up his switched-off phone at least twenty times an hour, as if it were an automatic reflex. He felt cut off from everything: what if his friends had organised something without him?",
+  "On the third day, however, something strange happened. On the bus, instead of scrolling the screen, he looked out of the window and noticed a mural he had never seen, even though he had been taking that road for years. In the evening he finished a novel he had left half-read for months.",
+  "At the end of the week Luca wrote an essay for the teacher. «I don't think I'll give up my phone for ever», he concluded, «but I've understood that, if I didn't check it every five minutes, I would have much more time for the things that really matter.»",
+  "Today Luca leaves his phone in a drawer for an hour every evening. He calls it «the lamp hour»: no screens, just a book, a conversation or, simply, silence."],
+ g:{professoressa:'teacher (woman)',proposto:'proposed',sfida:'challenge',intera:'whole',"è scoppiato a ridere":'burst out laughing',farei:'would I do',passa:'comes by',pioverà:'it will rain',terribili:'terrible',"in mano":'in his hand',spento:'switched off',"all'ora":'an hour',"come se fosse":'as if it were',riflesso:'reflex',"tagliato fuori":'cut off',"e se":'what if',avessero:'had',organizzato:'organised',successo:'happened',scorrere:'to scroll',schermo:'screen',schermi:'screens',notato:'noticed',murale:'mural',"anche se":'even though',faceva:'was taking, did',romanzo:'novel',lasciato:'left',"a metà":'halfway',tema:'essay',rinuncerò:'I will give up',"per sempre":'for ever',concluso:'concluded',controllassi:'I checked',avrei:'I would have',contano:'matter',davvero:'really',lascia:'leaves',cassetto:'drawer',niente:'no, nothing',conversazione:'conversation',semplicemente:'simply'},
+ q:[["Che cosa ha proposto la professoressa?","Una settimana senza smartphone","Una gita con la classe","Un esame più difficile","Un concorso di fotografia"],["Come si sentiva Luca i primi due giorni?","Tagliato fuori da tutto","Rilassato e felice","Malato","Più concentrato a scuola"],
+  ["Che cosa ha notato Luca sull'autobus il terzo giorno?","Un murale che non aveva mai visto","Un vecchio amico","Un telefono dimenticato","Un incidente"],["Che cosa ha concluso Luca nel suo tema?","Che senza controllare sempre il telefono avrebbe più tempo per ciò che conta","Che non userà mai più il telefono","Che lo smartphone è indispensabile per studiare","Che la sfida era inutile"],
+  ["Che cos'è «l'ora della lampada»?","Un'ora ogni sera senza schermi","L'ora in cui accende le luci","Una lezione di italiano","Un programma alla televisione"]]}];
+
+/* dizionario inverso: da una forma (gatti, abita, belle…) alla parola del vocabolario */
+let REV=null;
+function revIndex(){if(REV)return REV;REV=new Map();const add=(k,v)=>{k=String(k).toLowerCase();if(!REV.has(k))REV.set(k,[]);const a=REV.get(k);if(!a.some(x=>x.k===v.k))a.push(v);};
+  LEX.forEach(w=>{const v={k:'n:'+w.it,t:Art.full(w,false),en:w.en,it:w.it};add(w.it,v);if(w.pl)add(w.pl,v);});
+  ADJ.forEach(a=>{const v={k:'a:'+a.m,t:a.m,en:a.en};[a.m,a.f,a.mp,a.fp].forEach(f=>add(f,v));});
+  VERBS.forEach(v=>{const x={k:'v:'+v.inf,t:v.inf,en:v.en};add(v.inf,x);try{Conj.allForms(v).forEach(f=>add(f,x));}catch(e){}});
+  return REV;}
+function wordsHTML(t){return t.split(/([\p{L}’']+)/u).map((x,i)=>i%2?`<span class="wd">${esc(x)}</span>`:esc(x)).join('');}
+function storyLookup(tok,s,sentence){const t=tok.toLowerCase().replace(/’/g,"'"),low=sentence.toLowerCase().replace(/’/g,"'"),out=[],seen=new Set();
+  const push=(k,h)=>{if(!seen.has(k)){seen.add(k);out.push(h);}};const en=S.set.en;
+  const tries=[t,t.replace(/^[a-zà-ù]+'/,''),t.replace(/'$/,'')].filter((x,i,a)=>x&&a.indexOf(x)===i);
+  for(const k in s.g)if(k.includes(' ')&&low.includes(k)&&k.split(/[\s']+/).some(w=>tries.includes(w)||tries.includes(w+"'")))push('g:'+k,`<b>${esc(k)}</b>${en?' = '+esc(s.g[k]):''}`);
+  for(const x of tries)if(s.g[x])push('g:'+x,`<b>${esc(x)}</b>${en?' = '+esc(s.g[x]):''}`);
+  const R=revIndex();for(const x of tries)(R.get(x)||[]).forEach(v=>push(v.k,`<b>${esc(x)}</b> → <b>${esc(v.t)}</b>${en&&v.en?' = '+esc(v.en):''}`));
+  return out;}
+const RD={on:false,id:0};
+function readStop(){RD.on=false;RD.id++;Snd.Voice.stop();$$('.story .sn.rd').forEach(x=>x.classList.remove('rd'));const b=$('[data-rd]');if(b)$('span',b).textContent='Leggi tu, Genio';}
+function readAll(m,s,start){readStop();const seq=[];s.p.forEach((par,pi)=>par.forEach((se,si)=>seq.push([pi,si,se])));let k=Math.max(0,start||0);RD.on=true;const my=++RD.id;
+  const b=$('[data-rd]',m);if(b)$('span',b).textContent='Ferma la lettura';
+  const step=()=>{if(!RD.on||my!==RD.id)return;$$('.story .sn.rd',m).forEach(x=>x.classList.remove('rd'));if(k>=seq.length){readStop();return;}
+    const [pi,si,se]=seq[k],el=$(`.story .sn[data-p="${pi}"][data-s="${si}"]`,m);if(el){el.classList.add('rd');el.scrollIntoView({block:'center',behavior:S.set.motion===false?'auto':'smooth'});}
+    const ok=Snd.Voice.speak(se,{force:true,rate:Math.max(0.7,S.set.rate*0.95),onend:()=>{if(my!==RD.id)return;k++;setTimeout(step,260);}});if(!ok)readStop();};
+  step();}
+SCR.biblioteca={lay:'side',title:'Biblioteca delle Storie',music:'calm',pose:'present',enter(m){Genie.show(true);const lib=S.lib||{};const read=STORIES.filter(s=>lib[s.id]).length;
+  Genie.say(read?`Hai letto ${read} ${read===1?'storia':'storie'} su ${STORIES.length}. Quale libro apriamo oggi?`:'Benvenuto nella mia biblioteca! Ogni libro è una storia: leggila, ascoltala dalla mia voce e poi rispondi alle domande.',{act:'present',en:read?'':'Welcome to my library! Every book is a story: read it, listen to my voice and then answer the questions.'});
+  m.innerHTML=`<section class="card"><div class="row sb"><h3 style="margin:0">Scegli una storia</h3><span class="pill">${icon('library')} ${read} / ${STORIES.length}</span></div><p class="mut" style="margin:8px 0 0">Mentre leggi, tocca una parola per scoprire che cosa significa. Le storie sono divise per livello: il tuo è <b>${LV_NAMES[S.set.lv-1]}</b>.</p></section>
+   ${[1,2,3,4].map(lv=>{const ss=STORIES.filter(s=>s.lv===lv);if(!ss.length)return '';return `<section class="sect"><h3>Livello ${LV_NAMES[lv-1]}</h3><div class="shelf2">${ss.map(s=>{const r=lib[s.id];
+     return `<button class="book" data-s="${s.id}" style="--bc:${s.bc}"><span class="cv" aria-hidden="true">${s.em}</span><span><b>${esc(s.t)}</b><small>${esc(s.d)}</small><span class="bst" aria-label="${r?r.s+' stelle su 3':'Non ancora letta'}">${r?'★'.repeat(r.s)+'☆'.repeat(3-r.s):'☆☆☆'}</span></span></button>`;}).join('')}</div></section>`;}).join('')}`;
+  $$('[data-s]',m).forEach(b=>b.onclick=()=>{Snd.fx('page');go('storia',b.dataset.s);});}};
+SCR.storia={lay:'full',title:'',music:'calm',pose:'listen',back(){go('biblioteca');},leave(){readStop();},
+ enter(m,id){const s=STORIES.find(x=>x.id===id)||STORIES[0];$('#ttl').textContent=s.t;Genie.show(true);Stage.base('listen');const voice=Snd.Voice.avail();
+  Genie.say(`«${s.t}». ${voice?'Leggi con calma, oppure tocca «Leggi tu, Genio» e ascolta la mia voce.':'Leggi con calma: tocca le parole che non conosci.'}`,{act:'present'});
+  m.innerHTML=`<section class="card parch q"><div class="qtop"><span class="qskill">Livello ${LV_NAMES[s.lv-1]} · ${s.em}</span><span class="qsub">${esc(s.d)}</span></div><h2 style="margin:0;text-align:center">${esc(s.t)}</h2>
+    <div class="row c">${voice?`<button class="btn gold" data-rd>${icon('speaker')}<span>Leggi tu, Genio</span></button>`:''}${S.set.en?`<button class="btn ghost" data-tr aria-pressed="false">${icon('translate')}<span>Traduzione</span></button>`:''}</div>
+    <div class="story">${s.p.map((par,pi)=>`<p>${par.map((se,si)=>`<span class="sn" data-p="${pi}" data-s="${si}">${wordsHTML(se)}</span>`).join(' ')}<span class="tr en" hidden>${esc(s.en[pi]||'')}</span></p>`).join('')}</div>
+    <p class="mut" style="text-align:center;margin:0"><small>Tocca una parola per la traduzione${voice?' e la pronuncia':''}${voice?'; tocca lo spazio tra due parole per ascoltare la lettura da quella frase':''}.</small></p>
+    <div class="row c"><button class="btn gold big" data-q>${icon('check')}<span>Hai capito? Rispondi alle domande</span></button></div></section><div id="sq" style="margin-top:12px"></div>`;
+  const rd=$('[data-rd]',m);if(rd)rd.onclick=()=>{Snd.init();if(RD.on)readStop();else readAll(m,s,0);};
+  const tr=$('[data-tr]',m);if(tr)tr.onclick=()=>{const on=tr.getAttribute('aria-pressed')!=='true';tr.setAttribute('aria-pressed',on);tr.classList.toggle('gold',on);$$('.story .tr',m).forEach(x=>x.hidden=!on);};
+  $('.story',m).onclick=e=>{const w=e.target.closest('.wd'),sn=e.target.closest('.sn');if(!sn)return;
+    if(w){const res=storyLookup(w.textContent,s,sn.textContent);if(voice)Snd.Voice.speak(w.textContent,{force:true,rate:0.85,noLips:true});
+      toast(`${icon('book')}<div>${res.length?res.slice(0,3).join('<br>'):`<b>${esc(w.textContent)}</b><br><small>Questa parola non è nel dizionario del Genio: prova a indovinarla dal contesto!</small>`}</div>`,'',res.length?4200:3200);return;}
+    if(voice){const seq=[];s.p.forEach((par,pi)=>par.forEach((se,si)=>seq.push(pi+':'+si)));readAll(m,s,seq.indexOf(sn.dataset.p+':'+sn.dataset.s));}};
+  $('[data-q]',m).onclick=e=>{e.currentTarget.disabled=true;storyQuiz(m,s);};}};
+function storyQuiz(m,s){readStop();const qs=s.q,st={i:0,ok:0},box=$('#sq',m);
+  const next=()=>{if(st.i>=qs.length)return fin();const [qt,ok,...ko]=qs[st.i],o=shuffle([ok,...ko]);const q={skill:'lett',kind:'mc',prompt:esc(qt),sub:'Rispondi in base alla storia',opts:o,ans:o.indexOf(ok),full:ok};
+    box.innerHTML='';const h=document.createElement('div');box.appendChild(h);
+    QUI.render(h,q,{label:`Domanda ${st.i+1} di ${qs.length}`,noMiss:true,speak:false,onDone:res=>{if(res.ok){st.ok++;addXP(3);}
+      const nx=document.createElement('div');nx.className='row c';nx.style.marginTop='10px';nx.innerHTML=`<button class="btn gold" data-n>${icon('next')}<span>${st.i+1>=qs.length?'Risultato':'Avanti'}</span></button>`;h.querySelector('.q').appendChild(nx);$('[data-n]',nx).onclick=()=>{st.i++;next();};}});
+    h.scrollIntoView({block:'start',behavior:S.set.motion===false?'auto':'smooth'});};
+  const fin=()=>{const n=qs.length,stars=st.ok===n?3:st.ok>=n-1?2:1;if(!S.lib)S.lib={};const prev=S.lib[s.id];S.lib[s.id]={s:Math.max(stars,prev?prev.s:0),d:today()};
+    const gems=st.ok*2+(prev?0:5);addGems(gems);addXP(10);if(!prev)S.st.lib=(S.st.lib||0)+1;ev('read',1);award('storia1');award('primo');if(STORIES.every(x=>S.lib[x.id]))award('storie');save();
+    Snd.fx(stars>=2?'win':'lose');if(stars===3)FX.confetti(90);Stage.act(stars>=2?'cheer':'shrug');
+    Genie.say(stars===3?'Hai capito tutto! Sei un lettore straordinario.':stars===2?'Molto bene! Hai capito quasi tutto.':'Le storie si capiscono meglio la seconda volta: rileggila con calma!',{act:null});
+    box.innerHTML=`<section class="card res"><h2>${st.ok} / ${n}</h2><div class="stars3">${[0,1,2].map(i=>i<stars?'★':'<span class="off">★</span>').join('')}</div><p>risposte giuste · +${gems} gemme</p>
+     <div class="row c" style="margin-top:12px"><button class="btn gold" data-gw>${icon('grimoire')}<span>Parole nuove nel Grimorio</span></button><button class="btn" data-up>${icon('library')}<span>Altre storie</span></button><button class="btn ghost" data-rr>${icon('refresh')}<span>Rileggi</span></button></div></section>`;
+    $('[data-up]',box).onclick=()=>go('biblioteca');$('[data-rr]',box).onclick=()=>go('storia',s.id);
+    $('[data-gw]',box).onclick=e=>{const R=revIndex(),add=new Set();s.p.flat().join(' ').toLowerCase().split(/[^\p{L}’']+/u).forEach(t=>{const x=t.replace(/^[a-zà-ù]+['’]/,'');(R.get(x)||[]).forEach(v=>{if(v.k.startsWith('n:')&&!S.srs[v.it])add.add(v.it);});});
+      const list=[...add].slice(0,10);list.forEach(w=>S.srs[w]={b:0,due:Date.now(),ok:0,ko:0,seen:Date.now()});save();e.currentTarget.disabled=true;
+      toast(list.length?`${icon('grimoire')}<div><b>${list.length} parole nel Grimorio</b><br><small>${esc(list.join(', '))}</small></div>`:`${icon('grimoire')}<div>Le parole di questa storia sono già tutte nel tuo Grimorio!</div>`,list.length?'gold':'',4200);};
+    box.scrollIntoView({block:'start',behavior:S.set.motion===false?'auto':'smooth'});};
+  next();}
+
 /* ===== Avvio ===== */
 window.Stage=Stage;
 (function(){
@@ -4040,9 +4940,24 @@ window.Stage=Stage;
   $('#ghot').onclick=()=>{Snd.init();const h=Stage.scr.head;if(h)FX.spark(h[0],h[1],18,'gold',140,0.8,5);Snd.fx('sparkle');Genie.say(rnd(POKES),{act:rnd(['laugh','surprise','wink','spin'])});};
   addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#modal').classList.contains('on'))Modal.close();else if(!['hub','title'].includes(document.body.dataset.scr))back();}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)Snd.Voice.stop();});
+  // accessibilità: il tasto Tab resta dentro la finestra aperta; il testo inglese viene letto con la pronuncia inglese
+  $('#modal').addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=$$('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])',$('#modal')).filter(x=>x.offsetParent!==null);if(!f.length)return;
+    const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}});
+  // e i pulsanti a scelta (.seg) dicono ai lettori di schermo quale opzione è attiva
+  const syncSeg=b=>b.setAttribute('aria-pressed',b.classList.contains('on'));
+  new MutationObserver(ms=>{let added=false;for(const r of ms){if(r.type==='attributes'){if(r.target.matches&&r.target.matches('.seg button'))syncSeg(r.target);}else if(r.addedNodes.length)added=true;}
+    if(added){for(const x of document.querySelectorAll('.en:not([lang])'))x.lang='en';for(const b of document.querySelectorAll('.seg button:not([aria-pressed])'))syncSeg(b);}}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  // salvataggio immediato quando l'app viene chiusa o messa in secondo piano
+  addEventListener('pagehide',saveNow);document.addEventListener('visibilitychange',()=>{if(document.hidden)saveNow();});
+  PWA.init();
   Genie.init();applySettings();refreshTop();missions();
-  /*HOOK*/
-  go('title');
+  // aggancio per i collaudi automatici: attivo solo aprendo la pagina con ?debug
+  if(/[?&]debug\b/.test(location.search))window.__app={go,back,get S(){return S},SCR,save,QG,QUI,Stage,Snd,FX,LEX,FOES,ROOMS,ev,award,addXP,addGems,Modal,ecoScore,listFromCode,listCode,STORIES,get cur(){return curName}};
+  // collegamenti diretti (scorciatoie dell'app installata) e liste condivise dall'insegnante
+  const hash=decodeURIComponent((location.hash||'').slice(1)),DEEP=['hub','parola','grimorio','eco','biblioteca','duello','quiz','torre','dettato'];
+  const shared=/^lista=/.test(hash)?listFromCode(location.hash):null;if(hash)try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  if(S.ach.intro&&DEEP.includes(hash)){Stage.lamp(true,0.25);go(hash);}else go('title');
+  if(/^lista=/.test(hash)){if(shared)setTimeout(()=>offerSharedList(shared),600);else toast(`${icon('x')}<div>Il link della lista non è valido o è incompleto.</div>`,'bad',4000);}
 })();
 
 })();

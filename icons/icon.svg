@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+ <defs>
+  <radialGradient id="bg" cx="50%" cy="36%" r="78%"><stop offset="0" stop-color="#3d2678"/><stop offset=".55" stop-color="#1b1442"/><stop offset="1" stop-color="#0b0820"/></radialGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4c8"/><stop offset=".42" stop-color="#e8c15a"/><stop offset="1" stop-color="#8a5d17"/></linearGradient>
+  <linearGradient id="goldside" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9a6a1c"/><stop offset=".45" stop-color="#f6dc8a"/><stop offset="1" stop-color="#8a5d17"/></linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".5"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+  <linearGradient id="smoke" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#9af0ff"/><stop offset="1" stop-color="#b98cff" stop-opacity=".15"/></linearGradient>
+ </defs>
+ <rect width="512" height="512" fill="url(#bg)"/>
+ <g fill="#fff">
+  <circle cx="96" cy="110" r="3"/><circle cx="150" cy="70" r="2"/><circle cx="420" cy="96" r="3"/><circle cx="452" cy="170" r="2"/><circle cx="70" cy="200" r="2"/><circle cx="380" cy="60" r="2"/><circle cx="210" cy="96" r="2.4"/>
+ </g>
+ <ellipse cx="256" cy="336" rx="200" ry="110" fill="url(#glow)"/>
+ <path d="M444 262c18-36 10-84-26-100-36-16-72 22-50 52 18 24 54 8 46-18" fill="none" stroke="url(#smoke)" stroke-width="18" stroke-linecap="round"/>
+ <path d="M300 132l9 22 22 9-22 9-9 22-9-22-22-9 22-9z" fill="#fff3c4"/>
+ <path d="M356 84l6 14 14 6-14 6-6 14-6-14-14-6 14-6z" fill="#9af0ff"/>
+ <g stroke="#5a3a0e" stroke-width="5" stroke-linejoin="round">
+  <path d="M138 318c-52-14-70 52-14 62" fill="none" stroke="url(#gold)" stroke-width="20" stroke-linecap="round"/>
+  <path d="M112 330c0-46 70-70 144-70 62 0 108 14 126 40l58-30c14-7 26 6 16 18l-66 70c-18 32-70 50-134 50-82 0-144-28-144-78z" fill="url(#gold)"/>
+  <path d="M186 262c4-34 136-34 140 0z" fill="url(#gold)"/>
+  <ellipse cx="256" cy="262" rx="76" ry="14" fill="url(#goldside)"/>
+  <circle cx="256" cy="220" r="13" fill="url(#gold)"/>
+  <path d="M206 404h100l18 30H188z" fill="url(#gold)"/>
+  <ellipse cx="256" cy="436" rx="78" ry="12" fill="url(#goldside)"/>
+ </g>
+ <path d="M150 316c30-22 90-30 140-24" fill="none" stroke="#fff8dc" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+ <circle cx="256" cy="336" r="16" fill="#d2123a" stroke="#fff0b8" stroke-width="5"/>
+</svg>
