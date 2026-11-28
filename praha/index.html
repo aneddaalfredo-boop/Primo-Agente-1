@@ -8,10 +8,18 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Praha Pilot">
+<meta name="description" content="Praga spendendo poco: mappa 3D, posti economici e gratis, trappole da evitare, portafoglio, meteo e SOS. Funziona anche senza internet.">
+<meta name="format-detection" content="telephone=no">
 <title>Praha Pilot</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;1,600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;1,600&display=swap"></noscript>
 <style>
 /* VOICE: a pro night instrument for a student on a budget: calm, exact, warm, never shouty.
    IDEA: Prague's Orloj, the astronomical clock that reads place and time at a glance; here it reads place and cost.
@@ -298,6 +306,123 @@ details p{margin:0 0 12px;color:var(--mute)}
 @media(max-width:380px){.bt small{display:none}.cats{grid-template-columns:repeat(3,minmax(0,1fr))}.price{max-width:40%}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
+/* ---------- potenziamenti ---------- */
+.cat.on{background:rgba(255,255,255,.07);background:color-mix(in srgb,var(--c) 15%,var(--bg2))}
+.cat-ico{background:rgba(255,255,255,.06);background:color-mix(in srgb,var(--c) 18%,transparent)}
+.banner>span{flex:1;min-width:0}.banner em{flex:none}
+.btn{transition:transform .12s ease,filter .2s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+/* «Portami lì»: pulsante diviso, a sinistra la strada, a destra la scelta dell'app */
+.navgrp{display:inline-flex;align-items:stretch;border-radius:10px;box-shadow:0 4px 14px rgba(217,180,90,.18)}
+.navgrp .btn{border-radius:10px 0 0 10px}
+.navgrp .navmore{width:38px;padding:0;border-radius:0 10px 10px 0;border-left:1px solid rgba(22,17,10,.35)}
+.fav{width:40px;padding:0}
+.fav .ic{transition:transform .25s}
+.fav.on{color:#ff8fab;border-color:rgba(255,122,154,.55);background:rgba(255,122,154,.1)}
+.fav.on .ic{fill:currentColor}
+.fav.pop .ic{animation:pop .45s}
+@keyframes pop{40%{transform:scale(1.45)}}
+/* schede con illustrazione */
+.res{position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.res>:not(.art){position:relative}
+.res .art{position:absolute;right:-10px;top:-6px;width:150px;height:100px;color:var(--c,#d9b45a);opacity:.13;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.res.sel .art{opacity:.24}
+.res.sel{box-shadow:inset 0 0 0 1px var(--gold),0 0 0 3px rgba(217,180,90,.16),0 12px 30px rgba(0,0,0,.35)}
+.results.enter .res{animation:rise .45s both}
+.results.enter .res:nth-child(2){animation-delay:.04s}.results.enter .res:nth-child(3){animation-delay:.08s}.results.enter .res:nth-child(4){animation-delay:.12s}.results.enter .res:nth-child(n+5){animation-delay:.16s}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+/* adesso a Praga */
+.now{position:relative;overflow:hidden;display:block;margin:12px 0;padding:12px 14px;border-radius:var(--r);border:1px solid var(--line2);background:linear-gradient(120deg,#132235 0%,#101a26 55%,#1d1a26 100%)}
+.now-art{position:absolute;right:-8px;bottom:-16px;width:220px;height:130px;color:var(--gold);opacity:.14;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.now>:not(.now-art){position:relative}
+.now-clock{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.now-clock b{display:block;font:700 34px/1 var(--fd);color:var(--gold2);font-variant-numeric:tabular-nums}
+.now-clock small{display:block;color:var(--mute);font-size:13px}
+.now-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.now-chip{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:1px 6px;min-height:54px;padding:7px 10px;border-radius:14px;border:1px solid var(--line2);background:rgba(11,16,22,.62);color:var(--ink);font:inherit;text-align:left}
+button.now-chip{cursor:pointer}
+button.now-chip:hover{border-color:var(--gold)}
+.now-chip .ic{width:16px;height:16px;color:var(--gold2)}
+.now-chip small{min-width:0;color:var(--mute);font-size:12.5px;font-weight:500;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-chip b{grid-column:1/-1;min-width:0;font:700 17px/1.15 var(--fd);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* scheda rapida sulla mappa */
+.map-card{position:absolute;left:10px;right:64px;bottom:10px;z-index:4;display:flex;flex-direction:column;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid var(--gold);background:rgba(15,22,30,.97);box-shadow:0 14px 34px rgba(0,0,0,.6);animation:rise .25s both}
+.map-card .mc-h{display:flex;align-items:flex-start;gap:10px}
+.map-card .mc-h b{display:block;font:700 18px/1.15 var(--fd)}
+.map-card .mc-h small{display:block;color:var(--mute);font-size:13px}
+.map-card .mc-x{margin-left:auto;flex:none}
+.map-card .acts{margin:0}
+.map-card{gap:7px;padding:9px 10px}
+.map-card .mc-h{gap:9px}
+.map-card .mc-h b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-card .mc-h small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-card .cat-ico{width:34px;height:34px;border-radius:10px}
+.map-card .acts{gap:6px}
+.map-card .acts .icon-btn{width:40px;height:40px}
+body.mc-on .trap-tog{opacity:0;pointer-events:none}
+/* il mio giro */
+.tour .stops{list-style:none;margin:8px 0;padding:0}
+.tour .stops li{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.tour .num{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#16110a;font:700 15px var(--fd)}
+.tour .sn{flex:1}.tour .sn small{display:block;color:var(--mute);font-size:13px}
+.tour .tot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.tour .tot div{padding:8px 10px;border-radius:12px;background:var(--bg2)}
+.tour .tot b{display:block;font:700 20px/1.1 var(--fd);color:var(--gold2)}
+.tour .tot span{font-size:12.5px;color:var(--mute)}
+/* installazione e aggiornamenti */
+.install{display:flex;gap:12px;align-items:center;border-color:rgba(217,180,90,.45);background:linear-gradient(135deg,rgba(217,180,90,.13),rgba(60,127,196,.1))}
+.install .logo{width:44px;height:44px;flex:none}
+.install p{margin:2px 0 0;color:var(--mute);font-size:14px}
+.install b{font:700 19px/1.1 var(--fd)}
+.install .x{margin-left:auto;flex:none}
+.upd{position:fixed;left:50%;top:calc(70px + var(--st));transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:14px;border:1px solid var(--gold);background:#101821;box-shadow:0 14px 34px rgba(0,0,0,.6);font-weight:600;width:max-content;max-width:calc(100vw - 24px)}
+/* punto di ritrovo */
+.meet h3 .ic{color:var(--azure2)}
+.meet .mp{display:flex;align-items:center;gap:10px;margin:10px 0;padding:10px 12px;border-radius:12px;background:var(--bg2)}
+.meet .mp>.ic{color:var(--azure2);width:24px;height:24px}
+.meet .mp small{display:block;color:var(--mute);font-size:13px}
+/* finestre di scelta */
+.opts{display:grid;gap:8px;margin:12px 0}
+.opt{display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 14px;border-radius:14px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);text-decoration:none;text-align:left;width:100%}
+.opt:hover{border-color:var(--gold)}
+.opt b{display:block}.opt small{display:block;color:var(--mute);font-size:13px}
+.opt>.ic{color:var(--gold2);width:24px;height:24px}
+.opt.best{border-color:var(--gold);background:rgba(217,180,90,.08)}
+.linkbox{display:block;width:100%;margin:6px 0;padding:10px 12px;border-radius:12px;background:var(--bg2);border:1px dashed var(--line2);color:var(--azure2);font-size:13px;word-break:break-all;user-select:all;-webkit-user-select:all}
+/* meteo */
+.wx-now{display:flex;align-items:center;gap:14px;margin:8px 0 12px}
+.wx-now .ic{width:52px;height:52px;color:var(--gold2)}
+.wx-now b{font:700 46px/1 var(--fd)}
+.wx-now span{display:block;margin-top:4px;color:var(--mute)}
+.wx-days{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.wx-days div{padding:10px 6px;border-radius:12px;background:var(--bg2);text-align:center;font-size:13px;color:var(--mute)}
+.wx-days .ic{width:26px;height:26px;color:var(--gold2);display:block;margin:4px auto}
+.wx-days b{display:block;font:700 16px var(--fd);color:var(--ink)}
+/* frasi con audio */
+.phr li{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto}
+.phr .say{grid-row:1/3;grid-column:3;align-self:center}
+.phr em{grid-column:1/3}
+/* contatore dei preferiti, voce, piccoli dettagli */
+.cat{position:relative}
+.cat .cnt{position:absolute;top:6px;right:8px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#ff7a9a;color:#16110a;font:700 12px/20px var(--fb);text-align:center}
+.say-sm{display:inline-grid;place-items:center;width:30px;height:30px;margin-left:2px;padding:0;border-radius:8px;border:1px solid var(--line2);background:var(--bg2);color:var(--gold2)}
+.say-sm .ic{width:16px;height:16px}
+.say.on,.say-sm.on{border-color:var(--gold);color:var(--gold2);box-shadow:0 0 0 3px rgba(217,180,90,.22)}
+.map-card .cz{margin-top:2px;color:var(--gold2)}
+.map-card .say-sm{width:26px;height:26px;vertical-align:middle}
+.map-card .mc-h>div{min-width:0;flex:1}
+.card h3.sub2{margin-top:18px}
+.steps{margin:8px 0;padding-left:22px}.steps li{margin:8px 0}
+.wx-none{color:var(--mute)}
+.navmore .ic{width:20px;height:20px}
+.tour h3 .ic,.empty h3 .ic,.meet h3 .ic{color:var(--gold2)}
+.tour .stops .icon-btn{flex:none}
+.res .acts .fav{margin-left:auto}
+@media(max-width:560px){.now-clock b{font-size:30px}}
+@media(max-width:340px){.now-chips{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){.now-clock b{font-size:28px}.tour .tot{grid-template-columns:1fr 1fr}.res .acts .fav{margin-left:0}}
+@media(prefers-reduced-motion:reduce){.results.enter .res,.map-card,.fav.pop .ic{animation:none}}
+
 </style>
 </head>
 <body data-tab="esplora">
@@ -327,6 +452,44 @@ details p{margin:0 0 12px;color:var(--mute)}
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
 <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.6-6.4L4 12z"/></symbol>
 <symbol id="i-orloj" viewBox="0 0 24 24"><clipPath id="lcp"><circle cx="12" cy="12" r="8"/></clipPath><circle cx="12" cy="12" r="11" fill="#0b1016" stroke="#d9b45a" stroke-width="1.4"/><g clip-path="url(#lcp)"><rect width="24" height="24" fill="#2f6aa8"/><circle cx="12" cy="27" r="14.4" fill="#c4512f"/><circle cx="12" cy="27" r="12.6" fill="#06080b"/></g><circle cx="12" cy="12" r="8" fill="none" stroke="#d9b45a" stroke-width="1"/><path d="M12 13.5V4.6" stroke="#f0d48a" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="8.2" r="2" fill="#d9b45a" stroke="#0b1016" stroke-width=".8"/><circle cx="12" cy="12" r="1.3" fill="#d9b45a"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9-8.6C1.6 8.2 3.6 5 6.8 5c2 0 3.4 1.1 5.2 3 1.8-1.9 3.2-3 5.2-3 3.2 0 5.2 3.2 3.8 6.4C19 15.6 12 20 12 20z"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4.5L17 13H5"/></symbol>
+<symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .6-7.96A5.5 5.5 0 0 0 7.1 9.1 4.5 4.5 0 0 0 7 18z"/></symbol>
+<symbol id="i-partly" viewBox="0 0 24 24"><path d="M8 3.5V5M3.8 6.3l1 1M2.5 10.5H4"/><path d="M11.4 7.6A3.6 3.6 0 0 0 5.2 11"/><path d="M9 20h8.5a3.5 3.5 0 0 0 .5-6.96A4.8 4.8 0 0 0 9.5 12a3.9 3.9 0 0 0-.5 8z"/></symbol>
+<symbol id="i-rain" viewBox="0 0 24 24"><path d="M7 15h10a4 4 0 0 0 .6-7.96A5.5 5.5 0 0 0 7.1 6.1 4.5 4.5 0 0 0 7 15z"/><path d="M8.5 18l-1 2.5M12.5 18l-1 2.5M16.5 18l-1 2.5"/></symbol>
+<symbol id="i-snow" viewBox="0 0 24 24"><path d="M7 14h10a4 4 0 0 0 .6-7.96A5.5 5.5 0 0 0 7.1 5.1 4.5 4.5 0 0 0 7 14z"/><path d="M8 18h.01M12 19.5h.01M16 18h.01M10 21.5h.01M14 21.5h.01" stroke-width="2.6"/></symbol>
+<symbol id="i-fog" viewBox="0 0 24 24"><path d="M4 8h16M2.5 12h19M5 16h14M8 20h8"/></symbol>
+<symbol id="i-storm" viewBox="0 0 24 24"><path d="M7 14h10a4 4 0 0 0 .6-7.96A5.5 5.5 0 0 0 7.1 5.1 4.5 4.5 0 0 0 7 14z"/><path d="M12.5 14l-2.2 3.6h3.2l-2.2 4"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+<symbol id="i-install" viewBox="0 0 24 24"><path d="M12 3v11M7.5 9.5L12 14l4.5-4.5"/><rect x="4" y="16" width="16" height="5" rx="1.5"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.8"/><path d="M15.5 14.2A5.5 5.5 0 0 1 21.5 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></symbol>
+<symbol id="art-orloj" viewBox="0 0 120 80"><path d="M36 79V32l24-20 24 20v47"/><path d="M30 32h60"/><path d="M54 12V5h12v7"/><circle cx="60" cy="52" r="18"/><circle cx="60" cy="52" r="11.5"/><path d="M60 34v6M60 64v6M42 52h6M72 52h6"/><path d="M60 52l7-9M60 52l-5 3"/><circle cx="60" cy="52" r="2.2" fill="currentColor"/><path d="M42 24h36"/></symbol>
+<symbol id="art-tyn" viewBox="0 0 120 80"><path d="M30 79V40h18v39M72 79V40h18v39"/><path d="M48 54h24M48 64h24"/><path d="M28 40l11-27 11 27M70 40l11-27 11 27"/><path d="M39 13V5M81 13V5"/><path d="M24 40l3-9 3 9M48 40l3-9 3 9M66 40l3-9 3 9M90 40l3-9 3 9"/><path d="M35 50v8M43 50v8M77 50v8M85 50v8"/><path d="M12 79h96"/></symbol>
+<symbol id="art-bridge" viewBox="0 0 120 80"><path d="M2 50h88"/><path d="M6 60q14-14 28 0M34 60q14-14 28 0M62 60q14-14 28 0"/><path d="M20 50v-7M48 50v-7M76 50v-7"/><circle cx="20" cy="40" r="2.4"/><circle cx="48" cy="40" r="2.4"/><circle cx="76" cy="40" r="2.4"/><path d="M90 79V26h20v53"/><path d="M88 26l12-18 12 18"/><path d="M96 36h8v10h-8z"/><path d="M4 70c7 2.5 14 2.5 21 0s14-2.5 21 0 14 2.5 21 0 14-2.5 21 0"/></symbol>
+<symbol id="art-castle" viewBox="0 0 120 80"><path d="M4 79V54h42v25M74 79V54h42v25"/><path d="M46 79V42h28v37"/><path d="M51 42V25l9-19 9 19v17"/><path d="M42 48l4-13 4 13M70 48l4-13 4 13"/><path d="M8 62h4M18 62h4M28 62h4M38 62h4M78 62h4M88 62h4M98 62h4M108 62h4"/><path d="M57 52h6v11h-6z"/><circle cx="60" cy="31" r="3"/><path d="M2 79h116"/></symbol>
+<symbol id="art-dome" viewBox="0 0 120 80"><path d="M28 79V48h60v31"/><path d="M38 48c0-14 9-24 20-24s20 10 20 24"/><path d="M54 24v-6h8v6M58 18V8M55 11h6"/><path d="M88 79V30h12v49"/><path d="M88 30l6-15 6 15"/><path d="M40 62h8v17M52 62h12M68 62h8v17"/><path d="M18 79h92"/></symbol>
+<symbol id="art-petrin" viewBox="0 0 120 80"><path d="M4 79c20-10 40-14 56-14s36 4 56 14"/><path d="M49 66l9-52h4l9 52"/><path d="M52 50h16M54 36h12M56 24h8"/><path d="M49 66l17-16M71 66L54 50M52 50l14-14M68 50L54 36M54 36l10-12M66 36L56 24"/><path d="M60 14V6"/><circle cx="60" cy="5" r="1.6" fill="currentColor"/></symbol>
+<symbol id="art-dancing" viewBox="0 0 120 80"><path d="M28 79V34c8-3 12-10 13-20 5 8 4 18 9 26 4 7 4 18 2 39"/><path d="M60 79V24h30v55"/><path d="M60 24c5-7 10-10 15-10s10 3 15 10"/><path d="M66 36h6M78 36h6M66 48h6M78 48h6M66 60h6M78 60h6M34 46h6M34 58h6M34 68h6"/><path d="M16 79h88"/></symbol>
+<symbol id="art-tv" viewBox="0 0 120 80"><path d="M53 79V10h7v69M64 79V16h6v63M46 79V18h6v61"/><rect x="42" y="30" width="32" height="8" rx="2"/><rect x="44" y="45" width="28" height="7" rx="2"/><path d="M56 10V3"/><path d="M34 79h52"/></symbol>
+<symbol id="art-vysehrad" viewBox="0 0 120 80"><path d="M8 79V63l9-4 9 4 9-4 9 4 9-4 9 4 9-4 9 4 9-4 9 4 9-4 9 4v16"/><path d="M40 59V37h40v22"/><path d="M44 37V21l6-15 6 15v16M64 37V21l6-15 6 15v16"/><path d="M55 47h10v12H55z"/><path d="M2 79h116"/></symbol>
+<symbol id="art-metronome" viewBox="0 0 120 80"><path d="M44 72l16-60 16 60z"/><path d="M60 60L82 14"/><circle cx="76" cy="27" r="3.2"/><path d="M36 72h48"/><path d="M4 79c18-6 34-8 56-8s38 2 56 8"/></symbol>
+<symbol id="art-tram" viewBox="0 0 120 80"><path d="M12 66V36c0-6 4-10 10-10h76c6 0 10 4 10 10v30z"/><path d="M12 51h96"/><path d="M20 33h14v12H20zM40 33h14v12H40zM60 33h14v12H60zM80 33h18v12H80z"/><circle cx="30" cy="68" r="5"/><circle cx="90" cy="68" r="5"/><path d="M60 26V14M47 14h26"/><path d="M2 76h116"/></symbol>
+<symbol id="art-tree" viewBox="0 0 120 80"><path d="M60 5l2.4 5.6 6 .5-4.6 3.9 1.4 5.9L60 17.8l-5.2 3.1 1.4-5.9-4.6-3.9 6-.5z"/><path d="M60 23L44 43h8L38 59h10L36 73h48L72 59h10L68 43h8z"/><path d="M56 73h8v6h-8z"/><circle cx="54" cy="50" r="1.8" fill="currentColor"/><circle cx="66" cy="57" r="1.8" fill="currentColor"/><circle cx="57" cy="65" r="1.8" fill="currentColor"/><circle cx="63" cy="39" r="1.8" fill="currentColor"/><path d="M14 79h92"/></symbol>
+<symbol id="art-mug" viewBox="0 0 120 80"><path d="M40 28h32v42a6 6 0 0 1-6 6H46a6 6 0 0 1-6-6z"/><path d="M72 38h8a6 6 0 0 1 6 6v12a6 6 0 0 1-6 6h-8"/><path d="M38 28c-1-8 6-13 12-10 3-7 13-7 15 0 6-3 13 2 10 10"/><path d="M50 38v28M62 38v28"/></symbol>
+<symbol id="art-plate" viewBox="0 0 120 80"><circle cx="60" cy="44" r="24"/><circle cx="60" cy="44" r="15"/><path d="M24 20v14a4 4 0 0 0 8 0V20M28 34v40M94 20c-5 0-7 6-7 14s3 10 7 10v30"/></symbol>
+<symbol id="art-cart" viewBox="0 0 120 80"><path d="M18 18h12l10 40h48l8-28H36"/><circle cx="46" cy="69" r="5"/><circle cx="82" cy="69" r="5"/><path d="M50 40h32M46 50h38"/></symbol>
+<symbol id="art-bag" viewBox="0 0 120 80"><path d="M36 30h48l-4 46H40z"/><path d="M48 30v-6a12 12 0 0 1 24 0v6"/><path d="M50 46c4 6 16 6 20 0"/></symbol>
+<symbol id="art-music" viewBox="0 0 120 80"><path d="M50 62V20l36-8v42"/><circle cx="42" cy="62" r="8"/><circle cx="78" cy="54" r="8"/><path d="M50 30l36-8"/></symbol>
+<symbol id="art-dice" viewBox="0 0 120 80"><rect x="30" y="24" width="34" height="34" rx="6" transform="rotate(-12 47 41)"/><rect x="62" y="32" width="30" height="30" rx="6" transform="rotate(14 77 47)"/><circle cx="41" cy="35" r="2.4" fill="currentColor"/><circle cx="53" cy="47" r="2.4" fill="currentColor"/><circle cx="71" cy="41" r="2.4" fill="currentColor"/><circle cx="77" cy="47" r="2.4" fill="currentColor"/><circle cx="83" cy="53" r="2.4" fill="currentColor"/></symbol>
+<symbol id="art-shield" viewBox="0 0 120 80"><path d="M60 6l28 11v20c0 19-12 31-28 37-16-6-28-18-28-37V17z"/><path d="M60 26v20M60 55v2"/></symbol>
+<symbol id="art-skyline" viewBox="0 0 120 80"><path d="M2 79V61h9V51l4-8 4 8v10h8V45l6-15 6 15v16h6v-6c0-6 4-10 10-10s10 4 10 10v6h6V36l5-15 5 15v25h8V51h6v-6l3-6 3 6v6h6v28"/><path d="M2 79h116"/></symbol>
 </defs></svg>
 
 <header class="top">
@@ -340,8 +503,8 @@ details p{margin:0 0 12px;color:var(--mute)}
     <div class="mapwrap" id="mapwrap">
       <canvas id="map" tabindex="0" aria-label="Mappa 3D del centro di Praga. Trascina per spostarti, due dita per ruotare e zoomare, tocca un punto per impostarlo come tua posizione. Da tastiera: frecce, più e meno, Q ed E per ruotare."></canvas>
       <div class="map-labels" id="mapLabels"></div>
-      <div class="sign" id="sign" aria-live="polite"><small id="signQ">Staré Město</small><b id="signN">Staroměstské náměstí</b></div>
-      <button class="orloj" id="compass" type="button" aria-label="Bussola: tocca per orientare la mappa a nord">
+      <div class="sign" id="sign" aria-live="polite" data-keep><small id="signQ">Staré Město</small><b id="signN">Staroměstské náměstí</b></div>
+      <button class="orloj" id="compass" type="button" aria-label="Bussola: tocca per orientare la mappa a nord" data-keep>
         <svg viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="oclip"><circle cx="50" cy="50" r="37"/></clipPath><radialGradient id="osky" cx="50%" cy="18%" r="85%"><stop offset="0" stop-color="#4a8ccf"/><stop offset="1" stop-color="#1b4675"/></radialGradient></defs>
           <circle cx="50" cy="50" r="48" fill="#0b1016" stroke="#d9b45a" stroke-width="2.2"/>
           <g id="oticks" stroke="#d9b45a" stroke-width="1.5" stroke-linecap="round"></g>
@@ -357,22 +520,33 @@ details p{margin:0 0 12px;color:var(--mute)}
         <button class="mbtn txt" id="m3d" type="button" aria-label="Vista dall’alto">2D</button>
         <button class="mbtn" id="mloc" type="button" aria-label="Vai alla mia posizione"><svg class="ic" aria-hidden="true"><use href="#i-gps"/></svg></button>
       </div>
-      <button class="trap-tog on" id="trapTog" type="button"><svg class="ic" aria-hidden="true"><use href="#i-avoid"/></svg>Zone trappola</button>
+      <button class="trap-tog on" id="trapTog" type="button" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-avoid"/></svg>Zone trappola</button>
       <div class="map-hint" id="mapHint">Tocca la mappa per dire «sono qui»</div>
       <div class="map-pop" id="mapPop" hidden><span id="popTxt"></span><button class="btn sm" id="popSet" type="button">Sono qui</button><button class="icon-btn sm" id="popClose" type="button" aria-label="Chiudi"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <div class="map-card" id="mapCard" hidden></div>
     </div>
   </section>
 
   <main class="panel">
-    <nav class="tabs" id="tabs" aria-label="Sezioni">
-      <button type="button" data-tab="esplora"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>Esplora</button>
-      <button type="button" data-tab="assistente"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>Assistente</button>
-      <button type="button" data-tab="portafoglio"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Portafoglio</button>
-      <button type="button" data-tab="muoversi"><svg class="ic" aria-hidden="true"><use href="#i-tram"/></svg>Muoversi</button>
-      <button type="button" data-tab="sos"><svg class="ic" aria-hidden="true"><use href="#i-sos"/></svg>SOS</button>
+    <nav class="tabs" id="tabs" aria-label="Sezioni" role="tablist">
+      <button type="button" role="tab" data-tab="esplora"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>Esplora</button>
+      <button type="button" role="tab" data-tab="assistente"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>Assistente</button>
+      <button type="button" role="tab" data-tab="portafoglio"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Portafoglio</button>
+      <button type="button" role="tab" data-tab="muoversi"><svg class="ic" aria-hidden="true"><use href="#i-tram"/></svg>Muoversi</button>
+      <button type="button" role="tab" data-tab="sos"><svg class="ic" aria-hidden="true"><use href="#i-sos"/></svg>SOS</button>
     </nav>
 
     <section class="pane" id="pane-esplora" aria-label="Esplora">
+      <div class="install card" id="installCard" hidden></div>
+      <section class="now" id="now" aria-label="Adesso a Praga">
+        <svg class="now-art" aria-hidden="true"><use href="#art-skyline"/></svg>
+        <div class="now-clock"><b id="nowTime">--:--</b><small id="nowDate">Praga</small></div>
+        <div class="now-chips">
+          <button class="now-chip" id="nowWx" type="button" aria-label="Meteo a Praga"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg><small>Meteo</small><b>Previsioni</b></button>
+          <span class="now-chip" id="nowSun"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg><small>Tramonto</small><b>--:--</b></span>
+          <button class="now-chip" id="nowOrloj" type="button" data-act="orloj"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg><small>Apostoli</small><b>--</b></button>
+        </div>
+      </section>
       <div class="console card">
         <div class="field">
           <label class="lbl" for="where">Dove sei?</label>
@@ -397,16 +571,19 @@ details p{margin:0 0 12px;color:var(--mute)}
             <button class="cat" type="button" data-c="fun" style="--c:#ff8fb4"><svg class="ic" aria-hidden="true"><use href="#i-fun"/></svg>Svago</button>
             <button class="cat" type="button" data-c="casino" style="--c:#b79bff"><svg class="ic" aria-hidden="true"><use href="#i-casino"/></svg>Casinò</button>
             <button class="cat" type="button" data-c="avoid" style="--c:#ff5a3c"><svg class="ic" aria-hidden="true"><use href="#i-avoid"/></svg>Evita</button>
+            <button class="cat" type="button" data-c="fav" style="--c:#ff7a9a"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg>Preferiti</button>
           </div>
         </div>
         <div class="filters">
           <div class="seg" id="radius" role="group" aria-label="Distanza massima"><button type="button" data-r="500">500 m</button><button type="button" data-r="1000">1 km</button><button type="button" data-r="2000">2 km</button><button type="button" data-r="99999999">Tutta Praga</button></div>
           <label class="sw"><input type="checkbox" id="onlyB" checked><span></span>Solo nel budget</label>
+          <label class="sw"><input type="checkbox" id="openNow"><span></span>Aperti adesso</label>
           <label class="selw">Ordina <select id="sort"><option value="smart">Consigliati</option><option value="near">Più vicini</option><option value="cheap">Più economici</option></select></label>
         </div>
       </div>
       <p class="summary" id="summary" aria-live="polite"></p>
       <div id="banner"></div>
+      <div id="tour"></div>
       <div class="results" id="results"></div>
       <p class="more"><a id="gmore" href="https://www.google.com/maps" target="_blank" rel="noopener">Cerca altri posti qui intorno su Google Maps</a></p>
       <p class="fine">Prezzi e orari raccolti a novembre 2026 da fonti ufficiali (PID, Banca Nazionale Ceca, Castello di Praga, Prague City Tourism) e dalla stampa ceca; quelli segnati «stima» sono indicativi. Controlla sempre il prezzo prima di pagare. App indipendente, non collegata ai locali citati.</p>
@@ -441,6 +618,10 @@ details p{margin:0 0 12px;color:var(--mute)}
         <div class="row"><input id="eNote" type="text" placeholder="Nota (facoltativa)" aria-label="Nota"><button class="btn">Aggiungi</button></div>
       </form>
       <div class="card"><h3>Le tue spese</h3><div class="bars" id="eBy"></div><ul class="elist" id="eList"></ul></div>
+      <div class="card"><h3><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Dividi il conto</h3>
+        <div class="row"><label>Totale del conto<span class="inp"><input id="spTot" type="text" inputmode="decimal" placeholder="Es. 1280"><i>Kč</i></span></label><label>Persone<span class="inp"><input id="spN" type="number" inputmode="numeric" min="1" max="40" value="4"></span></label></div>
+        <div class="seg" id="spTip" role="group" aria-label="Mancia"><button type="button" data-t="0">Senza mancia</button><button type="button" data-t="5">Mancia 5%</button><button type="button" data-t="10">Mancia 10%</button></div>
+        <div id="spOut"></div></div>
       <div class="card"><h3>Convertitore</h3>
         <div class="row"><label class="inp"><input id="cKc" type="text" inputmode="decimal" placeholder="Corone" aria-label="Corone"><i>Kč</i></label><span class="eqs">=</span><label class="inp"><input id="cEur" type="text" inputmode="decimal" placeholder="Euro" aria-label="Euro"><i>€</i></label></div>
         <p class="hint">1 € = <b id="cRate"></b> Kč. Puoi cambiare il tasso toccando il riquadro in alto.</p></div>
@@ -487,6 +668,7 @@ details p{margin:0 0 12px;color:var(--mute)}
 
     <section class="pane" id="pane-sos" aria-label="SOS" hidden>
       <div class="pane-h"><h2>SOS e regole d’oro</h2><p>I numeri di emergenza sono gratuiti da qualsiasi telefono.</p></div>
+      <div class="card meet" id="meetCard"></div>
       <div class="sosgrid" id="sosn"></div>
       <div id="help"></div>
       <div class="card"><h3>Se succede qualcosa</h3>
@@ -507,12 +689,26 @@ details p{margin:0 0 12px;color:var(--mute)}
   <div class="sheet-h"><h2 id="mTitle">Impostazioni</h2><button class="icon-btn" id="mClose" type="button" aria-label="Chiudi"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button></div>
   <label class="lbl" for="mRate">Tasso di cambio: quante corone vale 1 €</label>
   <div class="row"><label class="inp"><input id="mRate" type="text" inputmode="decimal"><i>Kč</i></label><button class="btn" id="mSave" type="button">Salva</button></div>
-  <p class="hint">Valore iniziale 24,30: Banca Nazionale Ceca, 4 novembre 2026 (24,310). Il tasso del giorno lo vedi nell’app della tua banca.</p>
+  <p class="hint" id="mRateInfo"></p>
+  <div class="row"><label class="sw"><input type="checkbox" id="mRateAuto"><span></span>Aggiorna da solo con il tasso della BCE</label><button class="btn sm ghost" id="mRateNow" type="button"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg>Aggiorna ora</button></div>
+  <h3>Navigazione</h3>
+  <label class="lbl" for="mMaps">Con quale app si apre «Portami lì»?</label>
+  <select id="mMaps"><option value="auto">Automatica: Mappe su iPhone, Google Maps sugli altri</option><option value="apple">Mappe di Apple</option><option value="google">Google Maps</option><option value="mapy">Mapy.com (ottima anche senza internet)</option></select>
+  <h3>Mappa</h3>
+  <label class="sw"><input type="checkbox" id="mSky"><span></span>Cielo vero: giorno, tramonto e notte secondo l’ora di Praga</label>
+  <h3>App sul telefono</h3>
+  <p class="hint" id="mAppInfo"></p>
+  <div class="row"><button class="btn sm" id="mInstall" type="button"><svg class="ic" aria-hidden="true"><use href="#i-install"/></svg>Installa l’app</button></div>
   <h3>Come funziona</h3>
-  <p class="hint">Tutti i dati sono dentro l’app: funziona anche senza internet. Servono internet solo i link a Google Maps e la ricerca degli indirizzi online. Le tue spese restano solo su questo telefono.</p>
+  <p class="hint">Tutti i dati sono dentro l’app: funziona anche senza internet. Internet serve solo per aprire le mappe, cercare indirizzi online, il meteo e il tasso aggiornato. Le tue spese restano solo su questo telefono.</p>
   <button class="btn ghost" id="mReset" type="button">Cancella spese e preferenze</button>
 </div></div>
+<div class="modal" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+  <div class="sheet-h"><h2 id="shTitle"></h2><button class="icon-btn" id="shClose" type="button" aria-label="Chiudi"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+  <div id="shBody"></div>
+</div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="upd" id="upd" role="alert" hidden></div>
 <script>
 (() => {
 "use strict";
@@ -801,8 +997,10 @@ const Map3D = (() => {
 
   let cv, ctx, wrap, labelBox, W = 0, H = 0, dpr = 1, g = null;
   const scene = document.createElement("canvas"), sctx = scene.getContext("2d");
+  /* mentre la mappa si muove si disegna su una tela a risoluzione ridotta: 4 volte meno pixel sui telefoni */
+  const sceneLo = document.createElement("canvas"), slctx = sceneLo.getContext("2d"); let shown = scene, loK = 1;
   const cam = {tx: 0, ty: 0, s: 0.3, th: -1.34, ph: 1.12};
-  let mode3d = true, anim = null, pins = [], zones = [], user = null, sel = null, emph = false;
+  let mode3d = true, anim = null, pins = [], zones = [], user = null, sel = null, selPt = null, emph = false, tour = [], meet = null, keep = [];
   let picks = [], raf = 0, lastT = 0, visible = true, lastAct = 0, lastMove = 0, labelEls = [], dirty = true, sceneKey = "", needHigh = false;
   const cb = {};
 
@@ -821,6 +1019,16 @@ const Map3D = (() => {
   const bridges = BRIDGES.map(b => ({g: !!b.gold, a: [wx(b.a[1]), wy(b.a[0]), 7], b: [wx(b.b[1]), wy(b.b[0]), 7]}));
   const dlab = DLAB.map(d => { const x = wx(d[2]), y = wy(d[1]); return {t: d[0], x, y, z: terrain(x, y) + 40}; });
   const stars = Array.from({length: 70}, () => [rnd(), rnd() * 0.92, rnd() < 0.15 ? 1.4 : 0.8, 0.25 + rnd() * 0.6]);
+  /* cielo vero: altezza del sole su Praga (formule astronomiche semplificate) e fase della luna */
+  function sunAlt(ms) { const r = Math.PI / 180, d = ms / 864e5 - 10957.5, g = (357.529 + 0.98560028 * d) * r, q = 280.459 + 0.98564736 * d, L = (q + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * r, e = (23.439 - 0.00000036 * d) * r;
+    const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)), dec = Math.asin(Math.sin(e) * Math.sin(L)), gm = ((18.697374558 + 24.06570982441908 * d) % 24 + 24) % 24, ha = (gm * 15 + 14.42) * r - ra, la = 50.087 * r;
+    return Math.asin(Math.sin(la) * Math.sin(dec) + Math.cos(la) * Math.cos(dec) * Math.cos(ha)) / r; }
+  const moonPh = ms => { const syn = 29.530588853, d = (ms - Date.UTC(2000, 0, 6, 18, 14)) / 864e5; return ((d % syn) + syn) % syn / syn; };
+  const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
+  const hex = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16)), rgb = c => `rgb(${c.join(",")})`;
+  const SKY = [[-90, ["#040a12", "#0d1f33", "#22405f"]], [-12, ["#040a12", "#0d1f33", "#22405f"]], [-5, ["#0a1230", "#2a2c58", "#a4583c"]], [1, ["#17345f", "#4d5f8f", "#ef9a55"]], [8, ["#2a64a8", "#5c94cf", "#a9cbeb"]], [90, ["#2a64a8", "#5c94cf", "#a9cbeb"]]].map(([a, c]) => [a, c.map(hex)]);
+  let skyNow = Date.now(), skyOn = true;
+  function skyCols() { const alt = skyOn ? sunAlt(skyNow) : -30; let i = 0; while (i < SKY.length - 2 && alt > SKY[i + 1][0]) i++; const [a0, c0] = SKY[i], [a1, c1] = SKY[i + 1], k = clamp((alt - a0) / (a1 - a0), 0, 1); return {alt, c: c0.map((c, j) => mix(c, c1[j], k))}; }
 
   /* ---------- edifici: monumenti illuminati + città con i tetti rossi ---------- */
   const LIGHT = (() => { const v = [-0.45, 0.35, 0.82], l = Math.hypot(...v); return v.map(c => c / l); })();
@@ -876,14 +1084,16 @@ const Map3D = (() => {
 
   /* ---------- scena (in cache) ---------- */
   function renderScene(high) {
-    setup(); g = sctx; g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const hz = sp > 0.05 ? CY - F * cp / sp : -1e4, hzs = clamp(hz, 0, H);
-    // cielo notturno
-    const sky = g.createLinearGradient(0, 0, 0, Math.max(20, hzs)); sky.addColorStop(0, "#040a12"); sky.addColorStop(0.7, "#0d1f33"); sky.addColorStop(1, "#22405f");
+    setup(); const lo = !high && dpr > 1.2, k = lo ? loK : dpr; g = lo ? slctx : sctx; shown = lo ? sceneLo : scene; g.setTransform(k, 0, 0, k, 0, 0);
+    const hz = sp > 0.05 ? CY - F * cp / sp : -1e4, hzs = clamp(hz, 0, H), SC = skyCols(), night = clamp((-SC.alt - 4) / 8, 0, 1);
+    // cielo: notte, crepuscolo o giorno secondo l'ora vera di Praga
+    const sky = g.createLinearGradient(0, 0, 0, Math.max(20, hzs)); sky.addColorStop(0, rgb(SC.c[0])); sky.addColorStop(0.7, rgb(SC.c[1])); sky.addColorStop(1, rgb(SC.c[2]));
     g.fillStyle = sky; g.fillRect(0, 0, W, H);
-    if (hz > 24) { for (const s of stars) { const y = s[1] * hz * 0.9; g.fillStyle = `rgba(241,234,219,${s[3]})`; g.fillRect(s[0] * W, y, s[2], s[2]); }
-      const mx = W * 0.8, my = hz * 0.32, mg = g.createRadialGradient(mx, my, 2, mx, my, 46); mg.addColorStop(0, "rgba(241,234,219,.35)"); mg.addColorStop(1, "rgba(241,234,219,0)"); g.fillStyle = mg; g.fillRect(mx - 50, my - 50, 100, 100); g.beginPath(); g.arc(mx, my, 7, 0, Math.PI * 2); g.fillStyle = "#efe6d2"; g.fill(); g.beginPath(); g.arc(mx + 3, my - 2, 6.2, 0, Math.PI * 2); g.fillStyle = "#0d1f33"; g.fill();
-      const glow = g.createLinearGradient(0, hz - 40, 0, hz); glow.addColorStop(0, "rgba(240,190,110,0)"); glow.addColorStop(1, "rgba(240,190,110,.16)"); g.fillStyle = glow; g.fillRect(0, hz - 40, W, 40); }
+    if (hz > 24) { if (night > 0.02) for (const s of stars) { const y = s[1] * hz * 0.9; g.fillStyle = `rgba(241,234,219,${(s[3] * night).toFixed(3)})`; g.fillRect(s[0] * W, y, s[2], s[2]); }
+      const mpos = night > 0.3 && hz > 40 ? [[0.8, 0.32], [0.62, 0.3], [0.45, 0.55], [0.8, 0.7], [0.3, 0.75]].map(c => [W * c[0], hz * c[1]]).find(c => !keep.some(b => c[0] > b[0] - 18 && c[0] < b[2] + 18 && c[1] > b[1] - 18 && c[1] < b[3] + 18)) : null;
+      if (mpos) { const mx = mpos[0], my = mpos[1], ph = moonPh(skyNow), lit = (1 - Math.cos(ph * Math.PI * 2)) / 2, mg = g.createRadialGradient(mx, my, 2, mx, my, 46); mg.addColorStop(0, `rgba(241,234,219,${(0.1 + 0.28 * lit).toFixed(3)})`); mg.addColorStop(1, "rgba(241,234,219,0)"); g.fillStyle = mg; g.fillRect(mx - 50, my - 50, 100, 100);
+        if (lit > 0.03) { g.save(); g.beginPath(); g.arc(mx, my, 7, 0, Math.PI * 2); g.clip(); g.fillStyle = "#efe6d2"; g.fill(); const off = 14 * (ph < 0.5 ? ph : 1 - ph) * 2 * (ph < 0.5 ? -1 : 1); g.beginPath(); g.arc(mx + off, my, 7.2, 0, Math.PI * 2); g.fillStyle = rgb(SC.c[1]); g.globalAlpha = 0.93; g.fill(); g.restore(); } }
+      const hc = SC.c[2], glow = g.createLinearGradient(0, hz - 40, 0, hz); glow.addColorStop(0, `rgba(${hc.join(",")},0)`); glow.addColorStop(1, `rgba(${hc.join(",")},.28)`); g.fillStyle = glow; g.fillRect(0, hz - 40, W, 40); }
     // suolo
     if (pathPoly([[-18000, -18000], [18000, -18000], [18000, 18000], [-18000, 18000]])) { const gr = g.createLinearGradient(0, Math.max(0, hz), 0, H); gr.addColorStop(0, "#16222e"); gr.addColorStop(1, "#0a0f15"); g.fillStyle = gr; g.fill(); }
     g.beginPath(); const gs = cam.s > 0.6 ? 100 : 200, gx0 = Math.round(cam.tx / gs) * gs, gy0 = Math.round(cam.ty / gs) * gs, n = 16;
@@ -910,11 +1120,16 @@ const Map3D = (() => {
     for (const it of list) { const cs = it.cs; g.beginPath(); for (let i = 0; i < cs.length; i++) { const s = pc(cs[i]); i ? g.lineTo(s[0], s[1]) : g.moveTo(s[0], s[1]); } g.closePath(); g.fillStyle = it.f.col; g.fill(); if (it.f.kind[0] === "l") { g.strokeStyle = it.f.kind === "lr" ? "rgba(240,212,138,.5)" : "rgba(0,0,0,.3)"; g.lineWidth = .7; g.stroke(); } }
     g.beginPath(); for (let k = 0; k < petr.length; k++) { const lv = petr[k].map(p => proj(...p)); if (lv.some(v => !v)) continue; const nx = k < petr.length - 1 ? petr[k + 1].map(p => proj(...p)) : null; for (let i = 0; i < 4; i++) { g.moveTo(lv[i][0], lv[i][1]); g.lineTo(lv[(i + 1) % 4][0], lv[(i + 1) % 4][1]); if (nx && nx.every(Boolean)) { g.moveTo(lv[i][0], lv[i][1]); g.lineTo(nx[i][0], nx[i][1]); g.moveTo(lv[i][0], lv[i][1]); g.lineTo(nx[(i + 1) % 4][0], nx[(i + 1) % 4][1]); } } } g.strokeStyle = "rgba(240,212,138,.85)"; g.lineWidth = 1; g.stroke();
     // nebbia verso l'orizzonte
-    if (hz > -H) { const fog = g.createLinearGradient(0, hz, 0, hz + H * 0.22); fog.addColorStop(0, "rgba(34,64,95,.92)"); fog.addColorStop(1, "rgba(34,64,95,0)"); g.fillStyle = fog; g.fillRect(0, Math.max(0, hz), W, H * 0.22); }
+    if (hz > -H) { const fc = mix([34, 64, 95], SC.c[2], 0.35 * (1 - night)).join(","), fog = g.createLinearGradient(0, hz, 0, hz + H * 0.22); fog.addColorStop(0, `rgba(${fc},.92)`); fog.addColorStop(1, `rgba(${fc},0)`); g.fillStyle = fog; g.fillRect(0, Math.max(0, hz), W, H * 0.22); }
     // nomi
     g.textAlign = "center"; g.textBaseline = "middle";
-    for (const d of dlab) { const s = proj(d.x, d.y, d.z); if (!s || s[1] < hz + 14 || s[1] > H - 30) continue; const fs = clamp(F / s[2] * 52, 12, 17); g.font = `600 ${fs}px "Barlow Condensed",sans-serif`; g.lineWidth = 3; g.strokeStyle = "rgba(8,13,19,.85)"; g.strokeText(d.t, s[0], s[1]); g.fillStyle = "rgba(241,234,219,.78)"; g.fillText(d.t, s[0], s[1]); }
+    for (const d of dlab) { const s = proj(d.x, d.y, d.z); if (!s || s[1] < hz + 14 || s[1] > H - 30 || keep.some(b => s[0] > b[0] - 30 && s[0] < b[2] + 30 && s[1] > b[1] - 10 && s[1] < b[3] + 10)) continue; const fs = clamp(F / s[2] * 52, 12, 17); g.font = `600 ${fs}px "Barlow Condensed",sans-serif`; g.lineWidth = 3; g.strokeStyle = "rgba(8,13,19,.85)"; g.strokeText(d.t, s[0], s[1]); g.fillStyle = "rgba(241,234,219,.78)"; g.fillText(d.t, s[0], s[1]); }
     { const s = proj(wx(14.4098), wy(50.0808), 0); if (s && s[1] > hz + 10) { g.font = `italic 600 ${clamp(F / s[2] * 48, 12, 17)}px "Barlow Condensed",sans-serif`; g.fillStyle = "rgba(170,210,245,.85)"; g.fillText("Vltava", s[0], s[1]); } }
+    // il mio giro: percorso in linea d'aria tra le tappe, nell'ordine consigliato
+    if (tour.length) { const pts = (user ? [{la: user.la, lo: user.lo}] : []).concat(tour); g.lineCap = "round"; g.lineJoin = "round";
+      for (let i = 0; i < pts.length - 1; i++) { const a = pts[i], b = pts[i + 1], ax = wx(a.lo), ay = wy(a.la), bx = wx(b.lo), by = wy(b.la), sg = seg([ax, ay, terrain(ax, ay) + 3], [bx, by, terrain(bx, by) + 3]); if (!sg) continue;
+        g.beginPath(); g.moveTo(sg[0][0], sg[0][1]); g.lineTo(sg[1][0], sg[1][1]); g.setLineDash([]); g.strokeStyle = "rgba(11,16,22,.75)"; g.lineWidth = 6; g.stroke(); g.setLineDash([8, 7]); g.strokeStyle = i === 0 && user ? "rgba(240,212,138,.55)" : "#f0d48a"; g.lineWidth = 2.6; g.stroke(); }
+      g.setLineDash([]); }
     // segnaposti
     picks = []; const lab = [];
     const vis = pins.map(p => { const x = wx(p.lo), y = wy(p.la), s = proj(x, y, terrain(x, y)); return {p, s}; }).filter(o => o.s && o.s[0] > -30 && o.s[0] < W + 30 && o.s[1] > hz + 4 && o.s[1] < H + 30).sort((a, b) => b.s[2] - a.s[2]);
@@ -929,13 +1144,26 @@ const Map3D = (() => {
       } else { const r = 4.2 * k, hy = s[1] - 9 * k; g.beginPath(); g.moveTo(s[0], s[1]); g.lineTo(s[0], hy); g.strokeStyle = p.col + "aa"; g.lineWidth = 1.3; g.stroke(); g.beginPath(); g.arc(s[0], hy, r, 0, Math.PI * 2); g.fillStyle = p.col; g.fill(); g.lineWidth = 1.2; g.strokeStyle = "#0b1016"; g.stroke(); picks.push({id: p.id, x: s[0], y: hy, r: r + 11}); }
     }
     if (emph) for (const z of zones) { const pt = z.pts[0], x = wx(pt[1]), y = wy(pt[0]), s = proj(x, y, terrain(x, y)); if (!s || s[1] < hz) continue; g.beginPath(); g.moveTo(s[0], s[1] - 15); g.lineTo(s[0] + 9, s[1] + 2); g.lineTo(s[0] - 9, s[1] + 2); g.closePath(); g.fillStyle = "#e2553b"; g.fill(); g.strokeStyle = "#0b1016"; g.lineWidth = 1.2; g.stroke(); g.fillStyle = "#fff"; g.font = "700 11px Barlow,sans-serif"; g.fillText("!", s[0], s[1] - 5); picks.push({id: z.id, x: s[0], y: s[1] - 6, r: 20}); }
+    g.textAlign = "center"; g.textBaseline = "middle";
+    tour.forEach((t, i) => { const x = wx(t.lo), y = wy(t.la), s = proj(x, y, terrain(x, y)); if (!s || s[1] < hz) return; g.beginPath(); g.moveTo(s[0], s[1] - 11); g.lineTo(s[0], s[1]); g.strokeStyle = "#f0d48a"; g.lineWidth = 2; g.stroke();
+      g.beginPath(); g.arc(s[0], s[1] - 22, 11, 0, Math.PI * 2); g.fillStyle = "#f0d48a"; g.fill(); g.lineWidth = 2; g.strokeStyle = "#0b1016"; g.stroke(); g.fillStyle = "#16110a"; g.font = "700 13px Barlow,sans-serif"; g.fillText(String(i + 1), s[0], s[1] - 21.5); picks.push({id: t.id, x: s[0], y: s[1] - 22, r: 18}); });
+    if (meet) { const x = wx(meet.lo), y = wy(meet.la), s = proj(x, y, terrain(x, y)); if (s && s[1] > hz) { const k = clamp(D / s[2], 0.7, 1.3); g.beginPath(); g.ellipse(s[0], s[1], 8 * k, 3.2 * k, 0, 0, Math.PI * 2); g.fillStyle = "rgba(60,127,196,.45)"; g.fill();
+      g.beginPath(); g.moveTo(s[0], s[1]); g.lineTo(s[0], s[1] - 42 * k); g.strokeStyle = "#f1eadb"; g.lineWidth = 2.2; g.stroke(); g.beginPath(); g.moveTo(s[0], s[1] - 42 * k); g.lineTo(s[0] + 21 * k, s[1] - 35 * k); g.lineTo(s[0], s[1] - 28 * k); g.closePath(); g.fillStyle = "#3c7fc4"; g.fill(); g.strokeStyle = "#f1eadb"; g.lineWidth = 1.3; g.stroke();
+      picks.push({id: "meet", x: s[0] + 6, y: s[1] - 34 * k, r: 22}); lab.push({x: s[0], y: s[1] - 46 * k, t: "Punto di ritrovo", sub: "", col: "#3c7fc4", id: "meet", pr: 0.5}); } }
     let ulab = null; if (user) { const x = wx(user.lo), y = wy(user.la), s = proj(x, y, terrain(x, y)); if (s && s[1] > hz) ulab = {x: s[0], y: s[1] + 14}; }
     placeLabels(lab, ulab);
     return hz;
   }
   /* ---------- sovrapposizione animata: la tua posizione ---------- */
+  function drawSel(t) {
+    if (!selPt) return; const x = wx(selPt.lo), y = wy(selPt.la), z = terrain(x, y), s = proj(x, y, z); if (!s) return;
+    if (user) { const ux = wx(user.lo), uy = wy(user.la), sg = seg([ux, uy, terrain(ux, uy) + 2], [x, y, z + 2]); if (sg) { g.lineCap = "round"; g.beginPath(); g.moveTo(sg[0][0], sg[0][1]); g.lineTo(sg[1][0], sg[1][1]); g.setLineDash([]); g.strokeStyle = "rgba(11,16,22,.7)"; g.lineWidth = 5; g.stroke();
+      g.setLineDash([2, 7]); g.lineDashOffset = RM ? 0 : -(t / 50) % 18; g.strokeStyle = "rgba(240,212,138,.95)"; g.lineWidth = 2.4; g.stroke(); g.setLineDash([]); g.lineDashOffset = 0; } }
+    for (let i = 0; i < 2; i++) { const ph = RM ? 0.5 : ((t / 1400) + i / 2) % 1; if (pathPoly(ring(x, y, (10 + ph * 70) / Math.max(0.5, cam.s * 3.2), 28, terrain))) { g.strokeStyle = `rgba(240,212,138,${((1 - ph) * 0.8).toFixed(3)})`; g.lineWidth = 2; g.stroke(); } }
+  }
   function drawUser(t) {
-    if (!user) return; g = ctx; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g = ctx; g.setTransform(dpr, 0, 0, dpr, 0, 0); drawSel(t);
+    if (!user) return;
     const x = wx(user.lo), y = wy(user.la), z = terrain(x, y), s = proj(x, y, z); if (!s) return;
     if (user.acc && user.acc < 400 && pathPoly(ring(x, y, user.acc, 30, terrain))) { g.fillStyle = "rgba(127,180,234,.08)"; g.fill(); }
     for (let i = 0; i < 3; i++) { const ph = RM ? (i + 1) / 4 : ((t / 1800) + i / 3) % 1; if (pathPoly(ring(x, y, (14 + ph * 120) / Math.max(0.5, cam.s * 3.2), 30, terrain))) { g.strokeStyle = `rgba(143,189,240,${(1 - ph) * 0.75})`; g.lineWidth = 1.8; g.stroke(); } }
@@ -946,15 +1174,15 @@ const Map3D = (() => {
   }
   function placeLabels(lab, ulab) {
     lab.sort((a, b) => a.pr - b.pr);
-    const all = []; const boxes = []; if (ulab) { const w = 66; boxes.push([ulab.x - w / 2, ulab.y, ulab.x + w / 2, ulab.y + 26]); all.push({x: ulab.x, y: ulab.y, me: 1}); }
+    const all = []; const boxes = keep.map(b => b.slice()); if (ulab) { const w = 66; boxes.push([ulab.x - w / 2, ulab.y, ulab.x + w / 2, ulab.y + 26]); all.push({x: ulab.x, y: ulab.y, me: 1}); }
     for (const L of lab) { const w = Math.min(214, 34 + (L.t.length + (L.sub ? L.sub.length + 1 : 0)) * 7.1), bx = [L.x - w / 2 - 4, L.y - 28, L.x + w / 2 + 4, L.y + 2]; if (all.length < 4 && !boxes.some(b => bx[0] < b[2] && bx[2] > b[0] && bx[1] < b[3] && bx[3] > b[1])) { boxes.push(bx); all.push(L); } }
     while (labelEls.length < all.length) { const el = document.createElement("button"); el.type = "button"; el.className = "ml"; el.addEventListener("click", () => { if (el.dataset.id && cb.pick) cb.pick(el.dataset.id); }); labelBox.appendChild(el); labelEls.push(el); }
     labelEls.forEach((el, i) => { const L = all[i]; if (!L || L.x < -20 || L.x > W + 20 || L.y < 0 || L.y > H + 20) { el.hidden = true; return; } el.hidden = false; const key = (L.me ? "me" : L.id) + "|" + (L.t || "") + "|" + (L.sub || ""); if (el.dataset.k !== key) { el.dataset.k = key; el.dataset.id = L.me ? "" : L.id; el.classList.toggle("me", !!L.me); el.innerHTML = L.me ? "Sei qui" : `<i style="background:${L.col}"></i>${esc(L.t)}${L.sub ? `<small>${esc(L.sub)}</small>` : ""}`; } el.classList.toggle("sel", !!L.sel); el.style.transform = L.me ? `translate(${Math.round(L.x)}px,${Math.round(L.y)}px) translate(-50%,0)` : `translate(${Math.round(L.x)}px,${Math.round(L.y)}px) translate(-50%,-100%)`; });
   }
 
   /* ---------- ciclo di disegno ---------- */
-  const ease = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-  function stepAnim(t) { const a = anim; if (!a.t0) a.t0 = t; const k = clamp((t - a.t0) / a.dur, 0, 1), e = ease(k); for (const key of ["tx", "ty", "s", "ph"]) cam[key] = a.from[key] + (a.to[key] - a.from[key]) * e; let dth = a.to.th - a.from.th; dth = Math.atan2(Math.sin(dth), Math.cos(dth)); cam.th = a.from.th + dth * e; if (k >= 1) anim = null; }
+  const ease = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, easeOut = k => 1 - Math.pow(1 - k, 3);
+  function stepAnim(t) { const a = anim; if (!a.t0) a.t0 = t; const k = clamp((t - a.t0) / a.dur, 0, 1), e = (a.e || ease)(k); for (const key of ["tx", "ty", "s", "ph"]) cam[key] = a.from[key] + (a.to[key] - a.from[key]) * e; let dth = a.to.th - a.from.th; dth = Math.atan2(Math.sin(dth), Math.cos(dth)); cam.th = a.from.th + dth * e; if (k >= 1) anim = null; }
   const ckey = () => [cam.tx.toFixed(1), cam.ty.toFixed(1), cam.s.toFixed(5), cam.th.toFixed(5), cam.ph.toFixed(5), W, H].join("|");
   function frame(t) {
     raf = 0; if (!visible || !W || !H) return;
@@ -964,23 +1192,26 @@ const Map3D = (() => {
     else if (needHigh && !moving) { renderScene(true); needHigh = false; }
     const pulse = !RM && performance.now() - lastAct < 30000;
     if (!moving && pulse && t - lastT < 40) { raf = requestAnimationFrame(frame); return; }
-    lastT = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(scene, 0, 0); setup(); drawUser(t);
+    lastT = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(shown, 0, 0, cv.width, cv.height); setup(); drawUser(t);
     if (moving || pulse || needHigh) raf = requestAnimationFrame(frame);
   }
   const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
   const wake = () => { lastAct = performance.now(); kick(); };
-  function go(to, dur) { const target = Object.assign({}, cam, to); target.s = clamp(target.s, 0.05, 1.6); if (RM || dur === 0) { Object.assign(cam, target); anim = null; } else anim = {from: Object.assign({}, cam), to: target, dur: dur || 900}; wake(); }
+  function go(to, dur, ez) { const target = Object.assign({}, cam, to); target.s = clamp(target.s, 0.05, 1.6); if (RM || dur === 0) { Object.assign(cam, target); anim = null; } else anim = {from: Object.assign({}, cam), to: target, dur: dur || 900, e: ez === "out" ? easeOut : ease}; wake(); }
 
   /* ---------- interazione ---------- */
-  const ptrs = new Map(); let prev = null, moved = false, downAt = 0, down0 = null;
+  const ptrs = new Map(), trail = []; let prev = null, moved = false, downAt = 0, down0 = null;
+  function fling(p) { const now = performance.now(), tr = trail.filter(q => now - q[0] < 120); trail.length = 0; if (RM || tr.length < 2) return; const a = tr[0], b = tr[tr.length - 1], dt = Math.max(16, b[0] - a[0]), vx = (b[1] - a[1]) / dt, vy = (b[2] - a[2]) / dt, v = Math.hypot(vx, vy); if (v < 0.3) return;
+    const k = Math.min(v, 3) / v * 280; setup(); const A = unproject(p.x, p.y), B = unproject(p.x + vx * k, p.y + vy * k); if (!A || !B) return;
+    go({tx: clamp(cam.tx + A[0] - B[0], -9000, 9000), ty: clamp(cam.ty + A[1] - B[1], -9000, 9000)}, 750, "out"); }
   function gstate() { const a = [...ptrs.values()]; if (a.length === 1) return {x: a[0].x, y: a[0].y, n: 1}; const [p, q] = a; return {x: (p.x + q.x) / 2, y: (p.y + q.y) / 2, d: Math.hypot(q.x - p.x, q.y - p.y), a: Math.atan2(q.y - p.y, q.x - p.x), n: 2}; }
   function panBy(x0, y0, x1, y1) { setup(); const a = unproject(x0, y0), b = unproject(x1, y1); if (!a || !b) return; cam.tx = clamp(cam.tx + a[0] - b[0], -9000, 9000); cam.ty = clamp(cam.ty + a[1] - b[1], -9000, 9000); }
   function zoomAt(f, x, y) { setup(); const a = unproject(x, y); cam.s = clamp(cam.s * f, 0.05, 1.6); setup(); const b = unproject(x, y); if (a && b) { cam.tx += a[0] - b[0]; cam.ty += a[1] - b[1]; } }
   function bind() {
     const xy = e => { const r = cv.getBoundingClientRect(); return {x: e.clientX - r.left, y: e.clientY - r.top}; };
-    cv.addEventListener("pointerdown", e => { try { cv.setPointerCapture(e.pointerId); } catch (er) {} ptrs.set(e.pointerId, xy(e)); prev = gstate(); moved = false; downAt = performance.now(); down0 = xy(e); anim = null; wake(); if (cb.move) cb.move(); });
-    cv.addEventListener("pointermove", e => { if (!ptrs.has(e.pointerId)) return; const p = xy(e); ptrs.set(e.pointerId, p); const gs = gstate(); if (!prev || prev.n !== gs.n) { prev = gs; return; } if (down0 && Math.hypot(p.x - down0.x, p.y - down0.y) > 7) moved = true; if (!moved) return; if (gs.n === 2) { zoomAt(gs.d / (prev.d || gs.d), gs.x, gs.y); cam.th -= gs.a - prev.a; } panBy(prev.x, prev.y, gs.x, gs.y); prev = gs; lastMove = performance.now(); wake(); });
-    const end = e => { if (!ptrs.has(e.pointerId)) return; const one = ptrs.size === 1; ptrs.delete(e.pointerId); prev = ptrs.size ? gstate() : null; lastMove = performance.now(); if (one && !moved && performance.now() - downAt < 500) tap(xy(e)); wake(); };
+    cv.addEventListener("pointerdown", e => { try { cv.setPointerCapture(e.pointerId); } catch (er) {} ptrs.set(e.pointerId, xy(e)); prev = gstate(); moved = false; downAt = performance.now(); down0 = xy(e); anim = null; trail.length = 0; wake(); if (cb.move) cb.move(); });
+    cv.addEventListener("pointermove", e => { if (!ptrs.has(e.pointerId)) return; const p = xy(e); ptrs.set(e.pointerId, p); const gs = gstate(); if (!prev || prev.n !== gs.n) { prev = gs; return; } if (down0 && Math.hypot(p.x - down0.x, p.y - down0.y) > 7) moved = true; if (!moved) return; if (gs.n === 2) { zoomAt(gs.d / (prev.d || gs.d), gs.x, gs.y); cam.th -= gs.a - prev.a; } panBy(prev.x, prev.y, gs.x, gs.y); prev = gs; if (gs.n === 1) { trail.push([performance.now(), gs.x, gs.y]); if (trail.length > 6) trail.shift(); } else trail.length = 0; lastMove = performance.now(); wake(); });
+    const end = e => { if (!ptrs.has(e.pointerId)) return; const one = ptrs.size === 1; ptrs.delete(e.pointerId); prev = ptrs.size ? gstate() : null; lastMove = performance.now(); if (one && !moved && performance.now() - downAt < 500) tap(xy(e)); else if (one && moved && e.type === "pointerup") fling(xy(e)); wake(); };
     cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
     cv.addEventListener("wheel", e => { e.preventDefault(); const p = xy(e); zoomAt(Math.exp(-e.deltaY * 0.0016), p.x, p.y); anim = null; lastMove = performance.now(); wake(); }, {passive: false});
     cv.addEventListener("dblclick", e => { const p = xy(e); zoomAt(1.7, p.x, p.y); wake(); });
@@ -988,7 +1219,8 @@ const Map3D = (() => {
       if (k === "ArrowUp") mv(0, step); else if (k === "ArrowDown") mv(0, -step); else if (k === "ArrowLeft") mv(-step, 0); else if (k === "ArrowRight") mv(step, 0); else if (k === "+" || k === "=") cam.s = clamp(cam.s * 1.25, .05, 1.6); else if (k === "-") cam.s = clamp(cam.s / 1.25, .05, 1.6); else if (k === "q" || k === "Q") cam.th -= .2; else if (k === "e" || k === "E") cam.th += .2; else if (k === "0") cam.th = 0; else used = false; if (used) { e.preventDefault(); wake(); } });
   }
   function tap(p) { let best = null, bd = 1e9; for (const k of picks) { const d = Math.hypot(k.x - p.x, k.y - p.y); if (d < k.r && d < bd) { bd = d; best = k; } } if (best && cb.pick) { cb.pick(best.id); return; } setup(); const gp = unproject(p.x, p.y); if (gp && cb.ground) { const ll = toLL(gp[0], gp[1]); cb.ground(ll[0], ll[1], p.x, p.y); } }
-  function resize() { if (!wrap) return; const r = wrap.getBoundingClientRect(); W = Math.round(r.width); H = Math.round(r.height); dpr = Math.min(2, window.devicePixelRatio || 1); for (const c of [cv, scene]) { c.width = Math.max(1, W * dpr); c.height = Math.max(1, H * dpr); } cv.style.width = W + "px"; cv.style.height = H + "px"; dirty = true; kick(); }
+  function resize() { if (!wrap) return; const r = wrap.getBoundingClientRect(); W = Math.round(r.width); H = Math.round(r.height); dpr = Math.min(2, window.devicePixelRatio || 1); for (const c of [cv, scene]) { c.width = Math.max(1, Math.round(W * dpr)); c.height = Math.max(1, Math.round(H * dpr)); } sceneLo.width = Math.max(1, Math.round(W * loK)); sceneLo.height = Math.max(1, Math.round(H * loK)); cv.style.width = W + "px"; cv.style.height = H + "px"; measureKeep(); dirty = true; kick(); }
+  function measureKeep() { if (!wrap) return; const r0 = wrap.getBoundingClientRect(); keep = [...wrap.querySelectorAll("[data-keep]")].filter(el => !el.hidden && el.offsetParent !== null).map(el => { const r = el.getBoundingClientRect(); return [r.left - r0.left, r.top - r0.top, r.right - r0.left, r.bottom - r0.top]; }); }
 
   return {
     init(canvas, wrapper, labels, callbacks, start) {
@@ -997,6 +1229,7 @@ const Map3D = (() => {
       new IntersectionObserver(en => { visible = en[0].isIntersecting; if (visible) kick(); }).observe(wrap);
       document.addEventListener("visibilitychange", () => { visible = !document.hidden; if (visible) kick(); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { dirty = true; kick(); });
+      if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", () => { dirty = true; kick(); });
       resize(); if (start) { cam.tx = wx(start.lo); cam.ty = wy(start.la); }
       const dest = Object.assign({}, cam, {s: clamp(Math.min(W || 360, (H || 360) * 1.25) / 1250, 0.2, 0.6)});
       cam.s = 0.07; cam.ph = 0.5; cam.th = -2.4; go(dest, 1800);
@@ -1004,14 +1237,19 @@ const Map3D = (() => {
     setPins(list) { pins = list; dirty = true; wake(); },
     setZones(list, e) { zones = list; emph = !!e; dirty = true; wake(); },
     setUser(u) { user = u; dirty = true; wake(); },
-    select(id) { sel = id; dirty = true; wake(); },
+    select(id, pt) { sel = id; selPt = pt || null; dirty = true; wake(); },
+    setTour(list) { tour = list || []; dirty = true; wake(); },
+    setMeet(pt) { meet = pt || null; dirty = true; wake(); },
+    setSky(on) { if (on !== undefined) skyOn = !!on; skyNow = Date.now(); dirty = true; kick(); }, // un solo fotogramma: niente animazione inutile
+    refreshKeep() { measureKeep(); dirty = true; wake(); },
+    sky: () => { const c = skyCols(); return {alt: Math.round(c.alt * 10) / 10, moon: Math.round(moonPh(Date.now()) * 100) / 100}; },
     flyTo(la, lo, s, extra) { go(Object.assign({tx: wx(lo), ty: wy(la), s: s || cam.s}, extra || {})); },
     fit(la, lo, pts) { const x0 = wx(lo), y0 = wy(la); let m = 300; for (const p of pts) m = Math.max(m, Math.hypot(wx(p.lo) - x0, wy(p.la) - y0)); m = Math.min(m, 4500); go({tx: x0, ty: y0, s: clamp(Math.min(W || 360, (H || 360) * 1.25) * 0.42 / m, 0.08, 0.9)}); },
     zoomBy(f) { go({s: cam.s * f}, 350); },
     rotateBy(a) { go({th: cam.th + a}, 450); },
     north() { go({th: 0}, 600); },
     toggle3d() { mode3d = !mode3d; go({ph: mode3d ? 1.12 : 0.0001}, 700); return mode3d; },
-    resize, wake, stats: () => ({blocks: blocks.length, trees: trees.length, faces: lmFaces.length}),
+    resize, wake, sunAlt, stats: () => ({blocks: blocks.length, trees: trees.length, faces: lmFaces.length}),
     bench(n, hi) { const t0 = performance.now(); for (let i = 0; i < n; i++) renderScene(hi !== false); dirty = true; kick(); return Math.round((performance.now() - t0) / n * 10) / 10; }
   };
 })();
@@ -1027,9 +1265,10 @@ const DEMO = {la: 50.08753, lo: 14.42132, name: "Piazza della Città Vecchia", c
 const MONTHS = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
 
 const S = {loc: Object.assign({}, DEMO), budget: 300, cat: "all", radius: 2000, onlyB: true, sort: "smart", rate: RATE0, tab: "esplora", sel: null, trapsOn: true,
-  wallet: {total: 3000, days: 4, items: []}, est: {days: 4, lunch: true, dinner: false, nights: 2}, tr: {rides: 4, days: 3}, chat: []};
+  wallet: {total: 3000, days: 4, items: []}, est: {days: 4, lunch: true, dinner: false, nights: 2}, tr: {rides: 4, days: 3}, chat: [],
+  maps: "auto", sky: true, favs: [], openNow: false, rateAuto: true, rateTs: 0, rateDate: "", rateSrc: "", wx: null, split: {tip: 0}, meet: null, instHide: 0};
 const DEF = JSON.stringify(S);
-function save() { try { localStorage.setItem(KEY, JSON.stringify({loc: S.loc.src === "gps" ? null : S.loc, budget: S.budget, cat: S.cat, radius: S.radius, onlyB: S.onlyB, sort: S.sort, rate: S.rate, trapsOn: S.trapsOn, wallet: S.wallet, est: S.est, tr: S.tr, chat: S.chat.slice(-30)})); } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify({loc: S.loc.src === "gps" ? null : S.loc, budget: S.budget, cat: S.cat, radius: S.radius, onlyB: S.onlyB, sort: S.sort, rate: S.rate, trapsOn: S.trapsOn, wallet: S.wallet, est: S.est, tr: S.tr, chat: S.chat.slice(-30), maps: S.maps, sky: S.sky, favs: S.favs, openNow: S.openNow, rateAuto: S.rateAuto, rateTs: S.rateTs, rateDate: S.rateDate, rateSrc: S.rateSrc, wx: S.wx, split: S.split, meet: S.meet, instHide: S.instHide})); } catch (e) {} }
 function load() { try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (!d) return; for (const k of Object.keys(d)) if (d[k] != null) S[k] = d[k]; } catch (e) {} }
 
 /* ---- utilità ---- */
@@ -1039,7 +1278,6 @@ const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ
 function hav(a, b, c, d) { const t = Math.PI / 180, x = Math.sin((c - a) * t / 2) ** 2 + Math.cos(a * t) * Math.cos(c * t) * Math.sin((d - b) * t / 2) ** 2; return 12742000 * Math.asin(Math.sqrt(x)); }
 const walkMin = m => Math.max(1, Math.round(m * 1.3 / 78));
 const distTxt = m => m < 1000 ? Math.round(m / 10) * 10 + " m" : NE.format(m / 1000).replace(/0$/, "") + " km";
-const dir = (la, lo) => `https://www.google.com/maps/dir/?api=1&destination=${la},${lo}&travelmode=walking`;
 const gsearch = (q, la, lo) => `https://www.google.com/maps/search/${encodeURIComponent(q)}/@${la},${lo},16z`;
 const ico = (id, cls) => `<svg class="ic ${cls || ""}" aria-hidden="true"><use href="#${id}"/></svg>`;
 const byId = id => P.find(p => p.id === id);
@@ -1060,34 +1298,39 @@ function eurTxt(p, cat) { const [a, b] = cost(p, cat == null ? S.cat : cat); if 
 
 /* ---- risultati ---- */
 function compute(loc, B, cat) {
-  const R = S.radius;
-  let list = P.filter(p => cat === "all" ? p.c[0] !== "casino" : p.c.includes(cat)).map(p => { const d = hav(loc.la, loc.lo, p.la, p.lo), st = status(p), c = cost(p, cat); return {p, d, st, c, inB: c[0] <= B, full: c[1] <= B}; });
+  const R = S.radius, now = pragueNow(), fav = cat === "fav";
+  const list = P.filter(p => fav ? S.favs.includes(p.id) : cat === "all" ? p.c[0] !== "casino" : p.c.includes(cat)).map(p => {
+    const k = fav ? p.c[0] : cat, d = hav(loc.la, loc.lo, p.la, p.lo), st = status(p), c = cost(p, k), o = st && (st.closed || st.soon) ? null : openState(p.id, now);
+    return {p, d, st, c, cat: k, inB: c[0] <= B, full: c[1] <= B, o, os: ohTxt(o, p.id)}; });
+  if (fav) return {shown: list, expanded: false, over: 0, shut: 0};
   let pool = list.filter(x => x.d <= R), expanded = false;
   if (pool.filter(x => x.inB && !(x.st && x.st.closed)).length < 3 && R < 1e7) { pool = list; expanded = true; }
   const over = pool.filter(x => !x.inB).length;
-  let shown = S.onlyB ? pool.filter(x => x.inB) : pool.slice();
-  for (const x of shown) x.score = x.d / 1000 + (x.c[0] / Math.max(B, 120)) * 0.7 - (x.p.v - 3) * 0.32 + (x.st && x.st.closed ? 8 : 0) + (x.inB ? 0 : 3) + (x.st && x.st.soon ? 0.4 : 0);
+  let shown = S.onlyB ? pool.filter(x => x.inB) : pool.slice(), shut = 0;
+  if (S.openNow) { const keep = shown.filter(x => !(x.st && (x.st.closed || x.st.soon)) && !(x.o && !x.o.open)); shut = shown.length - keep.length; shown = keep; }
+  for (const x of shown) x.score = x.d / 1000 + (x.c[0] / Math.max(B, 120)) * 0.7 - (x.p.v - 3) * 0.32 + (x.st && x.st.closed ? 8 : 0) + (x.inB ? 0 : 3) + (x.st && x.st.soon ? 0.4 : 0) + (x.o && !x.o.open ? 1.2 : 0);
   if (S.sort === "near") shown.sort((a, b) => a.d - b.d); else if (S.sort === "cheap") shown.sort((a, b) => (a.c[0] - b.c[0]) || (a.d - b.d)); else shown.sort((a, b) => a.score - b.score);
-  return {shown, expanded, over};
+  return {shown, expanded, over, shut};
 }
 function trapsNear(loc, within) { return TRAPS.map(t => { const d = Math.min(...t.pts.map(p => Math.max(0, hav(loc.la, loc.lo, p[0], p[1]) - p[2]))); return {t, d}; }).filter(x => x.d <= within).sort((a, b) => a.d - b.d); }
 
 /* ---- schede ---- */
 function walkBadge(d) { const far = d > 2500; return `<span class="b">${ico("i-walk")}${walkMin(d)} min · ${distTxt(d)}${far ? " · oppure mezzi 36 Kč" : ""}</span>`; }
 function card(x, B) {
-  const p = x.p, c = CAT[p.c[0]], st = x.st;
+  const p = x.p, c = CAT[p.c[0]], st = x.st, k = x.cat;
   const cc = x.c, bud = p.c[0] === "casino" ? `<span class="b gold">Tetto consigliato ${kc(Math.min(300, Math.max(B, 100)))}</span>` : x.full ? `<span class="b ok">${ico("i-check")}Nel budget</span>` : x.inB ? `<span class="b gold">Al limite del budget</span>` : `<span class="b bad">Fuori budget</span>`;
   const stb = st ? `<span class="b ${st.closed ? "bad" : st.soon ? "gold" : "ok"}">${ico("i-clock")}${esc(st.t)}</span>` : "";
-  return `<article class="res${S.sel === p.id ? " sel" : ""}${st && st.closed ? " dim" : ""}" id="r-${p.id}" data-id="${p.id}">
-  <div class="res-top"><span class="cat-ico" style="--c:${c.col}">${ico(c.i)}</span>
+  return `<article class="res${S.sel === p.id ? " sel" : ""}${st && st.closed ? " dim" : ""}" id="r-${p.id}" data-id="${p.id}" style="--c:${c.col}">
+  <svg class="art" aria-hidden="true"><use href="#${artFor(p)}"/></svg>
+  <div class="res-top"><span class="cat-ico">${ico(c.i)}</span>
    <div class="res-h"><h3>${esc(p.n)}</h3><p class="meta">${esc(p.t)}${p.a ? " · " + esc(p.a) : ""}</p></div>
-   <div class="price"><b>${priceTxt(p)}</b>${eurTxt(p) ? `<small>≈ ${eurTxt(p)}</small>` : ""}</div></div>
-  <div class="badges">${walkBadge(x.d)}${bud}${stb}${p.w ? `<span class="b soft">${esc(p.w)}</span>` : ""}${p.ver ? `<span class="b soft">verificato nov. 2026</span>` : ""}</div>
+   <div class="price"><b>${priceTxt(p, k)}</b>${eurTxt(p, k) ? `<small>≈ ${eurTxt(p, k)}</small>` : ""}</div></div>
+  <div class="badges">${walkBadge(x.d)}${bud}${stb}${st && (st.closed || st.soon) ? "" : openBadge(p, x.os)}${p.w ? `<span class="b soft">${esc(p.w)}</span>` : ""}${p.ver ? `<span class="b soft">verificato nov. 2026</span>` : ""}</div>
   <p class="desc">${esc(p.d)}</p>
   ${p.tip ? `<p class="tip"><b>Per spendere meno</b> ${esc(p.tip)}</p>` : ""}
   ${p.warn ? `<p class="warn"><b>Attenzione</b> ${esc(p.warn)}</p>` : ""}
   ${p.h ? `<p class="hours">${ico("i-clock")}${esc(p.h)} <span>(orari indicativi)</span></p>` : ""}
-  <div class="acts"><a class="btn sm" href="${dir(p.la, p.lo)}" target="_blank" rel="noopener">${ico("i-route")}Portami lì</a><button class="btn sm ghost" data-act="map" data-id="${p.id}">${ico("i-map")}Sulla mappa</button>${cc[1] > 0 ? `<button class="btn sm ghost" data-act="spend" data-id="${p.id}">${ico("i-plus")}Segna spesa</button>` : ""}</div>
+  <div class="acts">${navBtns(p.la, p.lo, p.n)}<button class="btn sm ghost" type="button" data-act="map" data-id="${p.id}">${ico("i-map")}Mappa</button>${cc[1] > 0 ? `<button class="btn sm ghost" type="button" data-act="spend" data-id="${p.id}">${ico("i-plus")}Segna spesa</button>` : ""}${favBtn(p.id)}</div>
  </article>`;
 }
 function trapCard(x) {
@@ -1119,10 +1362,23 @@ function renderExplore(fly) {
   $$("#budChips .chip").forEach(b => b.classList.toggle("on", +b.dataset.b === B));
   $$("#cats .cat").forEach(b => { const on = b.dataset.c === S.cat; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
   $$("#radius button").forEach(b => b.classList.toggle("on", +b.dataset.r === S.radius));
-  $("#onlyB").checked = S.onlyB; $("#sort").value = S.sort;
-  const box = $("#results"), sum = $("#summary"), ban = $("#banner");
-  let pins = [];
-  if (S.cat === "avoid") {
+  $("#onlyB").checked = S.onlyB; $("#sort").value = S.sort; $("#openNow").checked = S.openNow;
+  const box = $("#results"), sum = $("#summary"), ban = $("#banner"), tb = $("#tour");
+  let pins = [], tour = [];
+  tb.innerHTML = "";
+  if (S.cat === "fav") {
+    const r = compute(L, B, "fav"), T = planTour(L, r.shown), n = r.shown.length;
+    ban.innerHTML = "";
+    if (!n) { sum.textContent = "Nessun preferito ancora"; box.innerHTML = `<div class="empty card"><h3>${ico("i-heart")}I tuoi preferiti</h3><p>Tocca il cuore su un posto per salvarlo qui. Con due o più preferiti ti preparo il giro a piedi più corto, da seguire con Mappe o Google Maps.</p><button class="btn" type="button" data-act="cat" data-c="see">${ico("i-see")}Cerca cose da vedere</button></div>`; }
+    else {
+      sum.innerHTML = `<b>${n}</b> ${n === 1 ? "preferito" : "preferiti"}${n > 1 ? ` · giro di circa <b>${distTxt(T.dist * 1.3)}</b> a piedi` : ""}${n > 20 ? " · nel giro entrano i primi 20" : ""}`;
+      if (T.stops.length > 1) tb.innerHTML = tourHTML(T);
+      const inT = new Set(T.stops.map(q => q.x.p.id));
+      box.innerHTML = T.stops.map(q => card(q.x, B)).join("") + r.shown.filter(x => !inT.has(x.p.id)).map(x => card(x, B)).join("");
+    }
+    if (T.stops.length > 1) tour = T.stops.map(q => ({id: q.x.p.id, la: q.x.p.la, lo: q.x.p.lo}));
+    else pins = r.shown.map(x => ({id: x.p.id, la: x.p.la, lo: x.p.lo, col: CAT[x.p.c[0]].col, top: true, label: x.p.n, sub: ""}));
+  } else if (S.cat === "avoid") {
     const near = trapsNear(L, 1e7);
     sum.innerHTML = `<b>${near.filter(x => x.d < 600).length}</b> trappole entro 600 m da te${isNight() ? " · è sera: attenzione alle zone «di notte»" : ""}`;
     ban.innerHTML = "";
@@ -1131,30 +1387,36 @@ function renderExplore(fly) {
     const r = compute(L, B, S.cat), sh = r.shown, free = sh.filter(x => x.c[1] === 0).length;
     const inB = sh.filter(x => x.inB && !(x.st && x.st.closed));
     const lo = inB.length ? Math.min(...inB.map(x => x.c[0])) : 0, hi = inB.length ? Math.max(...inB.slice(0, 6).map(x => Math.min(x.c[1], Math.max(B, x.c[0])))) : 0;
-    sum.innerHTML = `<b>${sh.length}</b> posti${free ? ` · <b>${free}</b> gratis` : ""}${inB.length ? ` · spesa tipica ${lo === hi ? kc(lo) : NF.format(lo) + "–" + kc(hi)}` : ""}${r.over && S.onlyB ? ` · ${r.over} fuori budget nascosti` : ""}${r.expanded ? ` · pochi posti nel raggio scelto: mostro tutta Praga` : ""}`;
+    sum.innerHTML = `<b>${sh.length}</b> posti${free ? ` · <b>${free}</b> gratis` : ""}${inB.length ? ` · spesa tipica ${lo === hi ? kc(lo) : NF.format(lo) + "–" + kc(hi)}` : ""}${r.over && S.onlyB ? ` · ${r.over} fuori budget nascosti` : ""}${r.shut ? ` · ${r.shut} chiusi adesso nascosti` : ""}${r.expanded ? ` · pochi posti nel raggio scelto: mostro tutta Praga` : ""}`;
     const tn = trapsNear(L, 350);
     ban.innerHTML = tn.length ? `<button class="banner" data-act="traps">${ico("i-avoid")}<span><b>${tn.length} ${tn.length === 1 ? "trappola" : "trappole"} vicino a te:</b> ${esc(tn.slice(0, 2).map(x => x.t.n).join(" · "))}</span><em>Vedi</em></button>` : "";
-    box.innerHTML = (S.cat === "casino" ? casinoHead(B) : "") + (sh.length ? sh.map(x => card(x, B)).join("") : `<div class="empty card"><h3>Niente nel budget qui intorno</h3><p>Prova ad alzare la spesa massima, togli «Solo nel budget» o scegli «Vedere»: molte cose belle a Praga sono gratis.</p><button class="btn" data-act="cat" data-c="see">${ico("i-see")}Cose gratis da vedere</button></div>`);
+    box.innerHTML = (S.cat === "casino" ? casinoHead(B) : "") + (sh.length ? sh.map(x => card(x, B)).join("") : `<div class="empty card"><h3>${S.openNow && r.shut ? "Adesso qui intorno è tutto chiuso" : "Niente nel budget qui intorno"}</h3><p>${S.openNow && r.shut ? "Togli «Aperti adesso» per vedere anche i posti chiusi, con l’orario di apertura." : "Prova ad alzare la spesa massima, togli «Solo nel budget» o scegli «Vedere»: molte cose belle a Praga sono gratis."}</p><button class="btn" type="button" data-act="cat" data-c="see">${ico("i-see")}Cose gratis da vedere</button></div>`);
     pins = sh.slice(0, 40).map((x, i) => ({id: x.p.id, la: x.p.la, lo: x.p.lo, col: CAT[x.p.c[0]].col, top: i < 3, label: x.p.n, sub: x.c[1] === 0 ? "Gratis" : priceTxt(x.p)}));
   }
-  const q = {all: "attrazioni", eat: "ristorante economico", shop: "supermercato", see: "attrazioni", fun: "bar", casino: "casino", avoid: "attrazioni"}[S.cat];
+  const q = {all: "attrazioni", eat: "ristorante economico", shop: "supermercato", see: "attrazioni", fun: "bar", casino: "casino", avoid: "attrazioni", fav: "attrazioni"}[S.cat] || "attrazioni";
   $("#gmore").href = gsearch(q, L.la, L.lo);
-  Map3D.setPins(pins);
+  Map3D.setPins(pins); Map3D.setTour(tour);
   Map3D.setZones(S.trapsOn || S.cat === "avoid" ? TRAPS : [], S.cat === "avoid");
   Map3D.setUser({la: L.la, lo: L.lo, acc: L.acc});
-  $("#trapTog").classList.toggle("on", S.trapsOn);
-  if (fly) Map3D.fit(L.la, L.lo, pins.slice(0, 5));
+  $("#trapTog").classList.toggle("on", S.trapsOn); $("#trapTog").setAttribute("aria-pressed", S.trapsOn);
+  if (fly) {
+    Map3D.fit(L.la, L.lo, tour.length ? tour : pins.slice(0, 5));
+    if (!RM) { box.classList.remove("enter"); void box.offsetWidth; box.classList.add("enter"); clearTimeout(renderExplore.t); renderExplore.t = setTimeout(() => box.classList.remove("enter"), 900); }
+  }
 }
 function setLoc(loc, opt) {
   S.loc = Object.assign({}, loc); if (loc.src !== "gps") stopWatch();
   renderSign(); save(); if (!opt || !opt.quiet) { renderExplore(true); toast("Posizione: " + (loc.name || loc.cz || "aggiornata")); }
 }
-function selectItem(id, fly) {
-  S.sel = id; Map3D.select(id);
+function selectItem(id, fly, fromMap) {
+  const p = byId(id), t = TRAPS.find(x => x.id === id), beh = RM ? "auto" : "smooth";
+  S.sel = id; Map3D.select(id, p ? {la: p.la, lo: p.lo} : null);
   $$(".res.sel").forEach(e => e.classList.remove("sel"));
-  const el = document.getElementById("r-" + id); if (el) { el.classList.add("sel"); if (!fly) el.scrollIntoView({behavior: RM ? "auto" : "smooth", block: "nearest"}); }
-  const p = byId(id); if (p && fly) { Map3D.flyTo(p.la, p.lo, 0.55); if (matchMedia("(max-width:979px)").matches) window.scrollTo({top: 0, behavior: RM ? "auto" : "smooth"}); }
-  const t = TRAPS.find(x => x.id === id); if (t) { if (S.cat !== "avoid") { S.cat = "avoid"; renderExplore(); } const e2 = document.getElementById("r-" + id); if (e2) e2.scrollIntoView({behavior: RM ? "auto" : "smooth", block: "nearest"}); }
+  const el = document.getElementById("r-" + id); if (el) el.classList.add("sel");
+  if (fromMap) { showMapCard(id); if (isDesk() && el) el.scrollIntoView({behavior: beh, block: "nearest"}); return; }
+  if (t) { hideMapCard(); if (S.cat !== "avoid") { S.cat = "avoid"; save(); renderExplore(false); } const e2 = document.getElementById("r-" + id); if (e2) { e2.classList.add("sel"); e2.scrollIntoView({behavior: beh, block: "center"}); } return; }
+  if (el && !fly) el.scrollIntoView({behavior: beh, block: isDesk() ? "nearest" : "center"});
+  if (p && fly) { Map3D.flyTo(p.la, p.lo, 0.55); showMapCard(id); if (!isDesk()) window.scrollTo({top: 0, behavior: beh}); }
 }
 
 /* ---- ricerca del luogo ---- */
@@ -1231,7 +1493,7 @@ function parseBudget(q) {
   if (u) return {kc: Math.round(n)};
   return n <= 60 ? {kc: Math.round(n * S.rate), eur: n, guess: 1} : {kc: Math.round(n)};
 }
-function pickHTML(x, C) { const p = x.p; return `<div class="a-pick"><div><b>${esc(p.n)}</b><span>${walkMin(x.d)} min a piedi · ${priceTxt(p, C)}</span></div><p>${esc(p.tip || p.d)}</p><div class="acts"><a class="btn sm" href="${dir(p.la, p.lo)}" target="_blank" rel="noopener">${ico("i-route")}Portami lì</a><button class="btn sm ghost" data-act="show" data-id="${p.id}">${ico("i-map")}Mostra</button></div></div>`; }
+function pickHTML(x, C) { const p = x.p; return `<div class="a-pick"><div><b>${esc(p.n)}</b><span>${walkMin(x.d)} min a piedi · ${priceTxt(p, C)}</span></div><p>${esc(p.tip || p.d)}</p><div class="acts">${navBtns(p.la, p.lo, p.n)}<button class="btn sm ghost" type="button" data-act="show" data-id="${p.id}">${ico("i-map")}Mostra</button></div></div>`; }
 function answer(q, dry) {
   const t = norm(q), bud = parseBudget(q), pl = placeIn(q);
   const sc = {}; for (const k in KW) sc[k] = hits(t, KW[k]); const tp = {}; for (const k in TOPIC) tp[k] = hits(t, TOPIC[k]);
@@ -1262,7 +1524,7 @@ function answer(q, dry) {
   if (tn) h += `<p class="a-warn"><b>Qui vicino evita:</b> ${esc(tn.t.n)}. ${esc(tn.t.x)}</p>`;
   return h;
 }
-function renderChat() { const box = $("#chat"); box.innerHTML = S.chat.map(m => m.me ? `<div class="msg me"><p>${esc(m.t)}</p></div>` : `<div class="msg bot">${m.ex ? `<small class="ex">Esempio</small>` : ""}${m.h}</div>`).join(""); box.scrollTop = box.scrollHeight; }
+function renderChat() { const box = $("#chat"); box.innerHTML = S.chat.map(m => m.me ? `<div class="msg me"><p>${esc(m.t)}</p></div>` : `<div class="msg bot">${m.ex ? `<small class="ex">Esempio</small>` : ""}${fixLinks(m.h)}</div>`).join(""); refreshNav(box); box.scrollTop = box.scrollHeight; }
 function ask(q) { q = q.trim(); if (!q) return; S.chat.push({me: 1, t: q}); S.chat.push({h: answer(q)}); S.chat = S.chat.slice(-30); save(); renderChat(); const last = $$("#chat .msg"); if (last.length > 1) last[last.length - 2].scrollIntoView({behavior: RM ? "auto" : "smooth", block: "start"}); }
 
 /* ---- Portafoglio ---- */
@@ -1330,20 +1592,399 @@ function renderTransport() {
 /* ---- SOS ---- */
 function renderSOS() {
   $("#sosn").innerHTML = SOSN.map(s => `<a class="sosn" href="tel:${s[0]}"><b>${s[0]}</b><span>${esc(s[1])}</span></a>`).join("");
-  $("#help").innerHTML = HELP.map(h => `<article class="res"><div class="res-h"><h3>${esc(h.n)}</h3><p class="meta">${esc(h.a)}</p></div><p class="desc">${h.tel.map(t => `<a href="tel:${t[0]}">${esc(t[1])}</a>${t[2] ? " <small>(" + esc(t[2]) + ")</small>" : ""}`).join("<br>")}</p><p class="hours">${ico("i-clock")}${esc(h.h)}</p><div class="acts"><a class="btn sm" href="${dir(h.la, h.lo)}" target="_blank" rel="noopener">${ico("i-route")}Portami lì</a></div></article>`).join("");
+  $("#help").innerHTML = HELP.map((h, i) => `<article class="res"><div class="res-h"><h3>${esc(h.n)}</h3><p class="meta">${esc(h.a)}</p></div><p class="desc">${h.tel.map(t => `<a href="tel:${t[0]}">${esc(t[1])}</a>${t[2] ? " <small>(" + esc(t[2]) + ")</small>" : ""}`).join("<br>")}</p><p class="hours">${ico("i-clock")}${esc(h.h)}</p>${OH["help" + i] ? `<div class="badges">${openBadge({id: "help" + i}, ohTxt(openState("help" + i), "help" + i))}</div>` : ""}<div class="acts">${navBtns(h.la, h.lo, h.n)}</div></article>`).join("");
   $("#gold").innerHTML = GOLD.map(g => `<li><b>${esc(g[0])}</b><span>${esc(g[1])}</span></li>`).join("");
-  $("#phr").innerHTML = PHRASES.map(f => `<li><b>${esc(f[0])}</b><span>${esc(f[1])}</span><em>${esc(f[2])}</em></li>`).join("");
+  $("#phr").innerHTML = PHRASES.map(f => `<li><b>${esc(f[0])}</b><span>${esc(f[1])}</span><em>${esc(f[2])}</em>${TTS ? `<button class="icon-btn sm say" type="button" data-act="say" data-t="${esc(f[0])}" aria-label="Ascolta «${esc(f[0])}»">${ico("i-volume")}</button>` : ""}</li>`).join("");
   $("#gifts").innerHTML = GIFTS.map(g => `<li><span><b>${esc(g[0])}</b><small>${esc(g[3])}</small></span><em>${NF.format(g[1])}–${kc(g[2])}</em></li>`).join("");
 }
+
+/* =====================================================================
+   Potenziamenti: «Portami lì» diretto, orari, preferiti e giro, meteo,
+   tasso BCE, voce ceca, punto di ritrovo, conto diviso, app installabile
+   ===================================================================== */
+const HOME_URL = "https://aneddaalfredo-boop.github.io/Primo-Agente-1/praha/";
+const UA = navigator.userAgent || "";
+const IOS = /iPad|iPhone|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+const ANDROID = /Android/i.test(UA);
+const MOBILE = IOS || ANDROID || matchMedia("(pointer: coarse)").matches;
+const FRAMED = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+const WEB = /^https?:$/.test(location.protocol);
+const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isDesk = () => matchMedia("(min-width:980px)").matches;
+const setTxt = (el, t) => { if (el && el.textContent !== t) el.textContent = t; };
+const DOWS = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"];
+const hhmm = (h, m) => h + ":" + String(m).padStart(2, "0");
+
+/* ---- ora di Praga, anche se il telefono è ancora sull'ora di casa ---- */
+const PRG = (() => { try { return new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Prague", year: "numeric", month: "numeric", day: "numeric", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23"}); } catch (e) { return null; } })();
+const WD = {Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6};
+function pragueNow(ms) {
+  const d = new Date(ms == null ? Date.now() : ms);
+  if (PRG) { try { const o = {}; for (const x of PRG.formatToParts(d)) o[x.type] = x.value; if (o.weekday in WD) return {y: +o.year, mo: +o.month, da: +o.day, dow: WD[o.weekday], h: (+o.hour) % 24, mi: +o.minute}; } catch (e) {} }
+  return {y: d.getFullYear(), mo: d.getMonth() + 1, da: d.getDate(), dow: (d.getDay() + 6) % 7, h: d.getHours(), mi: d.getMinutes()};
+}
+
+/* ---- orari di apertura (ora di Praga). Giorni: 0 = lunedì … 6 = domenica; mesi 1–12.
+   «m11-3» = da novembre a marzo; «d0-4,6» = lunedì–venerdì e domenica; «24h» = sempre aperto. ---- */
+const OH = {
+  radnice: "09:00-20:00", "hrad-okruh": "m11-3 09:00-16:00", lanovka: "07:00-22:15", rozhledna: "m11-12 10:00-18:00",
+  josefov: "d0-4,6 09:00-16:30", zizkov: "09:00-24:00",
+  "albert-vaclavske": "07:00-22:00", "albert-muzeum": "07:00-21:00", "albert-palladium": "07:00-21:00",
+  "xm-stare": "10:00-22:00", "xm-vaclavske": "10:00-22:00", "xm-holesovice": "d1-4 14:00-21:00;d5-6 10:00-17:00",
+  "lucerna-mb": "d4-5 21:00-28:00",
+  ambassador: "24h", kings: "24h", banco: "24h", allinn: "24h", help1: "24h", help2: "24h"
+};
+const OH_NOEND = new Set(["lucerna-mb"]); // si sa quando apre, non quando chiude
+const ALWAYS = new Set(["staromestske", "karluv-most", "mala-strana", "lennon", "kampa", "petrin", "nerudova", "vaclavske", "vysehrad", "letna", "riegrovy", "kafka", "naplavka", "tancici-dum"]);
+const OHP = {};
+const hm = s => { const [h, m] = s.split(":"); return (+h) * 60 + (+m || 0); };
+function rset(s, lo, hi) { const out = new Set(); for (const part of s.split(",")) { const [a, b] = part.split("-").map(Number); if (isNaN(b)) { out.add(a); continue; } for (let i = a, k = 0; k <= hi - lo; k++) { out.add(i); if (i === b) break; i = i >= hi ? lo : i + 1; } } return out; }
+function ohRules(id) {
+  if (OHP[id]) return OHP[id]; const s = OH[id]; if (!s) return null;
+  return (OHP[id] = s.split(";").map(r => { const o = {m: null, d: null, t: []}; for (const tok of r.trim().split(/\s+/)) { if (tok[0] === "m") o.m = rset(tok.slice(1), 1, 12); else if (tok[0] === "d") o.d = rset(tok.slice(1), 0, 6); else if (tok === "24h") o.t.push([0, 1440]); else for (const rg of tok.split(",")) { const [a, b] = rg.split("-"); o.t.push([hm(a), hm(b)]); } } return o; }));
+}
+function dayRanges(R, dow, mo) { const rs = R.filter(r => !r.m || r.m.has(mo)); if (!rs.length) return null; const out = []; for (const r of rs) if (!r.d || r.d.has(dow)) out.push(...r.t); return out; }
+function openState(id, now) {
+  const R = ohRules(id); if (!R) return null; now = now || pragueNow();
+  const t = now.h * 60 + now.mi, today = dayRanges(R, now.dow, now.mo); if (today === null) return null;
+  const prev = dayRanges(R, (now.dow + 6) % 7, now.mo) || [];
+  for (const [a, b] of today) if (b - a >= 1440) return {open: 1, h24: 1};
+  for (const [a, b] of today) if (t >= a && t < b) return {open: 1, until: b, t};
+  for (const [, b] of prev) if (b > 1440 && t < b - 1440) return {open: 1, until: b - 1440, t};
+  const later = today.filter(r => r[0] > t).sort((x, y) => x[0] - y[0])[0];
+  if (later) return {open: 0, at: later[0], day: 0};
+  for (let k = 1; k <= 7; k++) { const dw = (now.dow + k) % 7, rs = dayRanges(R, dw, now.mo); if (rs && rs.length) return {open: 0, at: rs.slice().sort((x, y) => x[0] - y[0])[0][0], day: k, dow: dw}; }
+  return {open: 0, none: 1};
+}
+const hmTxt = m => hhmm(Math.floor(m / 60) % 24, m % 60);
+function ohTxt(o, id) {
+  if (!o) return null;
+  if (o.h24) return {k: "ok", t: "Aperto 24 ore su 24"};
+  if (o.open) { if (OH_NOEND.has(id)) return {k: "ok", t: "Aperto adesso"}; const left = o.until - o.t; if (left <= 45) return {k: "gold", t: "Chiude tra " + Math.max(1, left) + " min"}; return {k: "ok", t: o.until >= 1440 ? "Aperto · chiude a mezzanotte" : "Aperto · chiude alle " + hmTxt(o.until)}; }
+  if (o.none) return {k: "bad", t: "Chiuso in questo periodo"};
+  return {k: "bad", t: "Chiuso · apre " + (o.day === 0 ? "alle " : o.day === 1 ? "domani alle " : DOWS[o.dow] + " alle ") + hmTxt(o.at)};
+}
+/* Orologio Astronomico: gli apostoli sfilano ogni ora, dalle 8 alle 23 */
+function orlojNext(now) {
+  now = now || pragueNow(); if (now.mi === 0 && now.h >= 8 && now.h <= 23) return {now: 1};
+  let h = now.h < 8 ? 8 : now.h + 1, tom = false; if (h > 23) { h = 8; tom = true; }
+  return {h, min: h * 60 - (now.h * 60 + now.mi) + (tom ? 1440 : 0), tom};
+}
+const orlojShort = o => o.now ? "adesso!" : o.tom ? "domani alle 8" : o.min <= 59 ? "tra " + o.min + " min" : "alle " + o.h;
+const orlojTxt = o => "Apostoli " + orlojShort(o);
+/* prossima alba o prossimo tramonto, calcolati sul posto (niente internet) */
+let sunC = null;
+function sunNext() {
+  const now = Date.now(); if (sunC && now < sunC.until) return sunC;
+  const f = ms => Map3D.sunAlt(ms) + 0.833; let a = now, fa = f(a), hit = null;
+  for (let i = 1; i <= 312 && !hit; i++) { const b = now + i * 300000, fb = f(b); if ((fa < 0) !== (fb < 0)) { let lo = a, hi = b; for (let k = 0; k < 14; k++) { const mid = (lo + hi) / 2; if ((f(mid) < 0) === (fa < 0)) lo = mid; else hi = mid; } hit = {ms: hi, rise: fa < 0}; } a = b; fa = fb; }
+  if (!hit) return null; const p = pragueNow(hit.ms);
+  sunC = {t: (hit.rise ? "Alba " : "Tramonto ") + hhmm(p.h, p.mi), hm: hhmm(p.h, p.mi), rise: hit.rise, until: Math.min(hit.ms, now + 600000)};
+  return sunC;
+}
+
+/* ---- «Portami lì»: apre direttamente l'app delle mappe ----
+   Su iPhone il link va a Mappe di Apple nella stessa finestra (iOS apre l'app Mappe):
+   i link «in una nuova finestra» su iPhone vengono spesso bloccati e il tocco sembra non fare nulla. */
+const MAPS = {
+  apple: {n: "Mappe di Apple", s: "L’app Mappe dell’iPhone, percorso a piedi", i: "i-map", url: (la, lo) => `https://maps.apple.com/?daddr=${la},${lo}&dirflg=w`},
+  google: {n: "Google Maps", s: "Percorso a piedi; se è lontano ti propone i mezzi", i: "i-route", url: (la, lo) => `https://www.google.com/maps/dir/?api=1&destination=${la},${lo}&travelmode=walking`},
+  mapy: {n: "Mapy.com", s: "Mappe ceche molto precise, anche senza internet", i: "i-walk", url: (la, lo, name) => `https://mapy.com/fnc/v1/route?end=${lo},${la}${name ? "&endName=" + encodeURIComponent(name) : ""}&routeType=foot_fast&navigate=true`}
+};
+const mapsApp = () => MAPS[S.maps] ? S.maps : IOS ? "apple" : "google";
+const sameWin = app => app === "apple" && IOS && !FRAMED;
+const navAttrs = app => sameWin(app) ? "" : ` target="_blank" rel="noopener"`;
+function navBtns(la, lo, name, label) {
+  const app = mapsApp(), n = esc(name || "");
+  return `<span class="navgrp"><a class="btn sm" data-nav data-la="${la}" data-lo="${lo}" data-n="${n}" href="${esc(MAPS[app].url(la, lo, name))}"${navAttrs(app)} aria-label="${esc(label || "Portami lì")} con ${MAPS[app].n}">${ico("i-route")}${esc(label || "Portami lì")}</a><button class="btn sm navmore" type="button" data-act="navpick" data-la="${la}" data-lo="${lo}" data-n="${n}" aria-label="Scegli l’app per il percorso">${ico("i-more")}</button></span>`;
+}
+function refreshNav(root) {
+  const app = mapsApp();
+  $$("a[data-nav]", root || document).forEach(a => { a.href = MAPS[app].url(+a.dataset.la, +a.dataset.lo, a.dataset.n); if (sameWin(app)) { a.removeAttribute("target"); a.removeAttribute("rel"); } else { a.target = "_blank"; a.rel = "noopener"; } const l = a.getAttribute("aria-label") || ""; a.setAttribute("aria-label", l.replace(/ con .*$/, "") + " con " + MAPS[app].n); });
+}
+/* risposte salvate dalle versioni precedenti: il vecchio link diventa il nuovo pulsante */
+const OLDNAV = /<a class="btn sm" href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&(?:amp;)?destination=(-?[\d.]+),(-?[\d.]+)&(?:amp;)?travelmode=walking" target="_blank" rel="noopener">[\s\S]*?<\/a>/g;
+const fixLinks = h => String(h || "").replace(OLDNAV, (m, la, lo) => { const p = P.find(q => Math.abs(q.la - la) < 1e-5 && Math.abs(q.lo - lo) < 1e-5); return navBtns(+la, +lo, p ? p.n : ""); });
+function navPick(la, lo, name, why) {
+  const best = mapsApp(), order = IOS ? ["apple", "google", "mapy"] : ["google", "mapy", "apple"], g = MAPS.google.url(la, lo), n = esc(name || "");
+  openSheet("Portami lì", `${why ? `<p class="warn">${esc(why)}</p>` : ""}<p class="hint">${name ? `Destinazione: <b>${n}</b>. ` : ""}Con quale app vuoi il percorso a piedi?</p>
+  <div class="opts">${order.map(k => `<a class="opt${k === best ? " best" : ""}" data-app="${k}" data-la="${la}" data-lo="${lo}" data-n="${n}" href="${esc(MAPS[k].url(la, lo, name))}"${navAttrs(k)}>${ico(MAPS[k].i)}<span><b>${MAPS[k].n}${k === best ? " · la tua scelta" : ""}</b><small>${MAPS[k].s}</small></span></a>`).join("")}</div>
+  <label class="sw"><input type="checkbox" id="navRemember"><span></span>Usa sempre l’app che tocco</label>
+  <h3>Se non si apre niente</h3><p class="hint">Copia il link e incollalo nel browser, oppure invialo a chi ti accompagna.</p>
+  <code class="linkbox">${esc(g)}</code>
+  <div class="acts"><button class="btn sm ghost" type="button" data-act="copy" data-t="${esc(g)}">${ico("i-copy")}Copia il link</button><button class="btn sm ghost" type="button" data-act="sharepl" data-la="${la}" data-lo="${lo}" data-n="${n}">${ico("i-share")}Invia</button></div>`);
+}
+/* se dopo il tocco la pagina è ancora davanti a te, la mappa non si è aperta: lo diciamo */
+let navT = 0;
+function navWatch() { clearTimeout(navT); navT = setTimeout(() => { if (document.visibilityState === "visible" && document.hasFocus()) toast("La mappa non si è aperta? Tocca ⋯ accanto a «Portami lì» per un’altra app o per copiare il link."); }, 2400); }
+
+/* ---- finestre (foglio in basso) ---- */
+let sheetRet = null;
+function openSheet(title, html) {
+  const m = $("#sheet"); if (m.hidden) sheetRet = document.activeElement; $("#shTitle").textContent = title; $("#shBody").innerHTML = html; m.hidden = false;
+  const sh = m.querySelector(".sheet"); if (sh) sh.scrollTop = 0; setTimeout(() => { const c = $("#shClose"); if (c && !m.hidden) c.focus({preventScroll: true}); }, 40);
+}
+function closeSheet() { const m = $("#sheet"); if (m.hidden) return; m.hidden = true; $("#shBody").innerHTML = ""; if (sheetRet && sheetRet.focus && document.contains(sheetRet)) sheetRet.focus({preventScroll: true}); sheetRet = null; }
+const topModal = () => !$("#sheet").hidden ? $("#sheet") : !$("#modal").hidden ? $("#modal") : null;
+async function copyText(t, msg) {
+  let ok = false;
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(t); ok = true; } } catch (e) {}
+  if (!ok) { try { const ta = document.createElement("textarea"); ta.value = t; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0"; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, t.length); ok = document.execCommand("copy"); ta.remove(); } catch (e) {} }
+  toast(ok ? (msg || "Copiato") : "Non riesco a copiare: tieni premuto sul link e scegli «Copia».");
+}
+async function sharePlace(la, lo, text) {
+  const url = `https://www.google.com/maps/search/?api=1&query=${la},${lo}`;
+  if (navigator.share) { try { await navigator.share({title: "Praha Pilot", text, url}); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+  copyText(text + " " + url, "Copiato: incollalo nella chat del gruppo");
+}
+
+/* ---- illustrazioni delle schede ---- */
+const ART = {staromestske: "tyn", orloj: "orloj", radnice: "orloj", "karluv-most": "bridge", "mostecka-vez": "bridge", naplavka: "bridge", hrad: "castle", "hrad-okruh": "castle", nerudova: "castle",
+  "mala-strana": "dome", jezulatko: "dome", strahov: "dome", klementinum: "dome", "obecni-dum": "dome", "narodni-muzeum": "dome", lennon: "music",
+  kampa: "tree", riegrovy: "tree", frantiskanska: "tree", valdstejn: "tree", petrin: "petrin", lanovka: "petrin", rozhledna: "petrin", "tancici-dum": "dancing",
+  vysehrad: "vysehrad", letna: "metronome", zizkov: "tv", tram22: "tram", "letna-bg": "mug", "strahov-pivovar": "mug", "lokal-dlouha": "mug", "lokal-kuzelka": "mug",
+  "u-pinkasu": "mug", "u-medvidku": "mug", "u-hrocha": "mug", "u-sadu": "mug"};
+function artFor(p) { if (ART[p.id]) return "art-" + ART[p.id]; if (/^xm-/.test(p.id)) return "art-tree"; if (/^(albert|lidl|billa)-/.test(p.id)) return "art-cart"; return "art-" + ({see: "skyline", eat: "plate", shop: "bag", fun: "music", casino: "dice"}[p.c[0]] || "skyline"); }
+function openBadge(p, os) {
+  if (p.id === "orloj") return `<span class="b gold" data-orloj>${ico("i-clock")}${esc(orlojTxt(orlojNext()))}</span>`;
+  if (os) return `<span class="b ${os.k}" data-oh="${p.id}">${ico("i-clock")}${esc(os.t)}</span>`;
+  return ALWAYS.has(p.id) ? `<span class="b soft">${ico("i-clock")}Sempre accessibile</span>` : "";
+}
+function liveBadges(root) {
+  const now = pragueNow(), ot = orlojTxt(orlojNext(now));
+  $$("[data-orloj]", root).forEach(b => { const n = b.lastChild; if (n && n.nodeType === 3) { if (n.nodeValue !== ot) n.nodeValue = ot; } });
+  $$("[data-oh]", root).forEach(b => { const o = ohTxt(openState(b.dataset.oh, now), b.dataset.oh); if (!o) return; b.className = "b " + o.k; const n = b.lastChild; if (n && n.nodeType === 3 && n.nodeValue !== o.t) n.nodeValue = o.t; });
+}
+
+/* ---- preferiti e «Il mio giro» ---- */
+const isFav = id => S.favs.includes(id);
+function favBtn(id) { const on = isFav(id); return `<button class="btn sm ghost fav${on ? " on" : ""}" type="button" data-act="fav" data-id="${id}" aria-pressed="${on}" aria-label="${on ? "Togli dai preferiti" : "Aggiungi ai preferiti"}">${ico("i-heart")}</button>`; }
+function updFavCount() { const c = $("#favCnt"); if (c) { c.textContent = S.favs.length || ""; c.hidden = !S.favs.length; } }
+function toggleFav(id) {
+  const i = S.favs.indexOf(id), on = i < 0; if (on) S.favs.push(id); else S.favs.splice(i, 1); save();
+  $$(`[data-act="fav"][data-id="${id}"]`).forEach(b => { b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); b.setAttribute("aria-label", on ? "Togli dai preferiti" : "Aggiungi ai preferiti"); b.classList.remove("pop"); if (on && !RM) { void b.offsetWidth; b.classList.add("pop"); } });
+  updFavCount(); toast(on ? "Salvato nei preferiti: il giro lo trovi in «Preferiti»" : "Tolto dai preferiti");
+  if (S.cat === "fav") renderExplore(false);
+}
+function planTour(start, xs) {
+  let r = xs.slice(0, 20).map(x => ({x, la: x.p.la, lo: x.p.lo}));
+  const d = (a, b) => hav(a.la, a.lo, b.la, b.lo), n = r.length, len = a => a.reduce((s, q, i) => s + d(i ? a[i - 1] : start, q), 0);
+  if (n > 1) {
+    const left = r.slice(); r = []; let cur = start;
+    while (left.length) { let bi = 0, bd = Infinity; left.forEach((q, i) => { const v = d(cur, q); if (v < bd) { bd = v; bi = i; } }); cur = left.splice(bi, 1)[0]; r.push(cur); }
+    let best = len(r);
+    for (let pass = 0, better = true; better && pass < 20; pass++) { better = false;
+      for (let i = 0; i < n - 1; i++) for (let k = i + 1; k < n; k++) { const c = r.slice(0, i).concat(r.slice(i, k + 1).reverse(), r.slice(k + 1)), l = len(c); if (l < best - 1) { r = c; best = l; better = true; } } }
+  }
+  let prev = start, dist = 0; const stops = r.map(q => { const leg = d(prev, q); prev = q; dist += leg; return {x: q.x, leg}; });
+  return {stops, dist};
+}
+const fmtMin = m => m < 60 ? m + " min" : Math.floor(m / 60) + " h" + (m % 60 ? " " + (m % 60) + " min" : "");
+function tourLinks(T) {
+  const s = T.stops.map(q => q.x.p), L = S.loc, chunk = MOBILE ? 4 : 10, out = [];
+  for (let i = 0; i < s.length; i += chunk) {
+    const part = s.slice(i, i + chunk), from = i ? s[i - 1] : L, dest = part[part.length - 1], way = part.slice(0, -1);
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${from.la},${from.lo}&destination=${dest.la},${dest.lo}${way.length ? "&waypoints=" + way.map(p => p.la + "," + p.lo).join("%7C") : ""}&travelmode=walking`;
+    out.push(`<a class="btn sm ghost" href="${esc(url)}" target="_blank" rel="noopener">${ico("i-route")}Google Maps${s.length > chunk ? " · tappe " + (i + 1) + "–" + (i + part.length) : ""}</a>`);
+  }
+  const m = s.slice(0, 16), e = m[m.length - 1];
+  out.push(`<a class="btn sm ghost" href="${esc(`https://mapy.com/fnc/v1/route?start=${L.lo},${L.la}&end=${e.lo},${e.la}${m.length > 1 ? "&waypoints=" + m.slice(0, -1).map(p => p.lo + "," + p.la).join(";") : ""}&routeType=foot_fast`)}" target="_blank" rel="noopener">${ico("i-walk")}Mapy.com</a>`);
+  return out.join("");
+}
+function tourHTML(T) {
+  const lo = T.stops.reduce((s, q) => s + q.x.c[0], 0), hi = T.stops.reduce((s, q) => s + q.x.c[1], 0), first = T.stops[0].x.p;
+  const money = hi === 0 ? "Gratis" : lo === hi ? kc(lo) : NF.format(lo) + "–" + kc(hi);
+  return `<section class="card tour" aria-label="Il mio giro"><h3>${ico("i-list")}Il mio giro</h3>
+  <p class="hint">L’ordine più corto a piedi partendo da ${esc(S.loc.name || "dove sei")}. Tempi indicativi.</p>
+  <div class="tot"><div><b>${distTxt(T.dist * 1.3)}</b><span>a piedi</span></div><div><b>${fmtMin(walkMin(T.dist))}</b><span>di cammino</span></div><div><b>${money}</b><span>da spendere</span></div></div>
+  <ol class="stops">${T.stops.map((q, i) => `<li><span class="num">${i + 1}</span><span class="sn"><b>${esc(q.x.p.n)}</b><small>${i ? "dalla tappa " + i : "da te"}: ${walkMin(q.leg)} min${q.x.os ? " · " + esc(q.x.os.t) : ""}</small></span><button class="icon-btn sm" type="button" data-act="map" data-id="${q.x.p.id}" aria-label="Mostra ${esc(q.x.p.n)} sulla mappa">${ico("i-map")}</button></li>`).join("")}</ol>
+  <div class="acts">${navBtns(first.la, first.lo, first.n, "Vai alla tappa 1")}</div>
+  <p class="hint">Tutto il giro in un’app di navigazione:</p><div class="acts">${tourLinks(T)}</div>
+  <div class="acts"><button class="btn sm ghost" type="button" data-act="tourfit">${ico("i-map")}Vedi il giro sulla mappa</button><button class="btn sm ghost" type="button" data-act="favclear">${ico("i-trash")}Svuota i preferiti</button></div></section>`;
+}
+
+/* ---- scheda rapida sulla mappa ---- */
+function showMapCard(id) {
+  const mc = $("#mapCard"), p = byId(id), t = TRAPS.find(x => x.id === id); let h = "";
+  if (p) { const c = CAT[p.c[0]], d = hav(S.loc.la, S.loc.lo, p.la, p.lo), os = ohTxt(openState(p.id), p.id), st = status(p);
+    h = `<div class="mc-h"><span class="cat-ico" style="--c:${c.col}">${ico(c.i)}</span><div><b>${esc(p.n)}</b><small>${walkMin(d)} min a piedi · ${priceTxt(p, S.cat === "fav" ? p.c[0] : null)}${st ? " · " + esc(st.t) : os ? " · " + esc(os.t) : ""}</small>${p.cz ? `<small class="cz">${esc(p.cz)}${TTS ? ` <button class="say-sm" type="button" data-act="say" data-t="${esc(p.cz)}" aria-label="Ascolta il nome in ceco">${ico("i-volume")}</button>` : ""}</small>` : ""}</div><button class="icon-btn sm mc-x" type="button" data-act="mcclose" aria-label="Chiudi la scheda">${ico("i-close")}</button></div>
+    <div class="acts">${navBtns(p.la, p.lo, p.n)}<button class="icon-btn sm" type="button" data-act="card" data-id="${p.id}" aria-label="Apri la scheda completa">${ico("i-list")}</button>${favBtn(p.id)}</div>`; }
+  else if (t) h = `<div class="mc-h"><span class="cat-ico" style="--c:#ff5a3c">${ico("i-avoid")}</span><div><b>${esc(t.n)}</b><small>${esc(t.x)}</small></div><button class="icon-btn sm mc-x" type="button" data-act="mcclose" aria-label="Chiudi la scheda">${ico("i-close")}</button></div><div class="acts"><button class="btn sm ghost" type="button" data-act="card" data-id="${t.id}">${ico("i-list")}Leggi tutto</button></div>`;
+  else if (id === "meet" && S.meet) { const d = hav(S.loc.la, S.loc.lo, S.meet.la, S.meet.lo);
+    h = `<div class="mc-h"><span class="cat-ico" style="--c:#3c7fc4">${ico("i-flag")}</span><div><b>Punto di ritrovo</b><small>${esc(S.meet.name)} · ${walkMin(d)} min a piedi</small></div><button class="icon-btn sm mc-x" type="button" data-act="mcclose" aria-label="Chiudi la scheda">${ico("i-close")}</button></div><div class="acts">${navBtns(S.meet.la, S.meet.lo, S.meet.name)}<button class="btn sm ghost" type="button" data-act="meetshare">${ico("i-share")}Invia</button></div>`; }
+  if (!h) { hideMapCard(); return; }
+  mc.innerHTML = h; mc.hidden = false; document.body.classList.add("mc-on"); Map3D.refreshKeep();
+}
+function hideMapCard() { const mc = $("#mapCard"); if (mc.hidden) return; mc.hidden = true; mc.innerHTML = ""; document.body.classList.remove("mc-on"); S.sel = null; $$(".res.sel").forEach(e => e.classList.remove("sel")); Map3D.select(null); Map3D.refreshKeep(); }
+
+/* ---- meteo (Open-Meteo, senza chiave; se manca internet resta l'ultimo dato) ---- */
+const WX = {0: ["Sereno", "sun"], 1: ["Quasi sereno", "partly"], 2: ["Poco nuvoloso", "partly"], 3: ["Coperto", "cloud"], 45: ["Nebbia", "fog"], 48: ["Nebbia con brina", "fog"],
+  51: ["Pioviggine", "rain"], 53: ["Pioviggine", "rain"], 55: ["Pioviggine fitta", "rain"], 56: ["Pioviggine gelata", "rain"], 57: ["Pioviggine gelata", "rain"],
+  61: ["Pioggia debole", "rain"], 63: ["Pioggia", "rain"], 65: ["Pioggia forte", "rain"], 66: ["Pioggia gelata", "rain"], 67: ["Pioggia gelata", "rain"],
+  71: ["Neve debole", "snow"], 73: ["Neve", "snow"], 75: ["Neve forte", "snow"], 77: ["Nevischio", "snow"], 80: ["Rovesci", "rain"], 81: ["Rovesci", "rain"], 82: ["Rovesci forti", "storm"],
+  85: ["Rovesci di neve", "snow"], 86: ["Forti nevicate", "snow"], 95: ["Temporale", "storm"], 96: ["Temporale e grandine", "storm"], 99: ["Temporale e grandine", "storm"]};
+const wxInfo = (c, day) => { const w = WX[c] || ["Variabile", "cloud"]; return {t: w[0], i: "i-" + (w[1] === "sun" && day === 0 ? "moon" : w[1])}; };
+let wxBusy = false;
+async function loadWx(force) {
+  if (wxBusy || (!force && S.wx && Date.now() - S.wx.ts < 30 * 60000) || navigator.onLine === false) return;
+  if (!force && Date.now() - (loadWx.t || 0) < 5 * 60000) return; // dopo un errore riprova con calma
+  wxBusy = true; loadWx.t = Date.now();
+  try {
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 9000);
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=50.0875&longitude=14.4213&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FPrague&forecast_days=4", {signal: ctl.signal});
+    clearTimeout(tm); if (!r.ok) throw new Error("meteo"); const j = await r.json(), c = j.current, dd = j.daily; if (!c || !dd || !dd.time) throw new Error("meteo");
+    S.wx = {ts: Date.now(), cur: {t: c.temperature_2m, f: c.apparent_temperature, c: c.weather_code, w: c.wind_speed_10m, d: c.is_day}, days: dd.time.map((d, i) => ({d, c: dd.weather_code[i], hi: dd.temperature_2m_max[i], lo: dd.temperature_2m_min[i], p: dd.precipitation_probability_max ? dd.precipitation_probability_max[i] : null}))};
+    save(); renderWxChip(); if (!$("#sheet").hidden && $("#shBody .wx-now, #shBody .wx-none")) showWx();
+  } catch (e) { if (force) toast("Il meteo non si aggiorna adesso: serve internet."); } finally { wxBusy = false; }
+}
+function renderWxChip() {
+  const b = $("#nowWx"), w = S.wx, sp = b.querySelector("b"), u = b.querySelector("use");
+  if (!w || !w.cur || Date.now() - w.ts > 6 * 3600000) { setTxt(sp, "Previsioni"); u.setAttribute("href", "#i-cloud"); b.setAttribute("aria-label", "Meteo a Praga: tocca per le previsioni"); return; }
+  const i = wxInfo(w.cur.c, w.cur.d), deg = Math.round(w.cur.t); setTxt(sp, deg + "° " + i.t); u.setAttribute("href", "#" + i.i); b.setAttribute("aria-label", `Meteo a Praga: ${deg} gradi, ${i.t.toLowerCase()}. Tocca per le previsioni`);
+}
+function wxTip(w) {
+  const c = w.cur, d0 = w.days && w.days[0], rain = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(c.c) || (d0 && d0.p >= 50), snow = [71, 73, 75, 77, 85, 86].includes(c.c);
+  if (snow) return "Neve: scalinate e salite (Castello, Petřín) possono essere scivolose. Meglio scarpe con la suola che fa presa.";
+  if (rain) return "Porta l’ombrello e tieni pronta una tappa al coperto, come un museo o un caffè. I panorami lasciali a quando smette.";
+  if (c.f <= 0) return "Si sente sotto zero: vestiti a strati, con cappello e guanti. Sul ponte e al Castello il vento si fa sentire.";
+  if (c.c <= 1 && c.d) return "Bel tempo: ottimo momento per i panorami gratis di Letná, Riegrovy sady e Petřín.";
+  return "Tempo da passeggiata: il centro si gira bene a piedi, ed è gratis.";
+}
+function showWx() {
+  const w = S.wx;
+  if (!w || !w.cur) { openSheet("Meteo a Praga", `<p class="wx-none">Il meteo arriva da internet e qui non è ancora disponibile.</p><div class="acts"><button class="btn sm" type="button" data-act="wxload">${ico("i-refresh")}Riprova</button></div>`); return; }
+  const i = wxInfo(w.cur.c, w.cur.d), age = Math.round((Date.now() - w.ts) / 60000), when = pragueNow(w.ts);
+  openSheet("Meteo a Praga", `<div class="wx-now">${ico(i.i)}<div><b>${Math.round(w.cur.t)}°</b><span> ${esc(i.t)} · percepiti ${Math.round(w.cur.f)}° · vento ${Math.round(w.cur.w)} km/h</span></div></div>
+  <div class="wx-days">${w.days.map((d, k) => { const x = wxInfo(d.c, 1), dt = new Date(d.d + "T12:00:00"); return `<div><span>${k ? DOWS[(dt.getDay() + 6) % 7].slice(0, 3) + " " + dt.getDate() : "Oggi"}</span>${ico(x.i)}<b>${Math.round(d.hi)}° / ${Math.round(d.lo)}°</b>${d.p != null ? `<span>pioggia ${d.p}%</span>` : ""}</div>`; }).join("")}</div>
+  <p class="tip"><b>Consiglio</b> ${esc(wxTip(w))}</p>
+  <p class="hint">Dati Open-Meteo, aggiornati ${age < 2 ? "adesso" : "alle " + hhmm(when.h, when.mi)}.</p><div class="acts"><button class="btn sm ghost" type="button" data-act="wxload">${ico("i-refresh")}Aggiorna</button></div>`);
+}
+
+/* ---- tasso di cambio della BCE (Frankfurter, senza chiave) ---- */
+const itDate = s => { const m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(s || ""); return m ? (+m[3]) + " " + MONTHS[+m[2] - 1] + " " + m[1] : ""; };
+async function loadRate(force) {
+  if ((!S.rateAuto && !force) || (!force && S.rateTs && Date.now() - S.rateTs < 12 * 3600000) || navigator.onLine === false) return;
+  if (!force && Date.now() - (loadRate.t || 0) < 10 * 60000) return; loadRate.t = Date.now();
+  try {
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 9000);
+    const r = await fetch("https://api.frankfurter.dev/v1/latest?base=EUR&symbols=CZK", {signal: ctl.signal}); clearTimeout(tm);
+    const j = await r.json(), v = j && j.rates && +j.rates.CZK; if (!(v > 10 && v < 40)) throw new Error("tasso");
+    const changed = Math.abs(v - S.rate) > 0.0005; S.rate = Math.round(v * 1000) / 1000; S.rateTs = Date.now(); S.rateDate = j.date || ""; S.rateSrc = "bce"; save();
+    if (changed) applyRate(); else renderRateInfo();
+    if (force) toast("Tasso BCE: 1 € = " + NE.format(S.rate) + " Kč" + (S.rateDate ? " (" + itDate(S.rateDate) + ")" : ""));
+  } catch (e) { if (force) toast("Non riesco ad aggiornare il tasso adesso: serve internet."); }
+}
+function applyRate() { $("#rateTxt").textContent = NE.format(S.rate); renderExplore(false); renderWallet(); renderSplit(); renderRateInfo(); }
+function renderRateInfo() {
+  const el = $("#mRateInfo"); if (!el) return;
+  el.textContent = S.rateSrc === "bce" && S.rateDate ? `Tasso ufficiale della Banca Centrale Europea del ${itDate(S.rateDate)}.` : S.rateSrc === "manual" ? "Tasso inserito da te." : "Tasso della Banca Nazionale Ceca del 4 novembre 2026. Con internet si aggiorna da solo.";
+}
+
+/* ---- voce ceca per frasi e nomi dei luoghi ---- */
+const TTS = "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function";
+let csVoice = null;
+function pickVoice() { try { csVoice = speechSynthesis.getVoices().find(v => /^cs([-_]|$)/i.test(v.lang)) || null; } catch (e) { csVoice = null; } }
+if (TTS) { pickVoice(); try { speechSynthesis.addEventListener("voiceschanged", pickVoice); } catch (e) {} }
+function say(t, btn) {
+  if (!TTS) { toast("Questo browser non sa leggere ad alta voce."); return; }
+  try {
+    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(String(t).replace(/…/g, "")); u.lang = "cs-CZ"; u.rate = 0.82; if (csVoice) u.voice = csVoice;
+    if (btn) { $$(".say.on, .say-sm.on").forEach(b => b.classList.remove("on")); btn.classList.add("on"); u.onend = u.onerror = () => btn.classList.remove("on"); setTimeout(() => btn.classList.remove("on"), 6000); }
+    speechSynthesis.speak(u);
+    if (!csVoice && !say.warned) { say.warned = 1; setTimeout(() => { pickVoice(); if (!csVoice) toast("Sul dispositivo manca la voce ceca: la pronuncia può essere imprecisa."); }, 700); }
+  } catch (e) {}
+}
+
+/* ---- punto di ritrovo e posizione da inviare ---- */
+const MEETS = [["Statua di San Venceslao", "Socha svatého Václava", 50.07965, 14.42950], ["Orologio Astronomico", "Staroměstský orloj", 50.08700, 14.42072], ["Torre delle Polveri", "Prašná brána", 50.08710, 14.42770], ["Ponte Carlo, torre della Città Vecchia", "Staroměstská mostecká věž", 50.08621, 14.41372], ["Metro Můstek", "Můstek", 50.08360, 14.42320]];
+function renderMeet() {
+  const m = S.meet, box = $("#meetCard");
+  const head = `<h3>${ico("i-flag")}Punto di ritrovo</h3>`, me = `<h3 class="sub2">${ico("i-share")}La mia posizione</h3><p class="hint">Invia dove sei a un amico o ai professori, con il link per raggiungerti.</p><div class="acts"><button class="btn sm ghost" type="button" data-act="shareme">${ico("i-share")}Invia la mia posizione</button></div>`;
+  if (m) { const d = hav(S.loc.la, S.loc.lo, m.la, m.lo);
+    box.innerHTML = head + `<div class="mp">${ico("i-flag")}<span><b>${esc(m.name)}</b><small>${d < 40 ? "Sei già qui" : walkMin(d) + " min a piedi da te · " + distTxt(d)}</small></span></div><div class="acts">${navBtns(m.la, m.lo, m.name)}<button class="btn sm ghost" type="button" data-act="meetmap">${ico("i-map")}Sulla mappa</button><button class="btn sm ghost" type="button" data-act="meetshare">${ico("i-share")}Invia al gruppo</button><button class="btn sm ghost" type="button" data-act="meetset">Cambia</button><button class="btn sm ghost" type="button" data-act="meetdel" aria-label="Togli il punto di ritrovo">${ico("i-trash")}</button></div>` + me;
+  } else box.innerHTML = head + `<p class="hint">Se qualcuno si perde, tutti sanno dove tornare. Sceglietelo prima di separarvi e inviatelo al gruppo: sulla mappa compare una bandierina.</p><div class="acts"><button class="btn sm" type="button" data-act="meetset">${ico("i-flag")}Scegli il punto di ritrovo</button></div>` + me;
+}
+function meetSheet() {
+  const L = S.loc;
+  openSheet("Punto di ritrovo", `<p class="hint">Meglio un posto famoso e facile da trovare per tutti.</p><div class="opts">
+  <button class="opt" type="button" data-act="meetpick" data-i="-1">${ico("i-gps")}<span><b>Dove sono adesso</b><small>${esc(L.name || L.cz || "La mia posizione")}${L.src === "demo" ? " · posizione di prova" : ""}</small></span></button>
+  ${MEETS.map((p, i) => `<button class="opt" type="button" data-act="meetpick" data-i="${i}">${ico("i-flag")}<span><b>${esc(p[0])}</b><small>${esc(p[1])} · ${walkMin(hav(L.la, L.lo, p[2], p[3]))} min da te</small></span></button>`).join("")}</div>`);
+}
+
+/* ---- dividi il conto ---- */
+function renderSplit() {
+  const out = $("#spOut"); if (!out) return;
+  const tot = parseFloat(String($("#spTot").value).replace(",", ".")), n = Math.max(1, Math.min(40, Math.round(+$("#spN").value || 1))), tip = S.split.tip;
+  $$("#spTip button").forEach(b => { const on = +b.dataset.t === tip; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  if (!(tot > 0)) { out.innerHTML = `<p class="hint">Scrivi il totale del conto. In Cechia la mancia non è obbligatoria: di solito si arrotonda o si lascia circa il 10%, dicendo al cameriere quanto vuoi pagare in tutto. Prima controlla che il servizio («servis») non sia già nel conto.</p>`; return; }
+  const all = Math.ceil(tot * (1 + tip / 100)), each = Math.ceil(all / n), round = Math.ceil(all / n / 10) * 10;
+  out.innerHTML = `<div class="verdict ok"><b>${kc(each)} a testa</b><span>≈ ${eur(each)} · in tutto ${kc(all)}${tip ? " con la mancia" : ""}</span><small>${round !== each ? `Più comodo: ${kc(round)} a testa. ` : ""}Quando paghi, di’ al cameriere il totale che vuoi pagare: ${kc(all)}.</small></div>
+  <div class="acts"><button class="btn sm ghost" type="button" data-act="spadd" data-v="${each}">${ico("i-plus")}Segna la mia quota nelle spese</button></div>`;
+}
+
+/* ---- app installabile e aggiornamenti ---- */
+let bip = null;
+function installMode() { if (standalone()) return "installed"; if (bip) return "prompt"; if (IOS) return WEB && !FRAMED ? "ios" : "iosweb"; return WEB && !FRAMED ? "menu" : "web"; }
+function renderInstall() {
+  const m = installMode(), card = $("#installCard"), hideUntil = (S.instHide || 0) + 14 * 864e5;
+  const show = (m === "prompt" || (m === "ios" && MOBILE)) && Date.now() > hideUntil;
+  card.hidden = !show;
+  card.innerHTML = show ? `<svg class="logo" aria-hidden="true"><use href="#i-orloj"/></svg><div><b>Praha Pilot sul telefono</b><p>${m === "ios" ? "Aggiungila alla schermata Home: si apre a tutto schermo e funziona senza internet." : "Installala: icona sulla Home, tutto schermo e funziona senza internet."}</p></div><button class="btn sm" type="button" data-act="install">${ico("i-install")}${m === "ios" ? "Come si fa" : "Installa"}</button><button class="icon-btn sm x" type="button" data-act="insthide" aria-label="Non ora">${ico("i-close")}</button>` : "";
+  const info = $("#mAppInfo"), btn = $("#mInstall");
+  if (info) info.textContent = {installed: "Stai usando Praha Pilot come app installata: funziona anche senza internet.", prompt: "Puoi installare Praha Pilot: icona sulla schermata Home, tutto schermo e funzionamento senza internet.", ios: "Su iPhone e iPad: tocca Condividi in Safari e poi «Aggiungi alla schermata Home».", iosweb: "Per installarla su iPhone apri l’indirizzo dell’app in Safari, poi Condividi e «Aggiungi alla schermata Home».", menu: "Dal menu del browser scegli «Installa app» oppure «Aggiungi a schermata Home».", web: "Per installarla apri l’app dal suo indirizzo web, non come file."}[m];
+  if (btn) btn.hidden = m === "installed";
+}
+async function doInstall() {
+  if (bip) { const e = bip; bip = null; try { e.prompt(); const r = await e.userChoice; toast(r && r.outcome === "accepted" ? "Installazione in corso…" : "Va bene, puoi installarla quando vuoi dalle Impostazioni"); } catch (er) {} renderInstall(); return; }
+  const m = installMode(), link = `<code class="linkbox">${esc(HOME_URL)}</code><div class="acts"><button class="btn sm ghost" type="button" data-act="copy" data-t="${esc(HOME_URL)}">${ico("i-copy")}Copia l’indirizzo</button>${navigator.share ? `<button class="btn sm ghost" type="button" data-act="shareapp">${ico("i-share")}Invia l’app a un amico</button>` : ""}</div>`;
+  const steps = m === "ios" ? `<ol class="steps"><li>Tocca <b>Condividi</b> (il quadrato con la freccia in su) nella barra di Safari. Sui modelli recenti è nel menu <b>⋯</b>.</li><li>Scorri e scegli <b>«Aggiungi alla schermata Home»</b>.</li><li>Tocca <b>Aggiungi</b>: l’icona dell’Orologio compare sulla Home.</li></ol>`
+    : m === "iosweb" ? `<ol class="steps"><li>Apri questo indirizzo in <b>Safari</b>:</li></ol>${link}<ol class="steps" start="2"><li>Tocca <b>Condividi</b> e poi <b>«Aggiungi alla schermata Home»</b>.</li></ol>`
+    : m === "installed" ? `<p>Praha Pilot è già installata su questo dispositivo.</p>${link}`
+    : m === "web" ? `<p>Apri Praha Pilot dal suo indirizzo, poi installala dal menu del browser:</p>${link}`
+    : `<ol class="steps"><li>Apri il menu del browser (<b>⋮</b> in alto a destra).</li><li>Scegli <b>«Installa app»</b> oppure <b>«Aggiungi a schermata Home»</b>.</li></ol>`;
+  openSheet("Installa Praha Pilot", steps + (m === "ios" || m === "menu" ? `<h3>Per i tuoi amici</h3><p class="hint">Invia loro questo indirizzo: lo aprono e la installano allo stesso modo.</p>${link}` : ""));
+}
+function showUpd() { const u = $("#upd"); if (!u.hidden) return; u.innerHTML = `<span>${ico("i-refresh")}C’è una versione nuova di Praha Pilot</span><button class="btn sm" type="button" data-act="reload">Aggiorna</button><button class="icon-btn sm" type="button" data-act="updx" aria-label="Più tardi">${ico("i-close")}</button>`; u.hidden = false; }
+function pwaInit() {
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); bip = e; renderInstall(); });
+  window.addEventListener("appinstalled", () => { bip = null; renderInstall(); toast("Fatto: Praha Pilot è tra le tue app"); });
+  renderInstall();
+  let sw = null; try { sw = WEB && "serviceWorker" in navigator ? navigator.serviceWorker : null; } catch (e) { sw = null; }
+  if (!sw) return;
+  sw.addEventListener("message", e => { if (e.data && e.data.type === "praha-update") showUpd(); });
+  const go = () => sw.register("sw.js", {updateViaCache: "none"}).then(() => sw.ready).then(r => { if (r.active) r.active.postMessage({type: "praha-fonts"}); }).catch(() => {});
+  if (document.readyState === "complete") setTimeout(go, 1200); else window.addEventListener("load", () => setTimeout(go, 1200), {once: true});
+}
+
+/* ---- orologio dal vivo: poche scritture al DOM, ferme quando la pagina non si vede ---- */
+let lastSky = 0;
+function renderNow() {
+  const n = pragueNow();
+  setTxt($("#nowTime"), hhmm(n.h, n.mi)); setTxt($("#nowDate"), DOWS[n.dow] + " " + n.da + " " + MONTHS[n.mo - 1] + " · ora di Praga");
+  const o = orlojNext(n), ob = $("#nowOrloj"); setTxt(ob.querySelector("b"), orlojShort(o)); ob.setAttribute("aria-label", "Orologio Astronomico: apostoli " + orlojShort(o) + ". Tocca per vederlo sulla mappa");
+  const s = sunNext(), sc = $("#nowSun"); if (s) { setTxt(sc.querySelector("small"), s.rise ? "Alba" : "Tramonto"); setTxt(sc.querySelector("b"), s.hm); const u = sc.querySelector("use"), hr = s.rise ? "#i-moon" : "#i-sun"; if (u.getAttribute("href") !== hr) u.setAttribute("href", hr); }
+  renderWxChip();
+}
+function tick() {
+  if (document.hidden) return;
+  renderNow(); liveBadges(document);
+  if (Date.now() - lastSky > 5 * 60000) { lastSky = Date.now(); Map3D.setSky(S.sky); }
+  loadWx(); loadRate();
+}
+
+let modalRet = null;
+function syncSettings() { $("#mRate").value = NE.format(S.rate); $("#mRateAuto").checked = !!S.rateAuto; $("#mMaps").value = MAPS[S.maps] ? S.maps : "auto"; $("#mSky").checked = !!S.sky; renderRateInfo(); renderInstall(); }
+function openModal() { const m = $("#modal"); if (!m.hidden) return; modalRet = document.activeElement; syncSettings(); m.hidden = false; setTimeout(() => { if (!m.hidden) $("#mClose").focus({preventScroll: true}); }, 30); }
+function closeModal() { const m = $("#modal"); if (m.hidden) return; m.hidden = true; if (modalRet && modalRet.focus && document.contains(modalRet)) modalRet.focus({preventScroll: true}); modalRet = null; }
 
 /* ---- schede (tab) ---- */
 const TABS = ["esplora", "assistente", "portafoglio", "muoversi", "sos"];
 function setTab(t, push) {
-  if (!TABS.includes(t)) t = "esplora"; S.tab = t; document.body.dataset.tab = t;
+  if (!TABS.includes(t)) t = "esplora"; const same = S.tab === t && document.body.dataset.tab === t; S.tab = t; document.body.dataset.tab = t;
   TABS.forEach(x => { $("#pane-" + x).hidden = x !== t; const b = $(`#tabs [data-tab="${x}"]`); b.setAttribute("aria-selected", x === t); b.classList.toggle("on", x === t); });
   if (push && location.hash !== "#" + t) location.hash = t;
-  if (t === "portafoglio") renderWallet(); if (t === "esplora") { renderExplore(false); Map3D.resize(); }
-  if (matchMedia("(max-width:979px)").matches) window.scrollTo(0, 0); else $(".panel").scrollTop = 0;
+  if (t === "portafoglio") renderWallet(); if (t === "esplora") { renderExplore(false); Map3D.resize(); } if (t === "sos") renderMeet();
+  if (!same) { if (matchMedia("(max-width:979px)").matches) window.scrollTo(0, 0); else $(".panel").scrollTop = 0; }
 }
 
 /* ---- avvio ---- */
@@ -1352,24 +1993,31 @@ function boot(data) {
   if (started) return; started = true;
   load(); if (data && data.loc) Object.assign(S, data);
   if (!S.loc || !S.loc.la) S.loc = Object.assign({}, DEMO);
+  if (!Array.isArray(S.favs)) S.favs = []; S.favs = S.favs.filter(id => byId(id));
+  if (!S.split || typeof S.split !== "object") S.split = {tip: 0};
+  if (S.meet && !(S.meet.la && S.meet.lo)) S.meet = null;
+  if (!MAPS[S.maps]) S.maps = "auto";
+  { const fc = document.createElement("b"); fc.className = "cnt"; fc.id = "favCnt"; fc.hidden = true; $('#cats [data-c="fav"]').appendChild(fc); }
+  $("#mapCard").setAttribute("data-keep", "");
   $("#pcItem").innerHTML = PRICES.map((p, i) => `<option value="${i}">${esc(p[0])}</option>`).join("");
   $("#eCat").innerHTML = ECATS.map(e => `<option value="${e[0]}">${e[1]}</option>`).join("");
   $("#rateTxt").textContent = NE.format(S.rate);
   $("#oticks").innerHTML = Array.from({length: 24}, (_, i) => { const a = i * Math.PI / 12, r2 = i % 6 ? 44 : 46.5; return `<line x1="${(50 + 40.5 * Math.sin(a)).toFixed(2)}" y1="${(50 - 40.5 * Math.cos(a)).toFixed(2)}" x2="${(50 + r2 * Math.sin(a)).toFixed(2)}" y2="${(50 - r2 * Math.cos(a)).toFixed(2)}"/>`; }).join("");
   Map3D.init($("#map"), $("#mapwrap"), $("#mapLabels"), {
-    pick: id => selectItem(id, false),
-    ground: (la, lo, x, y) => { const pop = $("#mapPop"), np = nearPlace(la, lo, 200); pop.dataset.la = la; pop.dataset.lo = lo; $("#popTxt").textContent = np ? "Vicino a " + np[0] : quarter(la, lo); pop.style.left = Math.min(Math.max(x, 110), $("#mapwrap").clientWidth - 110) + "px"; pop.style.top = Math.max(y, 90) + "px"; pop.hidden = false; },
+    pick: id => { if (id === "meet") showMapCard("meet"); else selectItem(id, false, true); },
+    ground: (la, lo, x, y) => { hideMapCard(); const pop = $("#mapPop"), np = nearPlace(la, lo, 200); pop.dataset.la = la; pop.dataset.lo = lo; $("#popTxt").textContent = np ? "Vicino a " + np[0] : quarter(la, lo); pop.style.left = Math.min(Math.max(x, 110), $("#mapwrap").clientWidth - 110) + "px"; pop.style.top = Math.max(y, 90) + "px"; pop.hidden = false; },
     bearing: th => { $("#hand").style.transform = `rotate(${(-th * 180 / Math.PI).toFixed(1)}deg)`; },
     move: () => { $("#mapPop").hidden = true; $("#mapHint").classList.add("gone"); }
   }, S.loc);
-  renderSign(); renderExplore(false); renderTransport(); renderSOS(); renderWallet();
+  Map3D.setSky(S.sky); Map3D.setMeet(S.meet); lastSky = Date.now();
+  renderSign(); renderExplore(false); renderTransport(); renderSOS(); renderWallet(); renderMeet(); renderSplit(); renderNow(); updFavCount();
   if (!S.chat.length) { const q = "Ho fame, 200 corone, vicino al Ponte Carlo"; S.chat = [{me: 1, t: q}, {h: answer(q, true), ex: 1}]; }
   renderChat();
   setTab((location.hash || "").slice(1) || "esplora");
   setTimeout(() => $("#mapHint").classList.add("gone"), 7000);
 
   /* eventi */
-  window.addEventListener("hashchange", () => setTab(location.hash.slice(1)));
+  window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (t !== S.tab) setTab(t); });
   $("#tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) setTab(b.dataset.tab, true); });
   const where = $("#where");
   where.addEventListener("input", () => { const v = where.value.trim(); if (v.length < 2) { $("#sugg").hidden = true; return; } showSugg(findPlaces(v)); });
@@ -1380,7 +2028,8 @@ function boot(data) {
   $("#gpsBtn").addEventListener("click", gps); $("#mloc").addEventListener("click", () => { if (S.loc.src === "gps" || S.loc.src === "demo") gps(); Map3D.flyTo(S.loc.la, S.loc.lo, 0.45); });
   $("#budget").addEventListener("input", e => { const v = Math.max(0, Math.min(100000, Math.round(+e.target.value || 0))); S.budget = v; save(); renderExplore(false); });
   $("#budChips").addEventListener("click", e => { const b = e.target.closest("[data-b]"); if (b) { S.budget = +b.dataset.b; save(); renderExplore(true); } });
-  $("#cats").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b) { S.cat = b.dataset.c; S.sel = null; save(); renderExplore(true); } });
+  $("#cats").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b) { hideMapCard(); S.cat = b.dataset.c; S.sel = null; save(); renderExplore(true); } });
+  $("#openNow").addEventListener("change", e => { S.openNow = e.target.checked; save(); renderExplore(false); });
   $("#radius").addEventListener("click", e => { const b = e.target.closest("[data-r]"); if (b) { S.radius = +b.dataset.r; save(); renderExplore(true); } });
   $("#onlyB").addEventListener("change", e => { S.onlyB = e.target.checked; save(); renderExplore(false); });
   $("#sort").addEventListener("change", e => { S.sort = e.target.value; save(); renderExplore(false); });
@@ -1402,8 +2051,31 @@ function boot(data) {
     else if (act === "cat") { S.cat = a.dataset.c; save(); renderExplore(true); }
     else if (act === "tab") setTab(a.dataset.tab, true);
     else if (act === "ask") ask(a.dataset.q);
-    else if (act === "spend") { const p = byId(id); setTab("portafoglio", true); { const c0 = cost(p, S.cat); $("#eAmt").value = c0[0] || c0[1]; } $("#eNote").value = p.n; $("#eCat").value = {eat: "eat", see: "see", shop: "shop", fun: "fun", casino: "fun"}[p.c[0]] || "oth"; $("#eAmt").focus(); }
+    else if (act === "spend") { const p = byId(id); setTab("portafoglio", true); { const c0 = cost(p, S.cat === "fav" ? p.c[0] : S.cat); $("#eAmt").value = c0[0] || c0[1]; } $("#eNote").value = p.n; $("#eCat").value = {eat: "eat", see: "see", shop: "shop", fun: "fun", casino: "fun"}[p.c[0]] || "oth"; $("#eAmt").focus(); }
     else if (act === "delexp") { S.wallet.items = S.wallet.items.filter(i => String(i.ts) !== a.dataset.ts); save(); renderWallet(); }
+    else if (act === "navpick") navPick(+a.dataset.la, +a.dataset.lo, a.dataset.n);
+    else if (act === "fav") toggleFav(id);
+    else if (act === "favclear") { if (!a.dataset.arm) { a.dataset.arm = 1; a.lastChild.nodeValue = "Tocca di nuovo per svuotare"; setTimeout(() => { if (a.isConnected) { delete a.dataset.arm; a.lastChild.nodeValue = "Svuota i preferiti"; } }, 4000); return; } S.favs = []; save(); updFavCount(); renderExplore(false); toast("Preferiti svuotati"); }
+    else if (act === "tourfit") { const pts = S.favs.map(byId).filter(Boolean); if (pts.length) { Map3D.fit(S.loc.la, S.loc.lo, pts); if (!isDesk()) window.scrollTo({top: 0, behavior: RM ? "auto" : "smooth"}); } }
+    else if (act === "say") say(a.dataset.t, a);
+    else if (act === "copy") copyText(a.dataset.t, "Link copiato");
+    else if (act === "sharepl") sharePlace(+a.dataset.la, +a.dataset.lo, (a.dataset.n || "Destinazione") + " (Praga)");
+    else if (act === "orloj") { if (S.tab !== "esplora") setTab("esplora", true); const p = byId("orloj"); Map3D.flyTo(p.la, p.lo, 0.7); selectItem("orloj", false, true); if (!isDesk()) window.scrollTo({top: 0, behavior: RM ? "auto" : "smooth"}); }
+    else if (act === "card") { const isTrap = TRAPS.some(t => t.id === id), p = byId(id); if (!document.getElementById("r-" + id)) { if (isTrap) S.cat = "avoid"; else if (p) { S.cat = p.c[0]; S.onlyB = false; } save(); renderExplore(false); } const el = document.getElementById("r-" + id); if (el) { $$(".res.sel").forEach(x => x.classList.remove("sel")); el.classList.add("sel"); el.scrollIntoView({behavior: RM ? "auto" : "smooth", block: "center"}); } }
+    else if (act === "mcclose") hideMapCard();
+    else if (act === "meetset") meetSheet();
+    else if (act === "meetpick") { const i = +a.dataset.i, L = S.loc, m = i < 0 ? {la: L.la, lo: L.lo, name: L.name || L.cz || "La mia posizione"} : {la: MEETS[i][2], lo: MEETS[i][3], name: MEETS[i][0]}; S.meet = m; save(); Map3D.setMeet(m); renderMeet(); closeSheet(); toast("Punto di ritrovo: " + m.name); }
+    else if (act === "meetdel") { S.meet = null; save(); Map3D.setMeet(null); renderMeet(); if ($('#mapCard [data-act="meetshare"]')) hideMapCard(); toast("Punto di ritrovo tolto"); }
+    else if (act === "meetmap") { if (!S.meet) return; setTab("esplora", true); setTimeout(() => { Map3D.flyTo(S.meet.la, S.meet.lo, 0.6); showMapCard("meet"); }, 60); }
+    else if (act === "meetshare") { if (S.meet) sharePlace(S.meet.la, S.meet.lo, "Punto di ritrovo: " + S.meet.name + " (Praga)"); }
+    else if (act === "shareme") { const L = S.loc; if (L.src === "demo") { toast("Prima premi GPS in Esplora, oppure scrivi o tocca sulla mappa dove sei."); return; } sharePlace(L.la, L.lo, "Sono qui: " + (L.name || L.cz || "la mia posizione") + " (Praga)"); }
+    else if (act === "spadd") { const v = +a.dataset.v; if (v > 0) { S.wallet.items.push({a: v, c: "eat", n: "La mia quota del conto", ts: Date.now()}); save(); renderWallet(); toast("Spesa registrata: " + kc(v)); } }
+    else if (act === "install") doInstall();
+    else if (act === "insthide") { S.instHide = Date.now(); save(); renderInstall(); toast("Va bene: la trovi sempre nelle Impostazioni"); }
+    else if (act === "shareapp") { if (navigator.share) navigator.share({title: "Praha Pilot", text: "Praha Pilot: Praga spendendo poco. Si installa come app:", url: HOME_URL}).catch(() => {}); }
+    else if (act === "reload") location.reload();
+    else if (act === "updx") $("#upd").hidden = true;
+    else if (act === "wxload") loadWx(true);
     else if (act === "usebud") { S.wallet.total = estTotals()[+a.dataset.i].tot; S.wallet.days = S.est.days; save(); renderWallet(); toast("Budget del viaggio aggiornato"); $("#wTotal").scrollIntoView({behavior: RM ? "auto" : "smooth", block: "center"}); }
   });
   $("#wTotal").addEventListener("input", e => { S.wallet.total = Math.max(0, Math.round(+e.target.value || 0)); save(); renderWallet(); });
@@ -1418,16 +2090,58 @@ function boot(data) {
   $("#esDinner").addEventListener("change", e => { S.est.dinner = e.target.checked; save(); renderEst(); });
   ["trRides", "trDays"].forEach(id => $("#" + id).addEventListener("input", e => { S.tr[id === "trRides" ? "rides" : "days"] = Math.max(1, Math.min(id === "trRides" ? 12 : 10, Math.round(+e.target.value || 1))); save(); renderTransport(); }));
   const modal = $("#modal");
-  const openM = () => { $("#mRate").value = S.rate; modal.hidden = false; $("#mRate").focus(); };
-  $("#setBtn").addEventListener("click", openM); $("#rateBtn").addEventListener("click", openM);
-  $("#mClose").addEventListener("click", () => { modal.hidden = true; });
-  modal.addEventListener("click", e => { if (e.target === modal) modal.hidden = true; });
-  document.addEventListener("keydown", e => { if (e.key === "Escape") modal.hidden = true; });
-  $("#mSave").addEventListener("click", () => { const v = parseFloat(String($("#mRate").value).replace(",", ".")); if (v > 10 && v < 40) { S.rate = v; save(); $("#rateTxt").textContent = NE.format(v); renderExplore(false); renderWallet(); toast("Tasso aggiornato: 1 € = " + NE.format(v) + " Kč"); modal.hidden = true; } else toast("Inserisci un tasso realistico, per esempio 24,3"); });
+  $("#setBtn").addEventListener("click", openModal); $("#rateBtn").addEventListener("click", openModal);
+  $("#mClose").addEventListener("click", closeModal);
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  $("#shClose").addEventListener("click", closeSheet);
+  $("#sheet").addEventListener("click", e => { if (e.target === e.currentTarget) closeSheet(); });
+  document.addEventListener("keydown", e => {
+    const m = topModal(); if (!m) return;
+    if (e.key === "Escape") { e.preventDefault(); if (m.id === "sheet") closeSheet(); else closeModal(); return; }
+    if (e.key !== "Tab") return;
+    const f = $$('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea,[tabindex]:not([tabindex="-1"])', m).filter(x => x.offsetParent !== null || x.getClientRects().length);
+    if (!f.length) return; const first = f[0], last = f[f.length - 1], cur = document.activeElement;
+    if (e.shiftKey && (cur === first || !m.contains(cur))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && (cur === last || !m.contains(cur))) { e.preventDefault(); first.focus(); }
+  });
+  $("#mMaps").addEventListener("change", e => { S.maps = e.target.value; save(); refreshNav(); toast("«Portami lì» ora apre " + MAPS[mapsApp()].n); });
+  $("#mSky").addEventListener("change", e => { S.sky = e.target.checked; save(); Map3D.setSky(S.sky); });
+  $("#mRateAuto").addEventListener("change", e => { S.rateAuto = e.target.checked; save(); if (S.rateAuto) loadRate(true); });
+  $("#mRateNow").addEventListener("click", () => loadRate(true));
+  $("#mInstall").addEventListener("click", () => { closeModal(); doInstall(); });
+  $("#nowWx").addEventListener("click", () => { showWx(); if (!S.wx || Date.now() - S.wx.ts > 10 * 60000) loadWx(true); });
+  $("#spTot").addEventListener("input", renderSplit); $("#spN").addEventListener("input", renderSplit);
+  $("#spTip").addEventListener("click", e => { const b = e.target.closest("[data-t]"); if (b) { S.split.tip = +b.dataset.t; save(); renderSplit(); } });
+  /* «Portami lì» e link esterni: se la finestra non può aprire altre app, si offre il link da copiare */
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[data-nav], a.opt[data-app]"), ext = a || (FRAMED && e.target.closest('a[target="_blank"]'));
+    if (!ext) return;
+    if (a && a.matches(".opt")) { const rem = $("#navRemember"); if (rem && rem.checked) { S.maps = a.dataset.app; save(); refreshNav(); toast("D’ora in poi «Portami lì» apre " + MAPS[S.maps].n); } setTimeout(closeSheet, 450); }
+    if (FRAMED) {
+      e.preventDefault(); let w = null; try { w = window.open(ext.href, "_blank"); } catch (er) {}
+      if (w) { try { w.opener = null; } catch (er) {} return; }
+      const why = "Questa finestra non lascia aprire altre app. Copia il link qui sotto, oppure apri Praha Pilot dal suo indirizzo web.";
+      if (a) setTimeout(() => navPick(+a.dataset.la, +a.dataset.lo, a.dataset.n, why), a.matches(".opt") ? 520 : 0);
+      else openSheet("Apri il link", `<p class="warn">${esc(why)}</p><code class="linkbox">${esc(ext.href)}</code><div class="acts"><button class="btn sm ghost" type="button" data-act="copy" data-t="${esc(ext.href)}">${ico("i-copy")}Copia il link</button></div>`);
+      return;
+    }
+    if (a) navWatch();
+  });
+  $("#mSave").addEventListener("click", () => { const v = parseFloat(String($("#mRate").value).replace(",", ".")); if (!(v > 10 && v < 40)) { toast("Inserisci un tasso realistico, per esempio 24,3"); return; } if (Math.abs(v - S.rate) >= 0.005) { S.rate = v; S.rateSrc = "manual"; S.rateAuto = false; save(); applyRate(); toast("Tasso fissato a mano: 1 € = " + NE.format(v) + " Kč"); } closeModal(); });
   $("#mReset").addEventListener("click", e => { const b = e.currentTarget; if (!b.dataset.arm) { b.dataset.arm = 1; b.textContent = "Tocca di nuovo per cancellare tutto"; setTimeout(() => { delete b.dataset.arm; b.textContent = "Cancella spese e preferenze"; }, 4000); return; }
     delete b.dataset.arm; b.textContent = "Cancella spese e preferenze"; try { localStorage.removeItem(KEY); } catch (er) {} stopWatch();
     const d = JSON.parse(DEF); for (const k of Object.keys(d)) S[k] = d[k];
-    $("#rateTxt").textContent = NE.format(S.rate); renderSign(); renderExplore(true); renderWallet(); renderTransport(); renderChat(); modal.hidden = true; toast("Dati cancellati"); });
+    $("#rateTxt").textContent = NE.format(S.rate); hideMapCard(); Map3D.setMeet(null); Map3D.setSky(S.sky); renderSign(); renderExplore(true); renderWallet(); renderTransport(); renderChat(); renderMeet(); renderSplit(); updFavCount(); refreshNav(); closeModal(); toast("Dati cancellati"); });
+
+  /* dal vivo: l'orologio si aggiorna allo scoccare di ogni minuto */
+  const everyMinute = () => setTimeout(() => { tick(); everyMinute(); }, 60000 - Date.now() % 60000 + 80);
+  everyMinute();
+  document.addEventListener("visibilitychange", () => { if (document.hidden) clearTimeout(navT); else tick(); });
+  ["pagehide", "blur"].forEach(ev => window.addEventListener(ev, () => clearTimeout(navT)));
+  window.addEventListener("online", () => { loadWx(); loadRate(); });
+  setTimeout(() => { loadRate(); loadWx(); }, 1500);
+  pwaInit();
+  if (/[?&]debug\b/.test(location.search)) window.__pp = {S, Map3D, save, pragueNow, openState, ohTxt, orlojNext, sunNext, planTour, compute, renderExplore, selectItem, showMapCard, mapsApp, MAPS, IOS, FRAMED};
 }
 window.claude?.hot?.snapshot?.(() => S);
 window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? null);

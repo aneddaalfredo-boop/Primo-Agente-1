@@ -4,8 +4,11 @@
    Come si aggiorna:
    - quando pubblichi un nuovo index.html, il service worker se ne accorge da solo
      (confronta la copia salvata con quella sul sito) e l'app propone «Aggiorna»;
-   - cambia VERSION solo quando aggiungi, rinomini o togli file dall'elenco SHELL. */
-const VERSION = 'lampada-2026-11-25';
+   - cambia VERSION solo quando aggiungi, rinomini o togli file dall'elenco SHELL.
+   Gestisce soltanto i file della Lampada: le altre app pubblicate nello stesso sito
+   (per esempio Praha Pilot nella cartella praha/) hanno il loro service worker. */
+const VERSION = 'lampada-2026-11-28';
+const PREFIX = 'lampada-';
 const FONT_CACHE = 'lampada-fonts';
 const SHELL = [
   './index.html',
@@ -30,7 +33,8 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== VERSION && k !== FONT_CACHE).map(k => caches.delete(k)));
+    // solo le copie vecchie della Lampada: le cache delle altre app restano intatte
+    await Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== VERSION && k !== FONT_CACHE).map(k => caches.delete(k)));
     await self.clients.claim();
   })());
 });
@@ -49,8 +53,10 @@ self.addEventListener('fetch', event => {
   const scope = new URL(self.registration.scope).pathname;
   const isPage = req.mode === 'navigate' && (url.pathname === scope || url.pathname === scope + 'index.html');
   if (isPage) { event.respondWith(page(event)); return; }
+  if (!OWN.has(url.pathname)) return; // non è un file della Lampada: lo lasciamo passare
   event.respondWith(cacheFirst(req, VERSION));
 });
+const OWN = new Set(SHELL.map(u => new URL(u, self.registration.scope).pathname));
 
 /* La pagina: si mostra subito la copia salvata (funziona offline) e intanto si controlla
    se sul sito ce n'è una nuova; se è cambiata, la si salva e si avvisa l'app. */

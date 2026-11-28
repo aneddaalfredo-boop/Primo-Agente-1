@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="36%" r="78%"><stop offset="0" stop-color="#1c3654"/><stop offset=".62" stop-color="#101b28"/><stop offset="1" stop-color="#0b1016"/></radialGradient>
+    <radialGradient id="sky" cx="50%" cy="22%" r="80%"><stop offset="0" stop-color="#6aa6e6"/><stop offset=".55" stop-color="#2f6aa8"/><stop offset="1" stop-color="#1b4675"/></radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6dc95"/><stop offset="1" stop-color="#c69a3e"/></linearGradient>
+    <radialGradient id="sun" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff1c4"/><stop offset="1" stop-color="#d9b45a"/></radialGradient>
+    <clipPath id="dial"><circle cx="256" cy="256" r="126.0"/></clipPath>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="166.32" fill="#0b1016" stroke="url(#gold)" stroke-width="11.76"/>
+  <g stroke="#d9b45a" stroke-linecap="round"><line x1="256.0" y1="119.9" x2="256.0" y2="99.8" stroke-width="7.56"/><line x1="293.0" y1="118.1" x2="296.0" y2="106.7" stroke-width="4.62"/><line x1="327.4" y1="132.3" x2="333.3" y2="122.1" stroke-width="4.62"/><line x1="357.0" y1="155.0" x2="365.3" y2="146.7" stroke-width="4.62"/><line x1="379.7" y1="184.6" x2="389.9" y2="178.7" stroke-width="4.62"/><line x1="393.9" y1="219.0" x2="405.3" y2="216.0" stroke-width="4.62"/><line x1="392.1" y1="256.0" x2="412.2" y2="256.0" stroke-width="7.56"/><line x1="393.9" y1="293.0" x2="405.3" y2="296.0" stroke-width="4.62"/><line x1="379.7" y1="327.4" x2="389.9" y2="333.3" stroke-width="4.62"/><line x1="357.0" y1="357.0" x2="365.3" y2="365.3" stroke-width="4.62"/><line x1="327.4" y1="379.7" x2="333.3" y2="389.9" stroke-width="4.62"/><line x1="293.0" y1="393.9" x2="296.0" y2="405.3" stroke-width="4.62"/><line x1="256.0" y1="392.1" x2="256.0" y2="412.2" stroke-width="7.56"/><line x1="219.0" y1="393.9" x2="216.0" y2="405.3" stroke-width="4.62"/><line x1="184.6" y1="379.7" x2="178.7" y2="389.9" stroke-width="4.62"/><line x1="155.0" y1="357.0" x2="146.7" y2="365.3" stroke-width="4.62"/><line x1="132.3" y1="327.4" x2="122.1" y2="333.3" stroke-width="4.62"/><line x1="118.1" y1="293.0" x2="106.7" y2="296.0" stroke-width="4.62"/><line x1="119.9" y1="256.0" x2="99.8" y2="256.0" stroke-width="7.56"/><line x1="118.1" y1="219.0" x2="106.7" y2="216.0" stroke-width="4.62"/><line x1="132.3" y1="184.6" x2="122.1" y2="178.7" stroke-width="4.62"/><line x1="155.0" y1="155.0" x2="146.7" y2="146.7" stroke-width="4.62"/><line x1="184.6" y1="132.3" x2="178.7" y2="122.1" stroke-width="4.62"/><line x1="219.0" y1="118.1" x2="216.0" y2="106.7" stroke-width="4.62"/></g>
+  <g clip-path="url(#dial)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <circle cx="256" cy="487.84000000000003" r="210.84" fill="#c4512f"/>
+    <circle cx="256" cy="487.84000000000003" r="189.84" fill="#06080b"/>
+  </g>
+  <circle cx="256" cy="256" r="126.0" fill="none" stroke="url(#gold)" stroke-width="6.72"/>
+  <circle cx="256" cy="230.8" r="84.0" fill="none" stroke="#f0d48a" stroke-opacity=".55" stroke-width="4.2"/>
+  <g transform="rotate(38 256 256)"><line x1="256" y1="284.56" x2="256" y2="156.88" stroke="#ecc975" stroke-width="10.92" stroke-linecap="round"/><path d="M256 118.24000000000001l18.48 36.96h-36.96z" fill="#f6dc95"/><circle cx="256" cy="188.8" r="22.68" fill="url(#sun)" stroke="#0b1016" stroke-width="5.04"/></g>
+  <circle cx="256" cy="256" r="15.96" fill="#d9b45a" stroke="#0b1016" stroke-width="3.36"/>
+</svg>
