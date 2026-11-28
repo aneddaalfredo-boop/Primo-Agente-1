@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1016">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Praha Pilot">
+<title>Praha Pilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a pro night instrument for a student on a budget: calm, exact, warm, never shouty.
+   IDEA: Prague's Orloj, the astronomical clock that reads place and time at a glance; here it reads place and cost.
+   PICTURE: a floodlit 3D model of central Prague (Vltava, bridges, hills, spires) framed by an Orloj dial compass.
+   COLOUR and TYPE: Orloj night #0b1016, azure #3c7fc4, gold #d9b45a, vermilion #e2553b; Barlow + Barlow Condensed, like Prague's red enamel street signs.
+   LAYOUT: phone first (map, console, results, bottom tabs); from 980px map on the left, panel on the right. */
+:root{color-scheme:dark;--bg:#0b1016;--bg2:#0f161e;--card:#121b25;--card2:#18232f;--line:#223040;--line2:#2e3f52;--ink:#f1eadb;--mute:#aab4c0;--dim:#7f8b98;--gold:#d9b45a;--gold2:#f0d48a;--azure:#3c7fc4;--azure2:#8fbdf0;--verm:#e2553b;--verm2:#ff9a82;--sign:#b8232c;--r:16px;--fd:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;--fb:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px)}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--fb);overflow-x:clip;-webkit-tap-highlight-color:transparent}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-4px}
+a{color:var(--azure2)}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* testata */
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:calc(8px + var(--st)) 14px 8px;background:rgba(11,16,22,.93);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-height:44px;color:var(--ink);text-decoration:none}
+.logo{width:36px;height:36px;flex:none}
+.bt b{display:block;font:700 22px/1 var(--fd)}
+.bt small{display:block;color:var(--mute);font-size:13px;line-height:1.25}
+.rate{min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--mute);font-size:14px;white-space:nowrap}
+.rate b{color:var(--gold2)}
+.icon-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line2);background:var(--card);color:var(--ink)}
+.icon-btn.sm{width:38px;height:38px;border-radius:10px}
+
+/* mappa */
+.mapcol{padding:12px 12px 0}
+.mapwrap{position:relative;height:clamp(300px,46vh,500px);height:clamp(300px,46svh,500px);border-radius:20px;overflow:hidden;border:1px solid var(--line2);background:#0b1016;box-shadow:0 22px 50px rgba(0,0,0,.45);touch-action:none;user-select:none;-webkit-user-select:none}
+.mapwrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none;cursor:grab}
+.mapwrap canvas:active{cursor:grabbing}
+.mapwrap canvas:focus-visible{box-shadow:inset 0 0 0 2px var(--gold)}
+.map-labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ml{position:absolute;left:0;top:0;pointer-events:auto;display:flex;align-items:center;gap:6px;max-width:210px;overflow:hidden;padding:4px 9px;border-radius:10px;border:1px solid var(--line2);background:rgba(11,16,22,.9);color:var(--ink);font:600 13px/1.25 var(--fb);white-space:nowrap}
+.ml i{width:8px;height:8px;border-radius:50%;flex:none}
+.ml small{color:var(--gold2);font-weight:600;font-size:13px;margin-left:2px}
+.ml.sel{border-color:var(--gold);box-shadow:0 0 0 2px rgba(217,180,90,.3)}
+.ml.me{background:var(--ink);color:#0b1016;border-color:var(--ink);font-weight:700}
+.sign{position:absolute;left:12px;top:12px;z-index:2;max-width:calc(100% - 112px);padding:5px 11px 6px;border-radius:5px;background:var(--sign);color:#fff;font-family:var(--fd);box-shadow:inset 0 0 0 2px var(--sign),inset 0 0 0 3.5px #fff,0 8px 20px rgba(0,0,0,.5)}
+.sign small{display:block;font-size:13px;font-weight:600;line-height:1.2;opacity:.94;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sign b{display:block;font-size:21px;font-weight:700;line-height:1.05;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.orloj{position:absolute;right:10px;top:10px;z-index:2;width:78px;height:78px;padding:0;border:0;border-radius:50%;background:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,.55))}
+.orloj svg{width:100%;height:100%;display:block}
+.map-ctrl{position:absolute;right:10px;bottom:10px;z-index:2;display:flex;flex-direction:column;gap:8px}
+.mbtn{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line2);background:rgba(15,22,30,.9);color:var(--ink);font:600 22px/1 var(--fb)}
+.mbtn.txt{font:700 16px/1 var(--fd)}
+.trap-tog{position:absolute;left:10px;bottom:10px;z-index:2;display:flex;align-items:center;gap:6px;min-height:42px;padding:0 13px;border-radius:999px;border:1px solid var(--line2);background:rgba(15,22,30,.9);color:var(--mute);font-size:14px;font-weight:600}
+.trap-tog.on{color:var(--verm2);border-color:rgba(226,85,59,.6)}
+.map-hint{position:absolute;left:12px;top:76px;z-index:1;max-width:calc(100% - 110px);padding:4px 10px;border-radius:10px;background:rgba(11,16,22,.8);color:var(--mute);font-size:13px;line-height:1.3;pointer-events:none;transition:opacity .4s}
+.map-hint.gone{opacity:0}
+.map-pop{position:absolute;z-index:3;transform:translate(-50%,calc(-100% - 14px));display:flex;align-items:center;gap:8px;padding:7px 7px 7px 12px;border-radius:14px;border:1px solid var(--gold);background:#0f161e;box-shadow:0 10px 30px rgba(0,0,0,.6);white-space:nowrap;font-size:14px}
+.map-pop span{max-width:150px;overflow:hidden;text-overflow:ellipsis}
+
+/* pannello e schede */
+.panel{padding:12px 12px calc(92px + var(--sb))}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px 6px calc(6px + var(--sb));background:rgba(11,16,22,.96);border-top:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:54px;padding:6px 2px;border:0;border-radius:12px;background:none;color:var(--mute);font:600 14px/1.1 var(--fd)}
+.tabs button .ic{width:22px;height:22px}
+.tabs button.on{color:var(--gold2);background:rgba(217,180,90,.1)}
+@media(max-width:979px){body:not([data-tab="esplora"]) .mapcol{display:none}}
+.pane-h h2{margin:8px 0 4px;font:700 34px/1.05 var(--fd);text-wrap:balance}
+.pane-h p{margin:0 0 6px;color:var(--mute)}
+
+/* elementi comuni */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0}
+.card h3,.note h3{margin:0 0 8px;display:flex;align-items:center;gap:8px;font:700 21px/1.15 var(--fd)}
+.lbl{display:block;margin:0 0 6px;font-weight:600;font-size:15px}
+.field+.field{margin-top:16px}
+input[type=search],input[type=text],input[type=number],select{width:100%;min-height:46px;padding:0 12px;border-radius:12px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-size:16px}
+input::placeholder{color:var(--dim)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 16px;border-radius:12px;border:1px solid var(--gold);background:var(--gold);color:#16110a;font-weight:700;text-decoration:none;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+.btn.sm{min-height:40px;padding:0 12px;font-size:14px;border-radius:10px}
+.btn.busy{opacity:.55;pointer-events:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:40px;padding:0 15px;border-radius:999px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-weight:600;font-size:15px}
+.chip.on{background:var(--gold);border-color:var(--gold);color:#16110a}
+
+/* console */
+.where-row{display:flex;gap:8px}
+.search{position:relative;flex:1;display:flex;align-items:center}
+.search>.ic{position:absolute;left:13px;color:var(--dim);pointer-events:none}
+.search input{padding-left:42px}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:25;margin:0;padding:6px;list-style:none;background:#101923;border:1px solid var(--line2);border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.6);max-height:330px;overflow:auto}
+.sugg button{width:100%;display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 10px;border:0;border-radius:10px;background:none;text-align:left}
+.sugg button:hover{background:var(--card2)}
+.sugg b{display:block;font-weight:600}
+.sugg small{display:block;color:var(--mute);font-size:13px}
+.sugg .none{display:grid;gap:8px;padding:10px;color:var(--mute);font-size:14px}
+.loc-note{margin:8px 0 0;color:var(--mute);font-size:14px}
+.bud-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.bud-row input{width:150px;min-height:58px;font:700 34px/1 var(--fd);color:var(--gold2)}
+.unit{font:700 24px var(--fd);color:var(--gold)}
+.eq{color:var(--mute);font-size:15px}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:64px;padding:6px 4px;border-radius:14px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font:600 15px/1.1 var(--fd)}
+.cat .ic{width:23px;height:23px;color:var(--c)}
+.cat.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 15%,var(--bg2))}
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:16px}
+.seg{display:flex;max-width:100%;overflow-x:auto;border:1px solid var(--line2);border-radius:12px}
+.seg button{flex:none;min-height:42px;padding:0 11px;border:0;background:var(--bg2);color:var(--mute);font-weight:600;font-size:14px;white-space:nowrap}
+.seg button+button{border-left:1px solid var(--line2)}
+.seg button.on{background:var(--card2);color:var(--gold2)}
+.sw{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:15px;cursor:pointer}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw span{position:relative;flex:none;width:44px;height:26px;border-radius:999px;background:var(--line2);transition:background .2s}
+.sw span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:transform .2s}
+.sw input:checked+span{background:var(--azure)}
+.sw input:checked+span::after{transform:translateX(18px)}
+.sw input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.selw{display:inline-flex;align-items:center;gap:8px;color:var(--mute);font-size:15px}
+.selw select{width:auto;min-height:42px}
+
+/* risultati */
+.summary{margin:14px 2px 6px;color:var(--mute);font-size:15px}
+.summary b{color:var(--ink)}
+.banner{width:100%;display:flex;align-items:center;gap:10px;margin:8px 0;padding:12px 14px;border-radius:14px;border:1px solid rgba(226,85,59,.55);background:rgba(226,85,59,.12);color:var(--ink);text-align:left;font-size:15px}
+.banner .ic{color:var(--verm2)}
+.banner em{margin-left:auto;padding-left:6px;font-style:normal;font-weight:700;color:var(--verm2)}
+.res{margin:10px 0;padding:14px;border-radius:var(--r);border:1px solid var(--line);background:var(--card);scroll-margin:84px}
+.res.sel{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.res.dim{opacity:.62}
+.res-top{display:flex;align-items:flex-start;gap:12px}
+.cat-ico{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--c)}
+.cat-ico.sm{width:34px;height:34px;border-radius:10px}
+.res-h{flex:1}
+.res-h h3{margin:0;font:700 21px/1.15 var(--fd)}
+.meta{margin:2px 0 0;color:var(--mute);font-size:14px}
+.price{flex:none;max-width:44%;text-align:right}
+.price b{display:block;font:700 19px/1.15 var(--fd);color:var(--gold2)}
+.price small{display:block;color:var(--mute);font-size:13px;white-space:nowrap}
+.trap .price b{color:var(--verm2);white-space:nowrap}
+.trap .price small{white-space:normal}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
+.b{display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);color:var(--mute);font-size:13px}
+.b .ic{width:15px;height:15px}
+.b.ok{color:#b3d5f6;border-color:rgba(60,127,196,.6);background:rgba(60,127,196,.14)}
+.b.gold{color:var(--gold2);border-color:rgba(217,180,90,.5);background:rgba(217,180,90,.1)}
+.b.bad{color:var(--verm2);border-color:rgba(226,85,59,.55);background:rgba(226,85,59,.1)}
+.b.soft{background:transparent}
+.desc{margin:6px 0}
+.tip,.warn,.a-tip,.a-warn{margin:8px 0;padding:10px 12px;border-radius:12px;font-size:15px}
+.tip,.a-tip{background:rgba(60,127,196,.13)}
+.warn,.a-warn{background:rgba(226,85,59,.13)}
+.tip b,.warn b{display:block;font-size:14px}
+.tip b{color:#b3d5f6}.warn b{color:var(--verm2)}
+.hours{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:6px 0;color:var(--mute);font-size:14px}
+.hours span{color:var(--dim)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sub{margin:22px 2px 4px;font:700 22px var(--fd)}
+.dots{margin:0;padding-left:20px}
+.dots li{margin:6px 0}
+.note{background:rgba(183,155,255,.08);border-color:rgba(183,155,255,.35)}
+.empty p{color:var(--mute)}
+.more{margin:14px 2px}
+.fine{margin:18px 2px;color:var(--dim);font-size:13px}
+
+/* assistente */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:240px;padding:12px}
+.msg{max-width:94%;padding:10px 12px;border-radius:16px;font-size:15px}
+.msg p{margin:4px 0}
+.msg.me{align-self:flex-end;background:var(--gold);color:#16110a;font-weight:600;border-bottom-right-radius:6px}
+.msg.bot{align-self:flex-start;background:var(--bg2);border:1px solid var(--line);border-bottom-left-radius:6px}
+.msg .ex{display:inline-block;margin-bottom:2px;color:var(--dim);font-size:13px}
+.a-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.a-head small{color:var(--mute)}
+.a-pick{margin:8px 0;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.a-pick>div:first-child{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px}
+.a-pick span{color:var(--gold2);font-size:14px}
+.a-pick p{margin:6px 0 0;font-size:14px;color:var(--mute)}
+.a-pick.trap{border-color:rgba(226,85,59,.5)}
+.a-est b{color:var(--gold2)}
+.qs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.qs .chip{height:auto;padding:7px 13px;font-size:14px;font-weight:500;text-align:left;white-space:normal}
+.composer{position:sticky;bottom:calc(74px + var(--sb));z-index:5;display:flex;gap:8px;padding:8px 0;background:var(--bg)}
+.composer input{flex:1}
+.composer .btn{width:52px;padding:0}
+.link{min-height:44px;border:0;background:none;color:var(--dim);font-size:14px;text-decoration:underline}
+
+/* portafoglio */
+.wallet{display:grid;gap:14px}
+.dialbox{width:min(250px,72vw);margin:0 auto}
+.dialsvg{display:block;width:100%;height:auto}
+.dial-c{margin-top:-4px;text-align:center}
+.dial-c span{color:var(--mute);font-size:14px}
+.dial-c b{display:block;font:700 46px/1 var(--fd);color:var(--gold2)}
+.dial-c b.neg{color:var(--verm2)}
+.dial-c small{color:var(--mute);font-size:14px}
+.wset{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:10px}
+.wset label,.row label{display:grid;gap:6px;color:var(--mute);font-size:14px}
+.inp{position:relative;display:block}
+.inp i{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-style:normal;color:var(--dim);pointer-events:none}
+.inp input{padding-right:40px}
+.wstats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wstats div{padding:10px 12px;border-radius:12px;background:var(--bg2)}
+.wstats b{display:block;font:700 23px/1.1 var(--fd)}
+.wstats span{color:var(--mute);font-size:13px}
+.row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;margin:8px 0}
+.row>*{flex:1 1 130px}
+.row>.btn,.row>.eqs{flex:0 0 auto}
+.row label.sw{display:inline-flex;flex:1 1 200px;align-items:center;gap:10px;color:var(--ink);font-size:15px}
+.eqs{align-self:center;font:700 24px var(--fd);color:var(--gold)}
+.elist{list-style:none;margin:0;padding:0}
+.elist li{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.elist .en{flex:1}
+.elist .en small{display:block;color:var(--mute);font-size:13px}
+.elist .ea{font:700 19px var(--fd);white-space:nowrap}
+.elist .none{border:0;color:var(--mute)}
+.bars{display:grid;gap:6px;margin-bottom:8px}
+.bar{display:grid;grid-template-columns:86px minmax(0,1fr) auto;align-items:center;gap:8px;font-size:14px}
+.bar i{height:10px;border-radius:6px;background:var(--azure)}
+.bar b{white-space:nowrap}
+.verdict{margin-top:10px;padding:12px;border-radius:12px;border:1px solid}
+.verdict b{display:block;font:700 21px/1.2 var(--fd)}
+.verdict span,.verdict small{display:block;margin-top:2px;font-size:14px}
+.verdict.ok{border-color:rgba(60,127,196,.6);background:rgba(60,127,196,.13)}
+.verdict.ok b{color:#b3d5f6}
+.verdict.mid{border-color:rgba(217,180,90,.55);background:rgba(217,180,90,.1)}
+.verdict.mid b{color:var(--gold2)}
+.verdict.bad{border-color:rgba(226,85,59,.6);background:rgba(226,85,59,.13)}
+.verdict.bad b{color:var(--verm2)}
+.hint{margin:6px 0;color:var(--mute);font-size:14px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mute);font-size:14px;font-weight:600}
+td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.best,th.best{color:var(--gold2)}
+.est th:not(:first-child),.est td:not(:first-child){text-align:right;white-space:nowrap}
+.est small{display:block;color:var(--mute);font-size:13px;font-weight:500}
+.tot td{border-bottom:0;font-weight:700}
+.save-line b{color:var(--gold2)}
+.gifts{list-style:none;margin:0;padding:0}
+.gifts li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.gifts small{display:block;color:var(--mute);font-size:13px}
+.gifts em{font-style:normal;font-weight:600;color:var(--gold2);white-space:nowrap}
+.alts{margin:8px 0 0;padding-left:20px;color:var(--mute);font-size:14px}
+
+/* SOS */
+.sosgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.sosn{display:flex;flex-direction:column;gap:2px;min-height:74px;padding:12px 14px;border-radius:14px;border:1px solid rgba(226,85,59,.5);background:rgba(226,85,59,.12);color:var(--ink);text-decoration:none}
+.sosn:first-child{grid-column:1/-1}
+.sosn b{font:700 34px/1 var(--fd);color:var(--verm2)}
+.sosn span{color:var(--mute);font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{display:flex;align-items:center;min-height:48px;font-weight:600;cursor:pointer}
+details p{margin:0 0 12px;color:var(--mute)}
+.goldl{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.goldl li{padding:10px 12px;border-radius:12px;background:var(--bg2)}
+.goldl b{display:block;font:700 19px/1.2 var(--fd);color:var(--gold2)}
+.goldl span{font-size:15px}
+.phr{list-style:none;margin:0;padding:0}
+.phr li{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:2px 10px;padding:8px 0;border-top:1px solid var(--line)}
+.phr span{text-align:right;color:var(--gold2);font-size:14px}
+.phr em{grid-column:1/-1;font-style:normal;color:var(--mute);font-size:14px}
+
+/* finestre */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:end center;padding:12px;background:rgba(0,0,0,.62)}
+.sheet{width:min(520px,100%);max-height:90vh;overflow:auto;margin-bottom:var(--sb);padding:18px;border-radius:20px;border:1px solid var(--line2);background:#101821}
+.sheet-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sheet-h h2{margin:0;font:700 30px var(--fd)}
+.sheet h3{margin:18px 0 4px;font:700 20px var(--fd)}
+.toast{position:fixed;left:50%;bottom:calc(98px + var(--sb));z-index:70;max-width:min(92vw,460px);padding:12px 16px;border-radius:14px;background:var(--ink);color:#0b1016;font-weight:600;font-size:15px;box-shadow:0 12px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;transform:translate(-50%,16px);transition:opacity .25s,transform .25s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media(min-width:700px){.modal{place-items:center}}
+@media(min-width:980px){
+  body{height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  .layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 480px}
+  .mapcol{height:100%;padding:14px}
+  .mapwrap{height:100%}
+  .panel{overflow-y:auto;padding:0 18px 40px;border-left:1px solid var(--line)}
+  .tabs{position:sticky;top:0;bottom:auto;margin:0 -18px 4px;padding:10px 12px;background:var(--bg);border-top:0;border-bottom:1px solid var(--line)}
+  .tabs button{flex-direction:row;gap:6px;min-height:46px;font-size:15px}
+  .composer{bottom:0}
+  .toast{bottom:24px}
+  .cats{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:380px){.bt small{display:none}.cats{grid-template-columns:repeat(3,minmax(0,1fr))}.price{max-width:40%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body data-tab="esplora">
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-all" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></symbol>
+<symbol id="i-eat" viewBox="0 0 24 24"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 3c-2 0-3 2.5-3 6s1 4 3 4v8"/></symbol>
+<symbol id="i-shop" viewBox="0 0 24 24"><path d="M5 8h14l-1.1 12H6.1L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+<symbol id="i-see" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-fun" viewBox="0 0 24 24"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></symbol>
+<symbol id="i-casino" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.2"/><circle cx="9" cy="9" r="1.1" fill="currentColor"/><circle cx="15" cy="9" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="9" cy="15" r="1.1" fill="currentColor"/><circle cx="15" cy="15" r="1.1" fill="currentColor"/></symbol>
+<symbol id="i-avoid" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M12 8v5M12 16.4v.2"/></symbol>
+<symbol id="i-gps" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><circle cx="12" cy="12" r="8"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></symbol>
+<symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2-6 3 3v3M12 15l-1-5 3-1 2 4 3 1M11 10l-3 2-1 3"/></symbol>
+<symbol id="i-tram" viewBox="0 0 24 24"><rect x="6" y="5" width="12" height="12" rx="3"/><path d="M6 11.5h12M9 17l-2 3.5M15 17l2 3.5M9.5 2.5h5M12 2.5V5"/><circle cx="9.5" cy="14.2" r=".8" fill="currentColor"/><circle cx="14.5" cy="14.2" r=".8" fill="currentColor"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1V7z"/><path d="M4 7l11-3v3"/><path d="M15.5 13.5h4.5"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9.5L4 20V5z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+<symbol id="i-sos" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.8"/><path d="M5.6 5.6l3.7 3.7M14.7 14.7l3.7 3.7M18.4 5.6l-3.7 3.7M9.3 14.7l-3.7 3.7"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><path d="M5 19V10a4 4 0 0 1 4-4h9"/><path d="M15 3l3 3-3 3"/><circle cx="5" cy="19.5" r="1.4"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6.5l6-2 6 2 6-2v13l-6 2-6-2-6 2v-13z"/><path d="M9 4.5v13M15 6.5v13"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M2.5 12h3M18.5 12h3M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.6-6.4L4 12z"/></symbol>
+<symbol id="i-orloj" viewBox="0 0 24 24"><clipPath id="lcp"><circle cx="12" cy="12" r="8"/></clipPath><circle cx="12" cy="12" r="11" fill="#0b1016" stroke="#d9b45a" stroke-width="1.4"/><g clip-path="url(#lcp)"><rect width="24" height="24" fill="#2f6aa8"/><circle cx="12" cy="27" r="14.4" fill="#c4512f"/><circle cx="12" cy="27" r="12.6" fill="#06080b"/></g><circle cx="12" cy="12" r="8" fill="none" stroke="#d9b45a" stroke-width="1"/><path d="M12 13.5V4.6" stroke="#f0d48a" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="8.2" r="2" fill="#d9b45a" stroke="#0b1016" stroke-width=".8"/><circle cx="12" cy="12" r="1.3" fill="#d9b45a"/></symbol>
+</defs></svg>
+
+<header class="top">
+  <a class="brand" href="#esplora" aria-label="Praha Pilot: torna a Esplora"><svg class="logo" aria-hidden="true"><use href="#i-orloj"/></svg><span class="bt"><b>Praha Pilot</b><small>Praga spendendo poco</small></span></a>
+  <button class="rate" id="rateBtn" type="button" aria-label="Tasso di cambio: tocca per modificarlo">1 € = <b id="rateTxt">24,30</b> Kč</button>
+  <button class="icon-btn" id="setBtn" type="button" aria-label="Impostazioni"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg></button>
+</header>
+
+<div class="layout">
+  <section class="mapcol" aria-label="Mappa 3D">
+    <div class="mapwrap" id="mapwrap">
+      <canvas id="map" tabindex="0" aria-label="Mappa 3D del centro di Praga. Trascina per spostarti, due dita per ruotare e zoomare, tocca un punto per impostarlo come tua posizione. Da tastiera: frecce, più e meno, Q ed E per ruotare."></canvas>
+      <div class="map-labels" id="mapLabels"></div>
+      <div class="sign" id="sign" aria-live="polite"><small id="signQ">Staré Město</small><b id="signN">Staroměstské náměstí</b></div>
+      <button class="orloj" id="compass" type="button" aria-label="Bussola: tocca per orientare la mappa a nord">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="oclip"><circle cx="50" cy="50" r="37"/></clipPath><radialGradient id="osky" cx="50%" cy="18%" r="85%"><stop offset="0" stop-color="#4a8ccf"/><stop offset="1" stop-color="#1b4675"/></radialGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="#0b1016" stroke="#d9b45a" stroke-width="2.2"/>
+          <g id="oticks" stroke="#d9b45a" stroke-width="1.5" stroke-linecap="round"></g>
+          <g clip-path="url(#oclip)"><rect width="100" height="100" fill="url(#osky)"/><circle cx="50" cy="118" r="62" fill="#c4512f"/><circle cx="50" cy="118" r="55.5" fill="#06080b"/></g>
+          <circle cx="50" cy="50" r="37" fill="none" stroke="#d9b45a" stroke-width="1.6"/>
+          <circle cx="50" cy="50" r="22" fill="none" stroke="#f0d48a" stroke-opacity=".45" stroke-width="1"/>
+          <g id="hand" style="transform-box:view-box;transform-origin:50px 50px"><line x1="50" y1="57" x2="50" y2="15" stroke="#f0d48a" stroke-width="2.8" stroke-linecap="round"/><path d="M50 6l5 10h-10z" fill="#f0d48a"/><circle cx="50" cy="31" r="6.5" fill="#d9b45a" stroke="#0b1016" stroke-width="1.5"/><text x="50" y="34.6" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="700" font-size="10" fill="#0b1016">N</text></g>
+          <circle cx="50" cy="50" r="4.2" fill="#d9b45a"/></svg>
+      </button>
+      <div class="map-ctrl">
+        <button class="mbtn" id="zin" type="button" aria-label="Avvicina">+</button>
+        <button class="mbtn" id="zout" type="button" aria-label="Allontana">−</button>
+        <button class="mbtn txt" id="m3d" type="button" aria-label="Vista dall’alto">2D</button>
+        <button class="mbtn" id="mloc" type="button" aria-label="Vai alla mia posizione"><svg class="ic" aria-hidden="true"><use href="#i-gps"/></svg></button>
+      </div>
+      <button class="trap-tog on" id="trapTog" type="button"><svg class="ic" aria-hidden="true"><use href="#i-avoid"/></svg>Zone trappola</button>
+      <div class="map-hint" id="mapHint">Tocca la mappa per dire «sono qui»</div>
+      <div class="map-pop" id="mapPop" hidden><span id="popTxt"></span><button class="btn sm" id="popSet" type="button">Sono qui</button><button class="icon-btn sm" id="popClose" type="button" aria-label="Chiudi"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    </div>
+  </section>
+
+  <main class="panel">
+    <nav class="tabs" id="tabs" aria-label="Sezioni">
+      <button type="button" data-tab="esplora"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>Esplora</button>
+      <button type="button" data-tab="assistente"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>Assistente</button>
+      <button type="button" data-tab="portafoglio"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Portafoglio</button>
+      <button type="button" data-tab="muoversi"><svg class="ic" aria-hidden="true"><use href="#i-tram"/></svg>Muoversi</button>
+      <button type="button" data-tab="sos"><svg class="ic" aria-hidden="true"><use href="#i-sos"/></svg>SOS</button>
+    </nav>
+
+    <section class="pane" id="pane-esplora" aria-label="Esplora">
+      <div class="console card">
+        <div class="field">
+          <label class="lbl" for="where">Dove sei?</label>
+          <div class="where-row">
+            <div class="search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input id="where" type="search" enterkeyhint="search" autocomplete="off" placeholder="Monumento, via, fermata della metro…"><ul class="sugg" id="sugg" hidden></ul></div>
+            <button class="btn" id="gpsBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-gps"/></svg>GPS</button>
+          </div>
+          <p class="loc-note" id="locNote"></p>
+        </div>
+        <div class="field">
+          <label class="lbl" for="budget">Quanto vuoi spendere al massimo?</label>
+          <div class="bud-row"><input id="budget" type="number" inputmode="numeric" min="0" step="10" value="300"><span class="unit">Kč</span><span class="eq" id="budEur"></span></div>
+          <div class="chips" id="budChips"><button class="chip" type="button" data-b="0">Gratis</button><button class="chip" type="button" data-b="100">100</button><button class="chip" type="button" data-b="200">200</button><button class="chip" type="button" data-b="300">300</button><button class="chip" type="button" data-b="500">500</button><button class="chip" type="button" data-b="1000">1.000</button></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Cosa cerchi?</span>
+          <div class="cats" id="cats">
+            <button class="cat" type="button" data-c="all" style="--c:#d9b45a"><svg class="ic" aria-hidden="true"><use href="#i-all"/></svg>Tutto</button>
+            <button class="cat" type="button" data-c="eat" style="--c:#f2a541"><svg class="ic" aria-hidden="true"><use href="#i-eat"/></svg>Mangiare</button>
+            <button class="cat" type="button" data-c="shop" style="--c:#7fb4ea"><svg class="ic" aria-hidden="true"><use href="#i-shop"/></svg>Comprare</button>
+            <button class="cat" type="button" data-c="see" style="--c:#efe6d2"><svg class="ic" aria-hidden="true"><use href="#i-see"/></svg>Vedere</button>
+            <button class="cat" type="button" data-c="fun" style="--c:#ff8fb4"><svg class="ic" aria-hidden="true"><use href="#i-fun"/></svg>Svago</button>
+            <button class="cat" type="button" data-c="casino" style="--c:#b79bff"><svg class="ic" aria-hidden="true"><use href="#i-casino"/></svg>Casinò</button>
+            <button class="cat" type="button" data-c="avoid" style="--c:#ff5a3c"><svg class="ic" aria-hidden="true"><use href="#i-avoid"/></svg>Evita</button>
+          </div>
+        </div>
+        <div class="filters">
+          <div class="seg" id="radius" role="group" aria-label="Distanza massima"><button type="button" data-r="500">500 m</button><button type="button" data-r="1000">1 km</button><button type="button" data-r="2000">2 km</button><button type="button" data-r="99999999">Tutta Praga</button></div>
+          <label class="sw"><input type="checkbox" id="onlyB" checked><span></span>Solo nel budget</label>
+          <label class="selw">Ordina <select id="sort"><option value="smart">Consigliati</option><option value="near">Più vicini</option><option value="cheap">Più economici</option></select></label>
+        </div>
+      </div>
+      <p class="summary" id="summary" aria-live="polite"></p>
+      <div id="banner"></div>
+      <div class="results" id="results"></div>
+      <p class="more"><a id="gmore" href="https://www.google.com/maps" target="_blank" rel="noopener">Cerca altri posti qui intorno su Google Maps</a></p>
+      <p class="fine">Prezzi e orari raccolti a novembre 2026 da fonti ufficiali (PID, Banca Nazionale Ceca, Castello di Praga, Prague City Tourism) e dalla stampa ceca; quelli segnati «stima» sono indicativi. Controlla sempre il prezzo prima di pagare. App indipendente, non collegata ai locali citati.</p>
+    </section>
+
+    <section class="pane" id="pane-assistente" aria-label="Assistente" hidden>
+      <div class="pane-h"><h2>Chiedi al Pilot</h2><p>Scrivi come parleresti a un amico praghese: dove sei, quanto vuoi spendere e cosa cerchi. Risponde all’istante con i dati dell’app, anche senza internet.</p></div>
+      <div class="chat card" id="chat" aria-live="polite"></div>
+      <div class="qs" id="suggQ">
+        <button class="chip" type="button" data-q="Ho 150 corone e fame, cosa mangio qui vicino?">Ho 150 Kč e fame</button>
+        <button class="chip" type="button" data-q="Cosa vedo gratis qui intorno?">Cosa vedo gratis?</button>
+        <button class="chip" type="button" data-q="Souvenir economici con 200 corone">Souvenir con 200 Kč</button>
+        <button class="chip" type="button" data-q="Serata low cost con 300 corone">Serata con 300 Kč</button>
+        <button class="chip" type="button" data-q="Dove mi possono fregare qui?">Dove mi fregano?</button>
+        <button class="chip" type="button" data-q="Quale biglietto del tram mi conviene?">Quale biglietto?</button>
+        <button class="chip" type="button" data-q="Casinò vicino a me">Casinò</button>
+        <button class="chip" type="button" data-q="Come si dice il conto per favore in ceco?">Frasi in ceco</button>
+      </div>
+      <form class="composer" id="ask"><input id="q" type="text" autocomplete="off" enterkeyhint="send" placeholder="Es. ho 10 euro e fame vicino a Můstek" aria-label="Scrivi la tua domanda"><button class="btn" aria-label="Invia"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button></form>
+      <button class="link" id="chatClear" type="button">Cancella la conversazione</button>
+    </section>
+
+    <section class="pane" id="pane-portafoglio" aria-label="Portafoglio" hidden>
+      <div class="pane-h"><h2>Portafoglio</h2><p>Segna ogni spesa e vedi subito quanto ti resta, oggi e per tutto il viaggio.</p></div>
+      <div class="card wallet">
+        <div class="dialbox"><div id="dial"></div><div class="dial-c"><span>Ti restano</span><b id="wLeft">0 Kč</b><small id="wLeftE"></small></div></div>
+        <div class="wset"><label>Budget del viaggio<span class="inp"><input id="wTotal" type="number" inputmode="numeric" min="0" step="50"><i>Kč</i></span></label><label>Giorni<span class="inp"><input id="wDays" type="number" inputmode="numeric" min="1" max="30"></span></label></div>
+        <div class="wstats" id="wStats"></div>
+      </div>
+      <form class="card" id="addExp"><h3><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Segna una spesa</h3>
+        <div class="row"><input id="eAmt" type="text" inputmode="decimal" placeholder="Importo" aria-label="Importo"><select id="eCur" aria-label="Valuta"><option value="kc">Kč</option><option value="eur">€</option></select><select id="eCat" aria-label="Categoria"></select></div>
+        <div class="row"><input id="eNote" type="text" placeholder="Nota (facoltativa)" aria-label="Nota"><button class="btn">Aggiungi</button></div>
+      </form>
+      <div class="card"><h3>Le tue spese</h3><div class="bars" id="eBy"></div><ul class="elist" id="eList"></ul></div>
+      <div class="card"><h3>Convertitore</h3>
+        <div class="row"><label class="inp"><input id="cKc" type="text" inputmode="decimal" placeholder="Corone" aria-label="Corone"><i>Kč</i></label><span class="eqs">=</span><label class="inp"><input id="cEur" type="text" inputmode="decimal" placeholder="Euro" aria-label="Euro"><i>€</i></label></div>
+        <p class="hint">1 € = <b id="cRate"></b> Kč. Puoi cambiare il tasso toccando il riquadro in alto.</p></div>
+      <div class="card"><h3>Prezzo giusto?</h3><p class="hint">Ti chiedono un prezzo? Controlla se è onesto per Praga.</p>
+        <div class="row"><select id="pcItem" aria-label="Cosa stai comprando"></select><label class="inp"><input id="pcPrice" type="text" inputmode="decimal" placeholder="Prezzo" aria-label="Prezzo in corone"><i>Kč</i></label></div><div id="pcOut"></div></div>
+      <div class="card"><h3>Ti stanno fregando al cambio?</h3>
+        <div class="row"><label class="inp"><input id="xEur" type="text" inputmode="decimal" placeholder="Euro che dai" aria-label="Euro che dai"><i>€</i></label><label class="inp"><input id="xKc" type="text" inputmode="decimal" placeholder="Corone che ricevi" aria-label="Corone che ricevi"><i>Kč</i></label></div><div id="xOut"></div></div>
+      <div class="card"><h3>Quanto mi costa il viaggio?</h3>
+        <div class="row"><label>Giorni<span class="inp"><input id="esDays" type="number" inputmode="numeric" min="1" max="30"></span></label><label>Serate fuori<span class="inp"><input id="esNights" type="number" inputmode="numeric" min="0" max="30"></span></label></div>
+        <div class="row"><label class="sw"><input type="checkbox" id="esLunch"><span></span>Pranzi a carico mio</label><label class="sw"><input type="checkbox" id="esDinner"><span></span>Cene a carico mio</label></div>
+        <div id="esOut"></div>
+        <p class="hint">Stime per persona. «Risparmio»: supermercato e menu del giorno, a piedi, cose gratis. «Turista»: ristoranti in piazza, taxi e attrazioni a pagamento.</p></div>
+      <div class="card"><h3>Regali che costano poco</h3><p class="hint">Al supermercato. Prezzi indicativi.</p><ul class="gifts" id="gifts"></ul></div>
+    </section>
+
+    <section class="pane" id="pane-muoversi" aria-label="Muoversi" hidden>
+      <div class="pane-h"><h2>Muoversi spendendo poco</h2><p>Tariffe PID in vigore dal 1° gennaio 2026. Il centro si gira bene a piedi, ed è gratis.</p></div>
+      <div class="card"><h3>Biglietti</h3><div class="scroll"><table class="tix" id="tix"></table></div><p class="hint">*Gli SMS funzionano solo con un numero ceco. Il prezzo più basso è sempre nell’app PID Lítačka.</p></div>
+      <div class="card"><h3>Quale biglietto mi conviene?</h3>
+        <div class="row"><label>Corse al giorno<span class="inp"><input id="trRides" type="number" inputmode="numeric" min="1" max="12"></span></label><label>Giorni<span class="inp"><input id="trDays" type="number" inputmode="numeric" min="1" max="10"></span></label></div><div id="trOut"></div></div>
+      <div class="card"><h3>Regole che ti salvano dalla multa</h3><ul class="dots">
+        <li><b>Biglietto di carta:</b> convalidalo nella macchinetta gialla appena sali; in metro prima delle scale mobili. Il 24 ore e il 72 ore si convalidano una sola volta.</li>
+        <li><b>In app:</b> attivalo almeno un minuto prima di salire.</li>
+        <li><b>A bordo</b> di tram e bus c’è un terminale per biglietti da 30 min, 90 min e 24 ore, solo con carta contactless.</li>
+        <li><b>Multa:</b> 1.200 Kč se paghi subito, fino a 2.000 Kč se paghi in ritardo. I controllori sono in borghese e mostrano il tesserino: chiedi sempre la ricevuta.</li></ul></div>
+      <div class="card"><h3>Giri panoramici al prezzo di un biglietto</h3><ul class="dots">
+        <li><b>Tram 22:</b> Città Nuova, Malá Strana e Castello. Scendi a Pohořelec e arriva al Castello a piedi, in discesa.</li>
+        <li><b>Tram 23:</b> spesso con vetture storiche, stesso biglietto normale.</li>
+        <li><b>Funicolare di Petřín:</b> 60 Kč, oppure inclusa nel 24 h o 72 h. Ogni 10 minuti circa, 7:00–22:15.</li>
+        <li><b>Traghetti PID</b> sulla Moldava: inclusi nei biglietti da 24 e 72 ore.</li></ul></div>
+      <div class="card"><h3>Taxi senza fregature</h3><ul class="dots">
+        <li>Solo con app: <b>Bolt</b>, <b>Uber</b> o <b>Liftago</b>. Vedi il prezzo prima di partire.</li>
+        <li>Nei taxi regolari la tariffa massima è di circa 36 Kč al km.</li>
+        <li>Mai i taxi in attesa in Piazza della Città Vecchia, a San Venceslao o in stazione.</li></ul></div>
+      <div class="card"><h3>Da e per l’aeroporto</h3><ul class="dots">
+        <li><b>Filobus 59</b> fino a Nádraží Veleslavín, poi metro A: circa 35 minuti con il biglietto da 90 min (46 Kč in app, 50 di carta).</li>
+        <li><b>Bus 100</b> fino a Zličín, poi metro B.</li>
+        <li><b>Airport Express (AE)</b> diretto alla stazione centrale: tariffa speciale, costa di più.</li></ul></div>
+      <div class="card"><h3>App utili</h3><ul class="dots">
+        <li><b>PID Lítačka:</b> biglietti più economici.</li>
+        <li><b>Mapy.com:</b> mappe di Praga anche offline, molto precise.</li>
+        <li><b>Bolt, Uber, Liftago:</b> taxi a prezzo fisso.</li></ul></div>
+    </section>
+
+    <section class="pane" id="pane-sos" aria-label="SOS" hidden>
+      <div class="pane-h"><h2>SOS e regole d’oro</h2><p>I numeri di emergenza sono gratuiti da qualsiasi telefono.</p></div>
+      <div class="sosgrid" id="sosn"></div>
+      <div id="help"></div>
+      <div class="card"><h3>Se succede qualcosa</h3>
+        <details><summary>Mi hanno rubato telefono o portafoglio</summary><p>Blocca subito le carte dall’app della banca, avvisa i professori e fai denuncia alla polizia (158): serve per l’assicurazione e per i documenti. Per i documenti persi aiuta l’Ambasciata d’Italia.</p></details>
+        <details><summary>Ho cambiato soldi e mi hanno fregato</summary><p>Torna entro 3 ore allo stesso sportello con lo scontrino: per legge puoi annullare il cambio fino all’equivalente di 1.000 €. Se rifiutano, presenta reclamo e chiama la polizia.</p></details>
+        <details><summary>Mi fermano i controllori</summary><p>Mostra il biglietto. Se non è valido la multa è di 1.200 Kč pagando subito; puoi anche lasciare i tuoi dati e pagare dopo, ma oltre i 15 giorni sale a 2.000 Kč. Chiedi sempre la ricevuta.</p></details>
+        <details><summary>Mi sono perso dal gruppo</summary><p>Fermati in un posto illuminato, chiama i professori e condividi la posizione. Concordate sempre un punto di ritrovo, per esempio la statua di San Venceslao.</p></details>
+        <details><summary>Sto male</summary><p>Emergenza: 112 o 155. Pronto soccorso e farmacia aperti 24 ore all’ospedale Na Františku. Porta la tessera sanitaria: sul retro c’è la TEAM europea.</p></details>
+      </div>
+      <div class="card"><h3>Le regole d’oro anti-spreco</h3><ul class="goldl" id="gold"></ul></div>
+      <div class="card"><h3>Frasi utili in ceco</h3><ul class="phr" id="phr"></ul></div>
+      <p class="fine">Numeri e indirizzi verificati a novembre 2026 su fonti ufficiali (Ministero degli Esteri ceco, Viaggiare Sicuri, Comune di Praga 1).</p>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet-h"><h2 id="mTitle">Impostazioni</h2><button class="icon-btn" id="mClose" type="button" aria-label="Chiudi"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+  <label class="lbl" for="mRate">Tasso di cambio: quante corone vale 1 €</label>
+  <div class="row"><label class="inp"><input id="mRate" type="text" inputmode="decimal"><i>Kč</i></label><button class="btn" id="mSave" type="button">Salva</button></div>
+  <p class="hint">Valore iniziale 24,30: Banca Nazionale Ceca, 4 novembre 2026 (24,310). Il tasso del giorno lo vedi nell’app della tua banca.</p>
+  <h3>Come funziona</h3>
+  <p class="hint">Tutti i dati sono dentro l’app: funziona anche senza internet. Servono internet solo i link a Google Maps e la ricerca degli indirizzi online. Le tue spese restano solo su questo telefono.</p>
+  <button class="btn ghost" id="mReset" type="button">Cancella spese e preferenze</button>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+"use strict";
+/* ===== Dati Praha Pilot — raccolti e verificati a novembre 2026 =====
+   ver:1 = prezzo/orario verificato su fonte ufficiale o stampa (nov. 2026)
+   est:1 = stima indicativa */
+const RATE0 = 24.3; // ČNB 4/11/2026: 1 EUR = 24,310 CZK
+const CAT = {
+  all:{n:"Tutto",i:"i-all",col:"#d9b45a"},
+  eat:{n:"Mangiare",i:"i-eat",col:"#f2a541"},
+  shop:{n:"Comprare",i:"i-shop",col:"#7fb4ea"},
+  see:{n:"Vedere",i:"i-see",col:"#efe6d2"},
+  fun:{n:"Svago",i:"i-fun",col:"#ff8fb4"},
+  casino:{n:"Casinò",i:"i-casino",col:"#b79bff"},
+  avoid:{n:"Evita",i:"i-avoid",col:"#ff5a3c"}
+};
+
+const P = [
+/* ---------- VEDERE ---------- */
+{id:"staromestske",ev:1,n:"Piazza della Città Vecchia",cz:"Staroměstské náměstí",c:["see","fun"],t:"Piazza storica",la:50.08753,lo:14.42132,p:[0,0],d:"Il cuore di Praga: chiesa di Týn, Orologio Astronomico e, dal 28 novembre, il grande mercatino di Natale con l’albero.",tip:"Guardare è gratis. È sedersi ai tavoli dei ristoranti della piazza che costa caro.",v:5},
+{id:"orloj",n:"Orologio Astronomico",cz:"Staroměstský orloj",c:["see"],t:"Spettacolo gratuito",la:50.08700,lo:14.42072,p:[0,0],d:"Ogni ora, dalle 8 alle 23, sfilano i dodici apostoli: lo spettacolo dura meno di un minuto.",tip:"Arriva 5–10 minuti prima e mettiti di lato: vedi bene e resti fuori dalla calca.",warn:"La folla dello spettacolo attira borseggiatori: telefono nella tasca davanti.",v:5,ver:1},
+{id:"radnice",n:"Torre del Municipio",cz:"Staroměstská radnice",c:["see"],t:"Vista a 360°",la:50.08712,lo:14.42060,p:[140,350],w:"giovani 16–26: 280 Kč",d:"Ascensore fino alla galleria: vista su piazza, Týn e Castello. Intero 350 Kč, giovani 16–26 anni 280 Kč.",tip:"Entra nella prima ora dopo l’apertura (9–10): −50%, cioè 140 Kč con tariffa giovani. Porta un documento.",h:"tutti i giorni 9–20",v:4,ver:1},
+{id:"karluv-most",ev:1,n:"Ponte Carlo",cz:"Karlův most",c:["see","fun"],t:"Gratis, giorno e notte",la:50.08647,lo:14.41144,p:[0,0],d:"Il ponte gotico con 30 statue tra Città Vecchia e Malá Strana. Illuminato di sera è spettacolare.",tip:"All’alba o dopo le 22 è quasi vuoto. Ignora chi vende tour, caricature o «cambio» sul ponte.",warn:"Quando è affollato è zona di borseggi.",v:5},
+{id:"mostecka-vez",n:"Torre del Ponte (Città Vecchia)",cz:"Staroměstská mostecká věž",c:["see"],t:"Vista sul ponte",la:50.08621,lo:14.41372,p:[100,250],w:"ingresso (stima)",d:"Torre gotica all’ingresso del Ponte Carlo: la vista più bella sul ponte e sul Castello.",tip:"Nella prima ora dopo l’apertura il biglietto costa la metà.",v:4,est:1},
+{id:"hrad",n:"Castello di Praga – cortili",cz:"Pražský hrad",c:["see"],t:"Area gratuita",la:50.09055,lo:14.40000,p:[0,0],d:"Il complesso di castello più grande del mondo: cortili, vista sulla città e cambio della guardia sono gratuiti.",tip:"Cambio della guardia solenne alle 12:00 al primo cortile. Sabato 28 novembre 2026 giornata a porte aperte (9–17).",h:"edifici nov–mar 9–16",v:5,ver:1},
+{id:"hrad-okruh",n:"Castello – circuito principale",c:["see"],t:"Cattedrale e Vicolo d’Oro",la:50.09088,lo:14.40036,p:[300,450],w:"ridotto studenti fino a 26 anni",d:"Cattedrale di San Vito, Antico Palazzo Reale, Basilica di San Giorgio e Vicolo d’Oro. Il biglietto vale 2 giorni.",tip:"Con la tessera studente paghi 300 Kč invece di 450. L’inizio della cattedrale si vede gratis.",h:"nov–mar 9–16",v:3,ver:1},
+{id:"mala-strana",n:"Piazza di Malá Strana",cz:"Malostranské náměstí",c:["see"],t:"Barocco",la:50.08803,lo:14.40347,p:[0,0],d:"Piazza barocca dominata dalla cupola verde rame della chiesa di San Nicola.",tip:"La piazza è gratis, la chiesa a pagamento: la cupola si fotografa benissimo da fuori.",v:4},
+{id:"jezulatko",n:"Gesù Bambino di Praga",cz:"Pražské Jezulátko",c:["see"],t:"Chiesa, ingresso libero",la:50.08594,lo:14.40411,p:[0,0],d:"Chiesa di Santa Maria della Vittoria con la statuetta del Bambino di Praga, molto venerata in Italia.",tip:"Ingresso libero, offerta facoltativa. Rispetta le funzioni.",v:4},
+{id:"lennon",n:"Muro di John Lennon",cz:"Lennonova zeď",c:["see"],t:"Graffiti",la:50.08623,lo:14.40680,p:[0,0],d:"Muro coperto di graffiti dedicati a Lennon e alla pace: cambia di continuo.",tip:"Gratis, e da qui sei a 2 minuti da Kampa.",v:4},
+{id:"kampa",n:"Isola di Kampa e Čertovka",cz:"Kampa",c:["see"],t:"Quiete sotto il ponte",la:50.08465,lo:14.40845,p:[0,0],d:"Isola tranquilla sotto il Ponte Carlo con il canale Čertovka, la «piccola Venezia», e i bimbi giganti di David Černý.",tip:"Gratis e meno affollata del ponte: perfetta per una pausa con un panino del supermercato.",v:5},
+{id:"petrin",n:"Collina di Petřín",cz:"Petřín",c:["see"],t:"Parco con vista",la:50.08300,lo:14.39880,p:[0,0],d:"Giardini in collina con vista su tutta Praga. A piedi da Újezd sono circa 20–25 minuti di salita.",tip:"Salire a piedi è gratis; la funicolare costa 60 Kč oppure è inclusa nel biglietto 24 h / 72 h.",v:5,ver:1},
+{id:"lanovka",n:"Funicolare di Petřín",cz:"Lanová dráha na Petřín",c:["see"],t:"Riaperta a settembre 2026",la:50.08108,lo:14.40513,p:[0,60],w:"60 Kč o gratis con 24 h/72 h",d:"Nuove vetture panoramiche ogni 10 minuti circa, dalle 7:00 alle 22:15, da Újezd alla cima.",tip:"Con il biglietto da 24 o 72 ore la corsa è inclusa: non comprarne un altro.",h:"7:00–22:15",v:4,ver:1},
+{id:"rozhledna",n:"Torre panoramica di Petřín",cz:"Petřínská rozhledna",c:["see"],t:"La «piccola Eiffel»",la:50.08355,lo:14.39505,p:[100,250],w:"giovani 16–26: 200 Kč",d:"Torre in acciaio del 1891 in cima alla collina, vista a 360° su Praga. Intero 250 Kč, giovani 200 Kč.",tip:"Prima ora dopo l’apertura (10–11): −50%, cioè 100 Kč con tariffa giovani. Con il labirinto di specchi: 300 Kč.",h:"nov–dic 10–18",v:4,ver:1},
+{id:"strahov",n:"Monastero di Strahov",cz:"Strahovský klášter",c:["see"],t:"Belvedere gratis",la:50.08625,lo:14.38925,p:[0,0],d:"Cortile del monastero e terrazza con una delle viste più belle su Malá Strana e il centro.",tip:"Il belvedere è gratis; la biblioteca storica è a pagamento.",v:4},
+{id:"nerudova",n:"Via Nerudova",cz:"Nerudova",c:["see"],t:"Insegne antiche",la:50.08840,lo:14.40000,p:[0,0],d:"La salita verso il Castello con le antiche insegne delle case: i tre violini, il ferro di cavallo d’oro, l’aquila rossa.",tip:"Guarda le insegne ma non mangiare qui: prezzi da turisti.",v:3},
+{id:"vaclavske",n:"Piazza San Venceslao",cz:"Václavské náměstí",c:["see"],t:"Viale storico",la:50.08130,lo:14.42760,p:[0,0],d:"Il grande viale della Città Nuova, dal Museo Nazionale a Můstek: qui è passata la storia del 1968 e del 1989.",tip:"Di giorno va benissimo. Di notte la parte bassa è piena di PR e cambiavalute: tira dritto.",v:3},
+{id:"narodni-muzeum",n:"Museo Nazionale",cz:"Národní muzeum",c:["see"],t:"Museo statale",la:50.07890,lo:14.43085,p:[0,300],w:"stima · gratis domenica 6/12",d:"Lo storico palazzo in cima a piazza San Venceslao: scalone, pantheon e collezioni di storia naturale.",tip:"Domenica 6 dicembre 2026 le esposizioni permanenti di musei e gallerie statali sono gratis per tutti. Ridotto per studenti fino a 26 anni.",v:3,est:1},
+{id:"tancici-dum",n:"Casa Danzante",cz:"Tančící dům",c:["see"],t:"Architettura",la:50.07548,lo:14.41414,p:[0,0],d:"L’edificio «Ginger e Fred» di Gehry e Milunić sul lungofiume.",tip:"La terrazza in cima è a pagamento: la foto migliore si fa gratis dall’altro lato della strada.",v:4},
+{id:"vysehrad",ev:1,n:"Vyšehrad",cz:"Vyšehrad",c:["see","fun"],t:"Fortezza panoramica",la:50.06450,lo:14.41800,p:[0,0],d:"Fortezza sul fiume con basilica, cimitero degli artisti (Dvořák, Mucha) e mura panoramiche. Pochissimi turisti.",tip:"Quasi tutto gratis. Metro C fino a Vyšehrad, oppure tram fino a Výtoň e salita a piedi.",v:5},
+{id:"letna",ev:1,n:"Parco Letná e Metronomo",cz:"Letenské sady",c:["see","fun"],t:"La cartolina dei ponti",la:50.09442,lo:14.41625,p:[0,0],d:"Il belvedere con il metronomo gigante: da qui vedi tutti i ponti sulla Moldava in fila.",tip:"Gratis. D’inverno il biergarten è chiuso, ma il panorama resta il migliore della città.",v:5},
+{id:"riegrovy",ev:1,n:"Riegrovy sady",c:["see","fun"],t:"Tramonto sul Castello",la:50.07930,lo:14.44090,p:[0,0],d:"Parco in collina a Vinohrady con vista sul Castello al tramonto, frequentato da studenti praghesi.",tip:"Gratis, e fuori dai giri turistici.",v:4},
+{id:"kafka",n:"Testa rotante di Kafka",cz:"Hlava Franze Kafky",c:["see"],t:"Scultura cinetica",la:50.08196,lo:14.42000,p:[0,0],d:"Scultura di David Černý: 42 strati d’acciaio che ruotano componendo il volto di Kafka (cortile del Quadrio, metro Národní třída).",tip:"Gratis. Si muove a intervalli: aspetta qualche minuto.",v:4},
+{id:"kun",n:"Cavallo capovolto (Lucerna)",cz:"Kůň",c:["see"],t:"Ironia di Černý",la:50.08155,lo:14.42530,p:[0,0],d:"San Venceslao in sella a un cavallo appeso a testa in giù, nella galleria liberty Lucerna.",tip:"Gratis. La stessa galleria porta al cinema storico e al Music Bar.",v:4},
+{id:"idiom",n:"Torre di libri «Idiom»",cz:"Idiom",c:["see"],t:"Foto gratis",la:50.08776,lo:14.41686,p:[0,0],d:"Una colonna di libri che sembra un tunnel infinito, nell’atrio della Biblioteca Municipale.",tip:"Gratis. Spesso c’è coda per la foto: vai presto.",v:4},
+{id:"klementinum",n:"Klementinum – cortili",cz:"Klementinum",c:["see"],t:"Complesso barocco",la:50.08648,lo:14.41635,p:[0,0],d:"Enorme complesso gesuitico: i cortili sono liberi; biblioteca barocca e torre astronomica si vedono con visita guidata a pagamento.",tip:"Attraversa i cortili gratis per tagliare tra via Karlova e la Biblioteca.",v:3},
+{id:"josefov",n:"Quartiere ebraico",cz:"Josefov",c:["see"],t:"Sinagoghe",la:50.09016,lo:14.41877,p:[0,0],d:"Sinagoga Vecchia-Nuova, Sinagoga Spagnola e antico cimitero ebraico. Le strade sono libere; gli interni con biglietto unico.",tip:"Il biglietto unico è caro: con budget stretto guarda l’esterno della Vecchia-Nuova e della Spagnola, che è splendido.",h:"musei 9–16:30, chiusi il sabato",v:3,ver:1},
+{id:"obecni-dum",n:"Casa Municipale e Torre delle Polveri",cz:"Obecní dům",c:["see"],t:"Liberty e gotico",la:50.08750,lo:14.42800,p:[0,0],d:"Capolavoro liberty accanto alla gotica Torre delle Polveri, antica porta della Città Vecchia.",tip:"Le facciate sono gratis; la torre è a pagamento (−50% nella prima ora dopo l’apertura).",v:4},
+{id:"frantiskanska",n:"Giardino dei Francescani",cz:"Františkánská zahrada",c:["see"],t:"Giardino nascosto",la:50.08290,lo:14.42225,p:[0,0],d:"Piccolo giardino segreto tra piazza San Venceslao e Jungmannovo náměstí.",tip:"Gratis: una pausa tranquilla a 2 minuti dalla folla.",v:3},
+{id:"valdstejn",n:"Giardino di Wallenstein",cz:"Valdštejnská zahrada",c:["see"],t:"Giardino barocco",la:50.08990,lo:14.40660,p:[0,0],sea:[4,10],d:"Giardino barocco con pavoni e la curiosa parete a stalattiti, sotto il Castello.",tip:"Gratis, ma solo da aprile a ottobre.",v:4},
+{id:"zizkov",n:"Torre della TV di Žižkov",cz:"Žižkovská věž",c:["see"],t:"I bambini di Černý",la:50.08100,lo:14.45100,p:[0,350],w:"bambini gratis · osservatorio 350 Kč",d:"La costruzione più alta di Praga (216 m), con i «bambini» di bronzo di Černý che la scalano. Osservatorio 350 Kč, ridotto 250.",tip:"I bambini si vedono gratis dal parco. Per un panorama gratuito: Letná, Vyšehrad o Strahov.",h:"tutti i giorni 9–24",v:3,ver:1},
+{id:"tram22",n:"Tram 22 panoramico",c:["see"],t:"Giro al prezzo di un biglietto",la:50.08105,lo:14.42020,p:[36,46],w:"1 biglietto in app",d:"La linea 22 attraversa Città Nuova e Malá Strana e sale al Castello: un giro turistico al prezzo di una corsa.",tip:"Scendi a Pohořelec e arriva al Castello a piedi, tutto in discesa. Il tram 23 usa vetture storiche con lo stesso biglietto.",warn:"Linea amata dai borseggiatori: zaino davanti.",v:5},
+{id:"veletrzni",n:"Galleria Nazionale – Veletržní palác",cz:"Veletržní palác",c:["see"],t:"Arte moderna",la:50.10190,lo:14.43350,p:[0,250],w:"ridotto 140 Kč · gratis dom. 6/12",d:"Arte ceca ed europea dell’Otto e Novecento in un gigantesco palazzo funzionalista del 1928.",tip:"Domenica 6 dicembre 2026 le collezioni permanenti sono gratis per tutti. Ridotto 140 Kč.",v:4,ver:1},
+{id:"naplavka",ev:1,n:"Náplavka – lungofiume",cz:"Rašínovo nábřeží",c:["see","fun"],t:"Il lungofiume dei praghesi",la:50.07150,lo:14.41430,p:[0,0],d:"Il lungofiume tra Palackého most e Výtoň, con barche-bar e vista sul Castello.",tip:"Gratis per passeggiare. Il sabato mattina c’è il mercato contadino.",v:4},
+{id:"freetour",n:"Tour a piedi «a offerta»",c:["see"],t:"Guida locale",la:50.08718,lo:14.42090,p:[100,300],w:"mancia libera",d:"Tour di 2–3 ore con guida locale (in inglese, a volte in italiano): alla fine paghi quanto ti sembra giusto.",tip:"Ottimo rapporto qualità/prezzo: 100–200 Kč di mancia sono normali per uno studente.",warn:"Prenota direttamente online: ignora chi ti ferma in piazza proponendo tour a pagamento.",v:5,est:1},
+
+/* ---------- MANGIARE ---------- */
+{id:"havelska",n:"Havelská Koruna",c:["eat"],t:"Mensa ceca self-service",la:50.08527,lo:14.42158,a:"Havelská 23",p:[150,260],w:"piatto + bevanda",d:"Mensa self-service con cucina ceca vera: gulasch, knedlíky, zuppe. Prendi il vassoio, ordini al banco e paghi alla cassa.",tip:"Zuppa e pane: il pasto caldo più economico a 3 minuti dalla piazza.",v:5,est:1},
+{id:"lokal-dlouha",ev:1,n:"Lokál Dlouhááá",c:["eat","fun"],t:"Birreria ceca",la:50.09032,lo:14.42398,a:"Dlouhá 33",p:[220,400],w:"piatto + bibita",d:"Grande birreria con Pilsner dalla cisterna e cucina tradizionale fatta bene, sempre piena di praghesi.",tip:"Prendi il piatto del giorno e dividete gli antipasti: spendi molto meno che sulla piazza.",v:4,est:1},
+{id:"lokal-kuzelka",n:"Lokál U Bílé kuželky",c:["eat"],t:"Birreria ceca",la:50.08697,lo:14.40743,a:"Míšeňská 12",p:[220,400],w:"piatto + bibita",d:"Stessa catena di Lokál, a 2 minuti dal Ponte Carlo lato Malá Strana: prezzi da praghesi in piena zona turistica.",tip:"Il posto giusto per pranzare scendendo dal Castello, invece di via Nerudova.",v:5,est:1},
+{id:"sisters",n:"Sisters",c:["eat"],t:"Tartine ceche",la:50.09048,lo:14.42490,a:"Dlouhá 39",p:[70,180],w:"2–3 chlebíčky",d:"Bistrot delle tartine aperte ceche (chlebíčky) in versione moderna.",tip:"Due tartine e un’acqua: pranzo veloce sotto le 180 Kč.",v:4,est:1},
+{id:"zlaty-kriz",n:"Lahůdky Zlatý kříž",c:["eat"],t:"Gastronomia storica",la:50.08180,lo:14.42220,a:"Jungmannova 34",p:[60,160],w:"2–3 chlebíčky",d:"Storica gastronomia praghese: tartine e insalate al banco, da mangiare in piedi o da asporto.",tip:"Uno dei pranzi più economici del centro.",v:5,est:1},
+{id:"country-life",n:"Country Life",c:["eat"],t:"Vegetariano a peso",la:50.08611,lo:14.42052,a:"Melantrichova 15",p:[150,270],w:"piatto a peso",d:"Buffet vegetariano e vegano a peso, tra la piazza e via Havelská.",tip:"Paghi a peso: riempi il piatto con criterio, le zuppe pesano.",v:4,est:1},
+{id:"tuan-lan",n:"Pho Vietnam Tuan & Lan",c:["eat"],t:"Pho vietnamita",la:50.07583,lo:14.43383,a:"Anglická 15",p:[170,250],w:"ciotola di pho",d:"Una delle zuppe pho più amate di Praga, porzioni enormi.",tip:"Una ciotola vale un pasto completo: niente antipasti.",v:5,est:1},
+{id:"kantyna",n:"Kantýna",c:["eat"],t:"Macelleria e mensa",la:50.08222,lo:14.43028,a:"Politických vězňů 5",p:[200,420],w:"piatto",d:"Ex banca trasformata in macelleria-mensa: carne e piatti cechi serviti al banco.",tip:"Scegli i piatti caldi del banco: costano meno delle bistecche.",v:4,est:1},
+{id:"u-pinkasu",ev:1,n:"U Pinkasů",c:["eat","fun"],t:"Pub storico",la:50.08386,lo:14.42263,a:"Jungmannovo nám. 16",p:[220,400],w:"piatto + bibita",d:"Pub del 1843, il primo a spillare Pilsner a Praga. Cucina ceca classica.",tip:"Nei giorni feriali a pranzo cerca il menu del giorno.",v:4,est:1},
+{id:"u-medvidku",ev:1,n:"U Medvídků",c:["eat","fun"],t:"Birrificio storico",la:50.08339,lo:14.41850,a:"Na Perštýně 7",p:[230,420],w:"piatto + bibita",d:"Antica birreria con microbirrificio e piatti cechi.",tip:"Vuoi solo assaggiare? Chiedi il formato piccolo da 0,3 l.",v:3,est:1},
+{id:"u-hrocha",ev:1,n:"U Hrocha",c:["eat","fun"],t:"Pub di quartiere",la:50.08918,lo:14.40423,a:"Thunovská 10",p:[80,250],w:"bibita o spuntino",d:"Piccolo pub autentico sotto il Castello, frequentato da gente del posto.",tip:"Prezzi da praghesi a 5 minuti dal Castello.",v:4,est:1},
+{id:"louvre",n:"Café Louvre",c:["eat"],t:"Caffè storico",la:50.08201,lo:14.41879,a:"Národní 22",p:[90,320],w:"caffè e dolce / pranzo",d:"Caffè viennese del 1902 al primo piano, frequentato un tempo da Kafka ed Einstein.",tip:"Per un caffè «storico» costa meno dei caffè sul fiume; a pranzo c’è il menu del giorno.",v:4,est:1},
+{id:"svetozor",n:"Ovocný Světozor",c:["eat"],t:"Dolci e gelati",la:50.08143,lo:14.42455,a:"Pasáž Světozor (Vodičkova 39)",p:[50,150],w:"dolce o gelato",d:"Pasticceria storica nella galleria Světozor: torte, dolci cechi e gelato a prezzi onesti.",tip:"L’alternativa vera al trdelník: un dolce ceco qui costa spesso meno.",v:5,est:1},
+{id:"maitrea",n:"Maitrea",c:["eat"],t:"Vegetariano",la:50.08825,lo:14.42392,a:"Týnská ulička 6",p:[200,340],w:"menu pranzo",d:"Ristorante vegetariano a due passi dalla chiesa di Týn.",tip:"Nei giorni feriali il menu del giorno costa molto meno della carta.",v:4,est:1},
+{id:"u-zaveseneho",n:"U Zavěšenýho kafe",c:["eat"],t:"Locale bohémien",la:50.08812,lo:14.39603,a:"Úvoz 6",p:[60,250],w:"caffè o piatto",d:"Locale bohémien sulla salita del Castello, famoso per il «caffè sospeso».",tip:"Sosta calda ed economica prima o dopo il Castello.",v:4,est:1},
+{id:"u-sadu",ev:1,n:"U Sadu",c:["eat","fun"],t:"Pub di quartiere",la:50.08050,lo:14.44735,a:"Škroupovo nám. 5",p:[180,330],w:"piatto + bibita",d:"Pub di quartiere a Žižkov con cucina ceca, aperto fino a tardi.",tip:"Prezzi da quartiere, non da centro storico.",v:4,est:1},
+{id:"strahov-pivovar",ev:1,n:"Birrificio del monastero di Strahov",cz:"Klášterní pivovar Strahov",c:["eat","fun"],t:"Birrificio monastico",la:50.08628,lo:14.38963,p:[250,480],w:"piatto + bibita",d:"Birre prodotte nel monastero, in un cortile storico.",tip:"Caro per mangiare: se il budget è stretto, scendi verso Malá Strana.",v:2,est:1},
+{id:"albert-vaclavske",n:"Albert – piazza San Venceslao",c:["eat","shop"],t:"Supermercato",la:50.08245,lo:14.42745,a:"Václavské nám. 21",p:[30,150],w:"pranzo al sacco",d:"Supermercato nel cuore della piazza, lato via Jindřišská, aperto fino a tardi.",tip:"Panino, bibita e frutta sotto le 120 Kč. Qui trovi anche i regali low-cost (cialde, cioccolato, Kofola).",h:"tutti i giorni 7–22 circa",v:5,ver:1},
+{id:"albert-muzeum",n:"Albert – metro Muzeum",c:["eat","shop"],t:"Supermercato",la:50.07990,lo:14.43010,a:"Václavské nám. 59",p:[30,150],w:"pranzo al sacco",d:"Piccolo supermercato nel vestibolo della metro Muzeum, in cima alla piazza.",h:"tutti i giorni 7–21",v:5,ver:1},
+{id:"albert-palladium",n:"Albert – Palladium",c:["eat","shop"],t:"Supermercato",la:50.08945,lo:14.42925,a:"náměstí Republiky 1, piano −2",p:[30,150],w:"pranzo al sacco",d:"Grande supermercato al piano −2 del centro commerciale Palladium.",h:"tutti i giorni 7–21",v:5,ver:1},
+{id:"lidl-poric",n:"Lidl – Na Poříčí",c:["eat","shop"],t:"Discount",la:50.08985,lo:14.43480,a:"Na Poříčí 23",p:[25,120],w:"pranzo al sacco",d:"Il discount più economico del centro, tra náměstí Republiky e Florenc.",tip:"Prezzi minimi per acqua, snack e regali tipici.",v:5},
+{id:"billa-celnici",n:"Billa – V Celnici",c:["eat","shop"],t:"Supermercato",la:50.08820,lo:14.43160,a:"V Celnici 4",p:[30,150],w:"pranzo al sacco",d:"Supermercato tra náměstí Republiky e la stazione Masarykovo nádraží.",v:4},
+{id:"albert-miru",n:"Albert – náměstí Míru",c:["eat","shop"],t:"Supermercato",la:50.07545,lo:14.43735,a:"náměstí Míru 8",p:[30,150],w:"pranzo al sacco",d:"Supermercato in piazza Míru, a Vinohrady.",v:4},
+{id:"lidl-smichov",n:"Lidl – Smíchov",c:["eat","shop"],t:"Discount",la:50.07110,lo:14.40620,a:"Stroupežnického 1",p:[25,120],w:"pranzo al sacco",d:"Discount vicino ad Anděl.",v:5},
+
+/* ---------- COMPRARE ---------- */
+{id:"havelske",n:"Mercato di Havel",cz:"Havelské tržiště",c:["shop"],t:"Souvenir e frutta",la:50.08560,lo:14.42110,p:[50,300],w:"souvenir piccolo",d:"Mercatino all’aperto di souvenir, artigianato e frutta, a 3 minuti dalla piazza.",tip:"Confronta 2–3 bancarelle: le stesse calamite costano meno che nei negozi di via Karlova.",v:4,est:1},
+{id:"rossmann",n:"Rossmann – San Venceslao",c:["shop"],t:"Drogheria",la:50.08215,lo:14.42640,a:"Václavské nám. 26",p:[30,200],w:"prodotti base",d:"Drogheria con prezzi da supermercato per dentifricio, crema, cerotti e simili.",tip:"Per i prodotti base costa molto meno dei negozi turistici e delle farmacie.",v:4},
+{id:"palladium",n:"Palladium",c:["shop"],t:"Centro commerciale",la:50.08960,lo:14.42890,a:"náměstí Republiky 1",p:[0,800],w:"dipende da te",d:"Grande centro commerciale di fronte alla Casa Municipale, con supermercato e food court.",tip:"Al caldo d’inverno, con un food court più economico dei ristoranti della piazza.",v:3},
+{id:"novy-smichov",n:"Nový Smíchov",c:["shop"],t:"Centro commerciale",la:50.07280,lo:14.40250,a:"Plzeňská 8 (Anděl)",p:[0,800],w:"dipende da te",d:"Grande centro commerciale ad Anděl con negozi di catena.",v:3},
+
+/* ---------- SVAGO (mercatini 2026 e serate) ---------- */
+{id:"xm-stare",ev:1,pe:[90,260],n:"Mercatino di Natale – Città Vecchia",c:["fun","eat","shop"],t:"Il più famoso",la:50.08760,lo:14.42160,p:[0,200],w:"vin brulé 100 Kč",dt:["2026-11-28","2027-01-06"],h:"tutti i giorni 10–22",d:"Albero, presepe, palco e bancarelle. L’albero si accende sabato 28 novembre alle 16:00.",tip:"Guarda qui e compra altrove: nei mercatini di quartiere il vin brulé costava 60–80 Kč contro 100.",warn:"Il prosciutto allo spiedo si paga a peso: chiedi il prezzo totale prima del taglio.",v:3,ver:1},
+{id:"xm-vaclavske",ev:1,pe:[90,260],n:"Mercatino di Natale – San Venceslao",c:["fun","eat","shop"],t:"Grande mercatino",la:50.08330,lo:14.42500,p:[0,200],w:"vin brulé 100 Kč",dt:["2026-11-28","2027-01-06"],h:"tutti i giorni 10–22",d:"Bancarelle nella parte bassa della piazza, con gli stessi prezzi della Città Vecchia.",tip:"Stessi prodotti dei mercatini di quartiere, ma più cari.",v:2,ver:1},
+{id:"xm-republiky",ev:1,pe:[80,230],n:"Mercatino – náměstí Republiky",c:["fun","eat","shop"],t:"Davanti al Palladium",la:50.08870,lo:14.43030,p:[0,150],w:"vin brulé ~90 Kč (2025)",dt:["2026-11-25","2026-12-24"],d:"Decine di bancarelle verso via V Celnici: decorazioni, dolci e vin brulé.",tip:"Di solito un po’ più economico della Città Vecchia.",v:3,ver:1},
+{id:"xm-miru",ev:1,pe:[70,200],n:"Mercatino – náměstí Míru",c:["fun","eat","shop"],t:"Mercatino di quartiere",la:50.07560,lo:14.43760,p:[0,130],w:"vin brulé ~80 Kč",dt:["2026-11-20","2026-12-24"],d:"Davanti alla chiesa di Santa Ludmilla: atmosfera da quartiere, più praghesi che turisti.",tip:"Tra i più convenienti: metro A náměstí Míru.",v:5,ver:1},
+{id:"xm-tylovo",ev:1,pe:[60,200],n:"Mercatino – Tylovo náměstí",c:["fun","eat"],t:"Piccolo e locale",la:50.07470,lo:14.43000,p:[0,130],w:"vin brulé da ~60–80 Kč",dt:["2026-11-26","2026-12-24"],d:"Piccolo mercatino a 3 minuti dalla metro I. P. Pavlova.",tip:"Prezzi da quartiere.",v:4,ver:1},
+{id:"xm-holesovice",ev:1,pe:[70,200],n:"Mercatino – Holešovická tržnice",c:["fun","eat"],t:"Al mercato di Holešovice",la:50.09840,lo:14.44750,p:[0,130],dt:["2026-11-26","2026-12-22"],h:"mar–ven 14–21 · sab–dom 10–17 · lun chiuso",d:"Accanto alla Hala 22 del mercato di Holešovice: vin brulé, mele calde e caldarroste.",tip:"Meno affollato del centro.",v:4,ver:1},
+{id:"xm-andel",ev:1,pe:[80,220],n:"Mercatino – Anděl",c:["fun","eat"],t:"Zona pedonale",la:50.07100,lo:14.40370,p:[0,150],dt:["2026-11-28","2026-12-31"],d:"Bancarelle nella zona pedonale di Smíchov, vicino al Nový Smíchov.",v:3,ver:1},
+{id:"karlovy-lazne",ev:1,n:"Karlovy Lázně",c:["fun"],t:"Discoteca su 5 piani",la:50.08540,lo:14.41386,a:"Smetanovo nábřeží 198",p:[0,300],w:"ingresso ~200 Kč",d:"La discoteca più grande dell’Europa centrale: cinque piani e cinque generi musicali accanto al Ponte Carlo. Età minima 16 anni, niente dress code.",tip:"Arriva presto: a volte l’ingresso è gratis o ridotto prima di mezzanotte. Decidi prima quanto spendere in drink.",warn:"Pista affollata = borseggi. Telefono nella tasca davanti.",v:3,ver:1},
+{id:"cross-club",ev:1,n:"Cross Club",c:["fun"],t:"Club industriale",la:50.10830,lo:14.44300,a:"Plynární 23",p:[0,200],w:"spesso ingresso libero",d:"Locale «steampunk» pieno di sculture meccaniche: bar, concerti e serate elettroniche.",tip:"Molte sere senza biglietto: vedi la Praga alternativa spendendo una bibita.",v:5,ver:1},
+{id:"lucerna-mb",ev:1,n:"Lucerna Music Bar – anni ’80 e ’90",c:["fun"],t:"Festa video",la:50.08167,lo:14.42500,a:"Vodičkova 36",p:[150,300],w:"biglietto alla cassa (stima)",h:"venerdì e sabato dalle 21",d:"Festa con i video musicali anni ’80–’90 sul maxischermo. Solo maggiorenni.",tip:"Biglietto alla porta, musica che conosci e nessun PR.",v:4,est:1},
+{id:"kino-lucerna",ev:1,n:"Kino Lucerna",c:["fun"],t:"Cinema storico",la:50.08160,lo:14.42520,a:"Vodičkova 36",p:[150,250],w:"biglietto (stima)",d:"Cinema liberty del 1909 nella galleria Lucerna.",tip:"Film spesso in lingua originale con sottotitoli cechi: scegli quelli in inglese.",v:4,est:1},
+{id:"letna-bg",ev:1,n:"Biergarten di Letná",c:["fun"],t:"Biergarten panoramico",la:50.09600,lo:14.42220,p:[60,150],w:"bibita",sea:[4,9],d:"Il biergarten all’aperto dei praghesi con vista sulla città.",tip:"Stagionale: d’inverno è chiuso.",v:4,est:1},
+
+/* ---------- CASINÒ ---------- */
+{id:"ambassador",n:"Casino Ambassador",c:["casino"],t:"Casinò 24 ore",la:50.08322,lo:14.42487,a:"Václavské nám. 5",p:[0,300],w:"ingresso gratis",h:"24 ore su 24",d:"Il casinò più noto di Praga, in fondo a piazza San Venceslao.",v:3,ver:1},
+{id:"kings",n:"King’s Casino Prague (Hilton)",c:["casino"],t:"Poker e roulette",la:50.09360,lo:14.44120,a:"Pobřežní 1, Karlín",p:[0,300],w:"ingresso gratis",h:"24 ore su 24",d:"L’ex Casino Atrium dentro l’hotel Hilton, con una sala poker famosa. Abbigliamento curato.",v:3,ver:1},
+{id:"banco",n:"Banco Casino",c:["casino"],t:"Casinò 24 ore",la:50.08520,lo:14.42640,a:"Na Příkopě",p:[0,300],w:"ingresso gratis",h:"24 ore su 24",d:"Casinò su Na Příkopě, tra Můstek e la Torre delle Polveri.",v:3,ver:1},
+{id:"allinn",n:"All INN Casino",c:["casino"],t:"Casinò 24 ore",la:50.08120,lo:14.42850,a:"Václavské nám. 45",p:[0,300],w:"ingresso gratis",h:"24 ore su 24",d:"Casinò nella parte alta di piazza San Venceslao.",v:3,ver:1}
+];
+
+/* ---------- TRAPPOLE con zona sulla mappa ---------- */
+const TRAPS = [
+{id:"t-piazza",n:"Ristoranti sulla Piazza della Città Vecchia",pts:[[50.08753,14.42132,130]],s:2,loss:"conto molto più caro",d:"Menu turistici, pane, salse e acqua portati senza chiederli e poi messi in conto; «service not included» scritto apposta per farti lasciare un 10–15% in più.",x:"Mangia a 3 minuti da qui: Havelská Koruna, Country Life o le tartine di Zlatý kříž.",alt:["havelska","country-life"]},
+{id:"t-sunka",n:"Prosciutto di Praga alle bancarelle",pts:[[50.08760,14.42200,90],[50.08330,14.42500,80]],s:3,loss:"spesso diverse centinaia di Kč",d:"Il prezzo esposto è per 100 g: il venditore taglia una porzione enorme e ti chiede il totale.",x:"Indica tu la quantità (per esempio 150 g) e chiedi il totale prima del taglio. Oppure salta: un panino al supermercato costa circa 60 Kč."},
+{id:"t-karlova",n:"Cambiavalute di via Karlova e del ponte",pts:[[50.08620,14.41700,170]],s:3,loss:"molto meno del cambio ufficiale",d:"Cartelli «0% commission» con tassi bellissimi che valgono solo per grandi somme o per la vendita, non per te.",x:"Paga con carta in corone o preleva da un bancomat di banca. Se cambi, chiedi prima la cifra esatta che ricevi: hai 3 ore per annullare (fino a 1.000 €) con lo scontrino."},
+{id:"t-strada",n:"Chi offre il cambio per strada",pts:[[50.08380,14.42350,220],[50.08700,14.42072,120]],s:3,loss:"tutto: banconote senza valore",d:"Uno sconosciuto propone un cambio «super» e ti dà banconote fuori corso o straniere, per esempio rubli bielorussi. La truffa è ancora attiva nel 2026.",x:"Mai cambiare soldi per strada, nemmeno pochi euro."},
+{id:"t-taxi",n:"Taxi presi per strada in centro",pts:[[50.08860,14.41960,110],[50.08310,14.43540,150],[50.08360,14.42320,110]],s:3,loss:"corse gonfiate di centinaia di Kč",d:"I taxi in attesa nelle zone turistiche applicano tariffe gonfiate. La polizia municipale ha segnalato un turista a cui avevano chiesto oltre 200.000 Kč per una corsa breve.",x:"Usa Bolt, Uber o Liftago: vedi il prezzo prima di partire. Nei taxi regolari la tariffa massima è di circa 36 Kč al km."},
+{id:"t-vaclavske-notte",n:"Piazza San Venceslao di notte",pts:[[50.08250,14.42620,260]],s:2,night:1,loss:"conti salatissimi",d:"PR che promettono ingresso gratis e shot omaggio in strip club e bar: conti gonfiati e buttafuori. Spacciatori che vendono roba falsa o pericolosa.",x:"Non seguire nessuno che ti ferma per strada. Scegli tu il locale, per esempio Lucerna Music Bar o Cross Club."},
+{id:"t-hlavni",n:"Stazione centrale e parco Vrchlického di notte",pts:[[50.08410,14.43420,200]],s:2,night:1,loss:"rischio furti",d:"Di notte il parco davanti alla stazione è frequentato da spacciatori e senzatetto.",x:"Di sera muoviti in gruppo e resta nelle vie illuminate."},
+{id:"t-borseggi",n:"Borseggiatori su ponte e Orologio",pts:[[50.08647,14.41144,170],[50.08700,14.42072,70]],s:2,loss:"telefono e portafoglio",d:"Folla = mani veloci, soprattutto durante lo spettacolo dell’Orologio e sul ponte affollato.",x:"Telefono e portafoglio nelle tasche davanti, zaino davanti nella calca."},
+{id:"t-tram22",n:"Borseggiatori sul tram 22",pts:[[50.08800,14.40450,90]],s:1,loss:"telefono e portafoglio",d:"La linea più turistica è anche la preferita dai borseggiatori.",x:"Stai lontano dalle porte e tieni lo zaino davanti."},
+{id:"t-nerudova",n:"Ristoranti di via Nerudova e del Castello",pts:[[50.08835,14.40010,150],[50.08950,14.39900,120]],s:1,loss:"prezzi molto sopra la media",d:"Prezzi gonfiati per chi scende stanco dal Castello.",x:"Scendi 10 minuti fino a Lokál U Bílé kuželky.",alt:["lokal-kuzelka"]},
+{id:"t-carrozze",n:"Carrozze e auto d’epoca",pts:[[50.08785,14.42115,60]],s:1,loss:"molto caro per pochi minuti",d:"Giri in carrozza o in auto d’epoca dalla piazza: costosi per quello che offrono.",x:"Il tram 22 o 23 fa un giro panoramico al prezzo di un biglietto."},
+{id:"t-trdelnik",n:"Trdelník nelle vie turistiche",pts:[[50.08620,14.41850,160]],s:1,loss:"100–180 Kč, di più con gelato",d:"Venduto come dolce tradizionale ceco, ma non lo è davvero; con gelato e panna costa parecchio.",x:"Prova un dolce ceco vero da Ovocný Světozor o al supermercato (Tatranky, Horalky).",alt:["svetozor"]}
+];
+
+/* ---------- trappole che trovi ovunque ---------- */
+const EVERY = [
+{n:"«Vuoi pagare in euro?»",d:"POS e bancomat propongono la conversione in euro (DCC) con un tasso peggiorativo.",x:"Scegli sempre CZK, cioè corone."},
+{n:"Bancomat Euronet e «exchange» nei negozi",d:"Commissioni alte e conversione sfavorevole.",x:"Preleva dai bancomat delle banche: Česká spořitelna, ČSOB, Komerční banka, Raiffeisenbank, Moneta. Rifiuta la conversione."},
+{n:"Shot «offerti» nei locali turistici",d:"Il cameriere gira con un vassoio di liquore: non è un omaggio, finisce sul conto.",x:"Dì subito «Ne, děkuji» (no, grazie)."},
+{n:"Conto in inglese con «service not included»",d:"Serve a farti aggiungere la mancia anche quando il servizio è già incluso.",x:"Controlla le voci; la mancia (circa 10%) è facoltativa."},
+{n:"Herna bar",d:"Sale slot dentro i bar, aperte di notte: ambiente poco sicuro.",x:"Se proprio vuoi giocare, solo casinò veri con registrazione all’ingresso."},
+{n:"Cambio in aeroporto e in stazione",d:"Tassi tra i peggiori della città.",x:"Arriva con una carta e preleva da un bancomat di banca."},
+{n:"Biglietto non convalidato",d:"Controllori in borghese: multa di 1.200 Kč se paghi subito, fino a 2.000 Kč se paghi in ritardo.",x:"Convalida il cartaceo, oppure attiva quello in app prima di salire."}
+];
+
+const GOLD = [
+["Paga sempre in corone","Se POS o bancomat chiedono «EUR o CZK?», scegli CZK."],
+["Bancomat solo di banche","Česká spořitelna, ČSOB, Komerční banka, Raiffeisenbank, Moneta. Evita Euronet e rifiuta la conversione."],
+["Mai cambiare per strada","In ufficio cambi chiedi prima la cifra esatta: hai 3 ore per annullare (fino a 1.000 €) con lo scontrino."],
+["A pranzo: menu del giorno","«Denní menu» o «polední menu»: il pasto caldo più economico, a Praga circa 200–230 Kč."],
+["Due strade più in là","Allontanati 2–3 vie da piazze e ponte: stessi piatti, prezzi molto più bassi."],
+["Supermercato per acqua e regali","Albert, Billa, Lidl: acqua 10–20 Kč, dolci tipici da regalare a poche decine di corone."],
+["Biglietti in app","PID Lítačka costa meno del cartaceo: 30 min 36 Kč, 24 h 140 Kč."],
+["Convalida sempre","Multa 1.200 Kč se paghi subito. Il biglietto da 24 o 72 ore si convalida una volta sola."],
+["Taxi solo con app","Bolt, Uber o Liftago. Mai taxi presi per strada in centro."],
+["Controlla il conto","Pane, salse e acqua portati senza chiedere si pagano. La mancia (~10%) è facoltativa."],
+["Sconti per giovani","Torri: tariffa 16–26 anni e −50% nella prima ora dopo l’apertura. Domenica 6 dicembre musei statali gratis."],
+["Il bello è gratis","Letná, Vyšehrad, Strahov, Riegrovy sady e il Ponte Carlo all’alba non costano nulla."]
+];
+
+/* ---------- luoghi per «Dove sei?» ---------- */
+const PLACES = [
+["Piazza della Città Vecchia","Staroměstské náměstí",50.08753,14.42132,"old town square piazza citta vecchia orologio orloj tyn"],
+["Ponte Carlo","Karlův most",50.08647,14.41144,"charles bridge ponte carlo"],
+["Castello di Praga","Pražský hrad",50.09060,14.40040,"castle castello hradcany san vito"],
+["Piazza San Venceslao","Václavské náměstí",50.08130,14.42760,"wenceslas square san venceslao"],
+["Malá Strana","Malostranské náměstí",50.08803,14.40347,"lesser town mala strana san nicola"],
+["Muro di John Lennon","Lennonova zeď",50.08623,14.40680,"lennon wall muro"],
+["Kampa","Kampa",50.08480,14.40850,"kampa certovka"],
+["Collina di Petřín","Petřín",50.08300,14.39800,"petrin collina torre rozhledna funicolare"],
+["Strahov","Strahovský klášter",50.08625,14.38925,"strahov monastero"],
+["Quartiere ebraico","Josefov",50.09016,14.41877,"josefov jewish ebraico sinagoga"],
+["Casa Danzante","Tančící dům",50.07548,14.41414,"dancing house casa danzante"],
+["Teatro Nazionale","Národní divadlo",50.08100,14.41340,"national theatre teatro nazionale"],
+["Museo Nazionale","Národní muzeum",50.07890,14.43085,"national museum museo nazionale"],
+["Stazione centrale","Hlavní nádraží",50.08310,14.43540,"main station stazione centrale treno"],
+["Autostazione Florenc","Florenc",50.08960,14.43980,"florenc bus autobus autostazione pullman"],
+["Piazza della Repubblica","Náměstí Republiky",50.08900,14.42950,"palladium repubblica obecni dum casa municipale torre polveri"],
+["Vyšehrad","Vyšehrad",50.06450,14.41800,"vysehrad"],
+["Letná","Letná",50.09550,14.42000,"letna metronomo"],
+["Anděl","Anděl",50.07090,14.40360,"andel smichov"],
+["Karlín","Karlín",50.09250,14.45000,"karlin"],
+["Náměstí Míru","Náměstí Míru",50.07540,14.43740,"vinohrady namesti miru"],
+["Žižkov","Žižkov",50.08300,14.45300,"zizkov torre tv"],
+["Holešovice","Holešovice",50.10100,14.43900,"holesovice"],
+["Dejvice","Dejvická",50.10030,14.39380,"dejvice dejvicka"],
+["Karlovo náměstí","Karlovo náměstí",50.07560,14.41870,"charles square karlovo"],
+["Národní třída","Národní třída",50.08080,14.42010,"narodni trida quadrio"],
+["Můstek","Můstek",50.08360,14.42320,"mustek"],
+["Na Příkopě","Na Příkopě",50.08560,14.42650,"na prikope"],
+["Aeroporto","Letiště Václava Havla",50.10080,14.26000,"airport aeroporto letiste"],
+["Metro Staroměstská","Staroměstská",50.08840,14.41720,"staromestska"],
+["Metro Malostranská","Malostranská",50.09090,14.40930,"malostranska"],
+["Metro Hradčanská","Hradčanská",50.09730,14.40270,"hradcanska"],
+["Metro Muzeum","Muzeum",50.07940,14.43070,"metro muzeum"],
+["Metro I. P. Pavlova","I. P. Pavlova",50.07520,14.43020,"ip pavlova pavlova"],
+["Metro Jiřího z Poděbrad","Jiřího z Poděbrad",50.07770,14.44970,"jiriho z podebrad"],
+["Metro Flora","Flora",50.07790,14.46220,"flora"],
+["Metro Křižíkova","Křižíkova",50.09280,14.45160,"krizikova"],
+["Metro Vltavská","Vltavská",50.09950,14.43830,"vltavska"],
+["Metro Nádraží Holešovice","Nádraží Holešovice",50.10960,14.44050,"nadrazi holesovice"],
+["Metro Vyšehrad","Vyšehrad (metro)",50.06260,14.43030,"metro vysehrad kongresove centrum"],
+["Metro Pražského povstání","Pražského povstání",50.05630,14.43420,"prazskeho povstani"],
+["Metro Pankrác","Pankrác",50.05110,14.43940,"pankrac"],
+["Metro Budějovická","Budějovická",50.04420,14.44890,"budejovicka"],
+["Metro Smíchovské nádraží","Smíchovské nádraží",50.06170,14.40860,"smichovske nadrazi"],
+["Metro Palmovka","Palmovka",50.10400,14.47500,"palmovka"],
+["Metro Nádraží Veleslavín","Nádraží Veleslavín",50.09580,14.34690,"veleslavin"],
+["Metro Zličín","Zličín",50.05400,14.29100,"zlicin"],
+["Metro Černý Most","Černý Most",50.10900,14.57700,"cerny most"],
+["Metro Háje","Háje",50.03100,14.52700,"haje"],
+["Metro Letňany","Letňany",50.12570,14.51580,"letnany"],
+["Metro Depo Hostivař","Depo Hostivař",50.07560,14.51530,"depo hostivar"]
+];
+const QUARTERS = [["Staré Město",50.0870,14.4200],["Josefov",50.0902,14.4185],["Malá Strana",50.0872,14.4040],["Hradčany",50.0900,14.3950],["Nové Město",50.0790,14.4240],["Vinohrady",50.0760,14.4440],["Žižkov",50.0850,14.4500],["Karlín",50.0925,14.4520],["Letná",50.0985,14.4230],["Holešovice",50.1030,14.4420],["Smíchov",50.0710,14.4030],["Vyšehrad",50.0640,14.4220],["Dejvice",50.1010,14.3920],["Nusle",50.0620,14.4400]];
+
+/* ---------- prezzo giusto? [voce, max giusto, max caro, nota] ---------- */
+const PRICES = [
+["Birra 0,5 l (pub)",80,110,"Media a Praga nel 2026: 71–75 Kč"],
+["Caffè espresso",70,95,"Stima"],
+["Cappuccino",90,120,"Stima"],
+["Acqua 0,5 l (negozio)",25,45,"Al supermercato 10–20 Kč"],
+["Menu pranzo del giorno",230,300,"Media a Praga nel 2026: circa 225 Kč"],
+["Piatto principale a cena",300,420,"Stima"],
+["Pizza",260,350,"Stima"],
+["Kebab o panino",170,220,"Stima"],
+["Trdelník",110,160,"Ai mercatini 2025: 100–180 Kč"],
+["Vin brulé (svařák)",80,100,"Ai mercatini 2025: 60–100 Kč"],
+["Salsiccia al mercatino",160,200,"Città Vecchia 2025: 160 Kč"],
+["Calamita souvenir",80,130,"Stima"],
+["Cocktail",200,280,"Stima"],
+["Ingresso discoteca",250,400,"Di solito circa 200 Kč"],
+["Biglietto mezzi 30 min",39,42,"App 36 · carta 39 · SMS 42"],
+["Biglietto mezzi 90 min",50,55,"App 46 · carta 50 · SMS 55"],
+["Taxi: Kč al km",36,45,"Tariffa massima regolata ~36 Kč/km"]
+];
+const GIFTS = [
+["Cioccolato Studentská pečeť",40,70,"Il classico ceco con frutta secca"],
+["Cialde termali (Lázeňské oplatky)",35,70,"Le cialde rotonde di Karlovy Vary"],
+["Tatranky o Horalky",12,25,"Wafer al cioccolato o alla nocciola"],
+["Kofola 0,5 l",20,35,"La «cola» ceca"],
+["Hořické trubičky",60,110,"Cannoli di wafer ripieni"],
+["Becherovka mignon 50 ml (18+)",60,90,"Il liquore alle erbe di Karlovy Vary"],
+["Peluche della Talpina (Krtek)",150,350,"Nei negozi di giocattoli, non sulle bancarelle"]
+];
+const PHRASES = [
+["Dobrý den","DO-bri den","Buongiorno"],["Ahoj","A-hoi","Ciao"],["Děkuji","DIE-ku-i","Grazie"],["Prosím","PRO-sim","Per favore / prego"],["Promiňte","PRO-min-te","Mi scusi"],["Mluvíte anglicky?","MLU-vi-te AN-glits-ki","Parla inglese?"],["Kolik to stojí?","KO-lik to STO-ii","Quanto costa?"],["Účet, prosím","U-cet PRO-sim","Il conto, per favore"],["Zaplatím kartou","ZA-pla-tim KAR-tou","Pago con la carta"],["V korunách, prosím","f KO-ru-nakh PRO-sim","In corone, per favore"],["Jedno pivo, prosím","IED-no PI-vo PRO-sim","Una birra, per favore"],["Kohoutkovou vodu, prosím","KO-hout-ko-vou VO-du","Acqua del rubinetto, per favore"],["Bez masa","BEZ MA-sa","Senza carne"],["Studentská sleva?","STU-dent-ska SLE-va","C’è lo sconto studenti?"],["Kde je…?","GDE ie","Dov’è…?"],["Ne, děkuji","NE DIE-ku-i","No, grazie (con PR e venditori)"],["Nerozumím","NE-ro-zu-mim","Non capisco"],["Na zdraví!","NA zdra-vi","Salute! (brindisi)"],["Pomoc!","PO-mots","Aiuto!"]
+];
+const TICKETS = [["30 minuti",36,39,42],["90 minuti",46,50,55],["24 ore",140,150,150],["72 ore",340,350,350]];
+const SOSN = [["112","Emergenza europea, rispondono anche in inglese"],["155","Ambulanza"],["158","Polizia"],["156","Polizia municipale"],["150","Vigili del fuoco"]];
+const HELP = [
+{n:"Ambasciata d’Italia",a:"Nerudova 20, Malá Strana",la:50.08869,lo:14.40033,tel:[["+420233080111","+420 233 080 111","centralino"],["+420603517770","+420 603 517 770","solo emergenze"]],h:"lun–ven 8:30–13:30 e 14:30–17:00"},
+{n:"Farmacia aperta 24 ore – Na Františku",a:"Na Františku 847/8 (ospedale Na Františku)",la:50.09210,lo:14.42230,tel:[["+420222801397","+420 222 801 397",""]],h:"24/7 · di notte suona all’ingresso principale dell’ospedale"},
+{n:"Pronto soccorso – Nemocnice Na Františku",a:"Na Františku 847/8, Staré Město",la:50.09210,lo:14.42230,tel:[["+420222801111","+420 222 801 111",""]],h:"24/7"}
+];
+
+/* ---------- geometria della mappa ---------- */
+const RIVER = [[50.0450,14.4150],[50.0520,14.4145],[50.0590,14.4140],[50.0650,14.4134],[50.0700,14.4127],[50.0745,14.4118],[50.0790,14.4107],[50.0830,14.4100],[50.0865,14.4110],[50.0895,14.4133],[50.0920,14.4155],[50.0938,14.4185],[50.0948,14.4240],[50.0955,14.4300],[50.0960,14.4360],[50.0975,14.4440],[50.1000,14.4550],[50.1050,14.4620],[50.1110,14.4570],[50.1150,14.4440],[50.1165,14.4300],[50.1170,14.4150],[50.1185,14.4020]];
+const BRIDGES = [
+{n:"Ponte Carlo",a:[50.08622,14.41365],b:[50.08655,14.40720],gold:1},
+{a:[50.08960,14.41575],b:[50.09080,14.41110]},{a:[50.08100,14.41320],b:[50.08085,14.40660]},
+{a:[50.07580,14.41370],b:[50.07610,14.40860]},{a:[50.07320,14.41470],b:[50.07230,14.40930]},
+{a:[50.09270,14.41890],b:[50.09430,14.41630]},{a:[50.09300,14.42680],b:[50.09630,14.42430]},
+{a:[50.09380,14.43690],b:[50.09900,14.43460]},{a:[50.06720,14.41580],b:[50.06640,14.41040]}
+];
+const PARKS = [[50.0832,14.3960,420,750,10],[50.0928,14.4010,520,110,-5],[50.0968,14.4230,800,230,5],[50.0842,14.4087,55,260,5],[50.0645,14.4185,300,220,0],[50.0793,14.4420,270,150,0],[50.1055,14.4230,1000,330,5],[50.0890,14.4510,900,160,-5],[50.0760,14.4192,80,250,10],[50.0845,14.4345,90,180,0],[50.0965,14.4360,350,70,10],[50.0812,14.4095,40,160,0]];
+const HILLS = [[50.0840,14.3925,120,420],[50.0905,14.3975,60,380],[50.0975,14.4210,45,520],[50.0643,14.4185,40,230],[50.0888,14.4520,70,360],[50.0760,14.4500,50,650],[50.0680,14.3950,70,400]];
+const DLAB = [["Staré Město",50.0868,14.4200],["Malá Strana",50.0866,14.4030],["Hradčany",50.0912,14.3925],["Josefov",50.0908,14.4190],["Nové Město",50.0788,14.4240],["Vinohrady",50.0752,14.4450],["Žižkov",50.0860,14.4500],["Karlín",50.0928,14.4520],["Letná",50.0995,14.4215],["Holešovice",50.1045,14.4420],["Smíchov",50.0712,14.4015],["Vyšehrad",50.0622,14.4232],["Dejvice",50.1025,14.3920]];
+/* edifici simbolo: lat, lon, larghezza E-O, profondità N-S, altezza, rotazione°, tetto (f piano, g a capanna, s guglia, d cupola), altezza tetto, materiale */
+const BLD = [
+[50.09088,14.40030,110,38,34,0,"g",10,"dark"],[50.09100,14.39955,12,12,50,0,"s",32,"dark"],[50.09076,14.39955,12,12,50,0,"s",32,"dark"],[50.09068,14.40022,16,16,62,0,"s",34,"dark"],
+[50.09000,14.40050,330,22,22,-4,"g",6,"stone"],[50.09050,14.39860,24,110,20,0,"g",5,"stone"],[50.09140,14.40000,200,20,20,0,"g",5,"stone"],
+[50.08770,14.42270,50,22,28,0,"g",10,"dark"],[50.08778,14.42228,9,9,44,0,"s",36,"dark"],[50.08762,14.42228,9,9,44,0,"s",36,"dark"],
+[50.08712,14.42060,11,11,58,0,"s",12,"stone"],[50.08621,14.41372,12,12,36,0,"s",12,"dark"],[50.08655,14.40705,11,11,33,0,"s",10,"dark"],
+[50.08803,14.40330,70,40,26,0,"f",0,"stone"],[50.08803,14.40345,24,24,22,0,"d",30,"patina"],[50.08795,14.40385,10,10,60,0,"s",19,"patina"],
+[50.07900,14.43085,104,70,28,0,"f",0,"stone"],[50.07900,14.43085,26,26,16,0,"d",26,"patina"],
+[50.08702,14.42742,14,14,44,0,"s",21,"dark"],[50.08750,14.42820,60,40,24,0,"d",14,"stone"],
+[50.07548,14.41414,16,16,28,0,"f",0,"glass"],[50.07556,14.41442,18,18,30,0,"d",5,"stone"],
+[50.06440,14.41810,60,24,24,0,"g",8,"stone"],[50.06448,14.41760,8,8,36,0,"s",22,"dark"],[50.06432,14.41760,8,8,36,0,"s",22,"dark"],
+[50.08100,14.41350,62,44,26,0,"g",12,"dark"],[50.08990,14.41530,70,45,22,0,"f",0,"stone"],
+[50.08628,14.38930,8,8,30,0,"s",14,"stone"],[50.08612,14.38930,8,8,30,0,"s",14,"stone"],
+[50.09442,14.41625,3,3,22,0,"s",3,"steel"]
+];
+
+/* ===== Motore della mappa 3D: canvas 2D con proiezione prospettica, città procedurale e cache ===== */
+const Map3D = (() => {
+  const O = {la: 50.0868, lo: 14.4180};
+  const MX = 111320 * Math.cos(O.la * Math.PI / 180), MY = 111230;
+  const wx = lo => (lo - O.lo) * MX, wy = la => (la - O.la) * MY;
+  const toLL = (x, y) => [O.la + y / MY, O.lo + x / MX];
+  const EZ = 1.5, BZ = 2.0, FZ = 1.25;
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+  let seed = 20261128; const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+
+  let cv, ctx, wrap, labelBox, W = 0, H = 0, dpr = 1, g = null;
+  const scene = document.createElement("canvas"), sctx = scene.getContext("2d");
+  const cam = {tx: 0, ty: 0, s: 0.3, th: -1.34, ph: 1.12};
+  let mode3d = true, anim = null, pins = [], zones = [], user = null, sel = null, emph = false;
+  let picks = [], raf = 0, lastT = 0, visible = true, lastAct = 0, lastMove = 0, labelEls = [], dirty = true, sceneKey = "", needHigh = false;
+  const cb = {};
+
+  /* ---------- geometria del territorio ---------- */
+  const hills = HILLS.map(h => ({x: wx(h[1]), y: wy(h[0]), h: h[2], s: h[3]}));
+  function terrain(x, y) { let z = 0; for (const h of hills) { const dx = x - h.x, dy = y - h.y; z += h.h * Math.exp(-(dx * dx + dy * dy) / (2 * h.s * h.s)); } return z * EZ; }
+  const rc = RIVER.map(p => [wx(p[1]), wy(p[0])]);
+  const riverPoly = (() => { const L = [], R = [], hw = 105; for (let i = 0; i < rc.length; i++) { const a = rc[Math.max(0, i - 1)], b = rc[Math.min(rc.length - 1, i + 1)]; let dx = b[0] - a[0], dy = b[1] - a[1]; const l = Math.hypot(dx, dy) || 1; dx /= l; dy /= l; L.push([rc[i][0] - dy * hw, rc[i][1] + dx * hw, 0]); R.push([rc[i][0] + dy * hw, rc[i][1] - dx * hw, 0]); } return L.concat(R.reverse()); })();
+  function riverDist(x, y) { let b = 1e18; for (let i = 0; i < rc.length - 1; i++) { const a = rc[i], c = rc[i + 1], dx = c[0] - a[0], dy = c[1] - a[1], t = clamp(((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy), 0, 1), px = a[0] + dx * t - x, py = a[1] + dy * t - y; b = Math.min(b, px * px + py * py); } return Math.sqrt(b); }
+  const ring = (x, y, r, n, zf) => { const out = []; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; out.push([px, py, zf ? zf(px, py) : 0]); } return out; };
+  const parkE = PARKS.map(p => ({x: wx(p[1]), y: wy(p[0]), rx: p[2], ry: p[3], r: p[4] * Math.PI / 180}));
+  const inPark = (x, y, m) => parkE.some(e => { const dx = x - e.x, dy = y - e.y, c = Math.cos(-e.r), s = Math.sin(-e.r), u = dx * c - dy * s, v = dx * s + dy * c; return u * u / ((e.rx + m) ** 2) + v * v / ((e.ry + m) ** 2) < 1; });
+  const parks = parkE.map(e => { const out = []; for (let i = 0; i < 28; i++) { const a = i / 28 * Math.PI * 2, u = Math.cos(a) * e.rx, v = Math.sin(a) * e.ry, X = e.x + u * Math.cos(e.r) - v * Math.sin(e.r), Y = e.y + u * Math.sin(e.r) + v * Math.cos(e.r); out.push([X, Y, terrain(X, Y)]); } return out; });
+  const trees = []; parkE.forEach(e => { const n = Math.min(70, Math.round(e.rx * e.ry / 2600)); for (let i = 0; i < n; i++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 0.92, u = Math.cos(a) * e.rx * r, v = Math.sin(a) * e.ry * r, X = e.x + u * Math.cos(e.r) - v * Math.sin(e.r), Y = e.y + u * Math.sin(e.r) + v * Math.cos(e.r); if (riverDist(X, Y) > 115) trees.push([X, Y, terrain(X, Y), 0.7 + rnd() * 0.6]); } });
+  const contours = []; hills.forEach(h => { for (let k = 1; k <= 4; k++) { const z = h.h * k / 5, r = h.s * Math.sqrt(2 * Math.log(5 / k)); contours.push({k, pts: ring(h.x, h.y, r, 40, () => z * EZ)}); } });
+  const bridges = BRIDGES.map(b => ({g: !!b.gold, a: [wx(b.a[1]), wy(b.a[0]), 7], b: [wx(b.b[1]), wy(b.b[0]), 7]}));
+  const dlab = DLAB.map(d => { const x = wx(d[2]), y = wy(d[1]); return {t: d[0], x, y, z: terrain(x, y) + 40}; });
+  const stars = Array.from({length: 70}, () => [rnd(), rnd() * 0.92, rnd() < 0.15 ? 1.4 : 0.8, 0.25 + rnd() * 0.6]);
+
+  /* ---------- edifici: monumenti illuminati + città con i tetti rossi ---------- */
+  const LIGHT = (() => { const v = [-0.45, 0.35, 0.82], l = Math.hypot(...v); return v.map(c => c / l); })();
+  const MAT = {stone: [220, 184, 120], dark: [122, 108, 94], patina: [92, 160, 136], glass: [126, 160, 188], steel: [206, 182, 128], wall: [96, 86, 74], wall2: [108, 96, 80], wall3: [86, 80, 76], roof: [156, 64, 44], roof2: [140, 56, 40], roof3: [166, 76, 52], slate: [70, 78, 90], flat: [62, 66, 74]};
+  function mkFace(pts, base, ctr, kind) {
+    const a = pts[0], b = pts[1], c = pts[2];
+    let n = [(b[1] - a[1]) * (c[2] - a[2]) - (b[2] - a[2]) * (c[1] - a[1]), (b[2] - a[2]) * (c[0] - a[0]) - (b[0] - a[0]) * (c[2] - a[2]), (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])];
+    const fc = [0, 1, 2].map(i => pts.reduce((s, p) => s + p[i], 0) / pts.length);
+    if (n[0] * (fc[0] - ctr[0]) + n[1] * (fc[1] - ctr[1]) + n[2] * (fc[2] - ctr[2]) < 0) n = n.map(v => -v);
+    const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
+    const k = 0.38 + 0.62 * Math.max(0, n[0] * LIGHT[0] + n[1] * LIGHT[1] + n[2] * LIGHT[2]);
+    return {pts, n, fc, kind, col: `rgb(${base.map(v => Math.round(clamp(v * k, 0, 255))).join(",")})`};
+  }
+  function prismFaces(cx, cy, w, d, h, rot, roof, hr, wallC, roofC, out, kinds) {
+    const z0 = terrain(cx, cy), z1 = z0 + h, zr = z1 + hr, r = rot * Math.PI / 180, cr = Math.cos(r), sr = Math.sin(r);
+    const corner = (u, v) => [cx + u * cr - v * sr, cy + u * sr + v * cr];
+    const c4 = [corner(-w / 2, -d / 2), corner(w / 2, -d / 2), corner(w / 2, d / 2), corner(-w / 2, d / 2)], ctr = [cx, cy, (z0 + z1) / 2];
+    for (let i = 0; i < 4; i++) { const p = c4[i], q = c4[(i + 1) % 4]; out.push(mkFace([[p[0], p[1], z0], [q[0], q[1], z0], [q[0], q[1], z1], [p[0], p[1], z1]], wallC, ctr, kinds.w)); }
+    const top = c4.map(p => [p[0], p[1], z1]);
+    if (roof === "f") out.push(mkFace(top, roofC, ctr, kinds.r));
+    else if (roof === "g") { const r1 = corner(-w / 2, 0), r2 = corner(w / 2, 0), A = [r1[0], r1[1], zr], B = [r2[0], r2[1], zr]; out.push(mkFace([top[0], top[1], B, A], roofC, ctr, kinds.r), mkFace([top[3], top[2], B, A], roofC, ctr, kinds.r), mkFace([top[0], A, top[3]], wallC, ctr, kinds.w), mkFace([top[1], B, top[2]], wallC, ctr, kinds.w)); }
+    else if (roof === "s") { const A = [cx, cy, zr]; for (let i = 0; i < 4; i++) out.push(mkFace([top[i], top[(i + 1) % 4], A], roofC, ctr, kinds.r)); }
+    else if (roof === "d") { const rr = Math.min(w, d) / 2, n = 8, r1 = [], r2 = [], A = [cx, cy, zr]; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; r1.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, z1]); r2.push([cx + Math.cos(a) * rr * .62, cy + Math.sin(a) * rr * .62, z1 + (zr - z1) * .62]); } for (let i = 0; i < n; i++) { const j = (i + 1) % n; out.push(mkFace([r1[i], r1[j], r2[j], r2[i]], roofC, [cx, cy, z1], kinds.r), mkFace([r2[i], r2[j], A], roofC, [cx, cy, z1], kinds.r)); } }
+  }
+  const lmFaces = [];
+  BLD.forEach(b => { const [la, lo, w, d, h, rot, roof, hr, m] = b, sc = w < 80 ? 1.5 : 1.12; const wc = MAT[m], rcol = roof === "g" && m === "stone" ? MAT.slate : MAT[m]; prismFaces(wx(lo), wy(la), w * sc, d * sc, h * BZ, rot, roof, hr * BZ, wc, rcol, lmFaces, {w: "lw", r: "lr"}); });
+  [[0, 0], [10, 6], [-10, 6]].forEach(([u, v], i) => prismFaces(wx(14.45100) + u, wy(50.08100) + v, 7, 7, (i ? 165 : 216) * 1.3, 0, "f", 0, MAT.steel, MAT.steel, lmFaces, {w: "lw", r: "lr"}));
+  [[66, 16], [93, 13]].forEach(([zc, s]) => { const cx = wx(14.45100), cy = wy(50.08104), z0 = terrain(cx, cy) + zc * 1.3; const c = [[cx - s, cy - s * .8], [cx + s, cy - s * .8], [cx + s, cy + s * .8], [cx - s, cy + s * .8]], ctr = [cx, cy, z0 + 7]; for (let i = 0; i < 4; i++) { const p = c[i], q = c[(i + 1) % 4]; lmFaces.push(mkFace([[p[0], p[1], z0], [q[0], q[1], z0], [q[0], q[1], z0 + 14], [p[0], p[1], z0 + 14]], MAT.glass, ctr, "lw")); } lmFaces.push(mkFace(c.map(p => [p[0], p[1], z0 + 14]), MAT.steel, ctr, "lr")); });
+  const petr = (() => { const cx = wx(14.39505), cy = wy(50.08355), z0 = terrain(cx, cy), h = 60 * BZ, b = 9, t = 2.2, lv = []; for (let k = 0; k <= 7; k++) { const f = k / 7, s = b + (t - b) * f; lv.push([[cx - s, cy - s, z0 + h * f], [cx + s, cy - s, z0 + h * f], [cx + s, cy + s, z0 + h * f], [cx - s, cy + s, z0 + h * f]]); } return lv; })();
+  const lmPts = BLD.map(b => [wx(b[1]), wy(b[0])]);
+  const OPEN = [[50.08753, 14.42132, 85], [50.0832, 14.4246, 42], [50.0820, 14.4263, 42], [50.0808, 14.4281, 42], [50.0797, 14.4298, 40], [50.08803, 14.40347, 42], [50.0890, 14.4296, 48], [50.0898, 14.3980, 60], [50.0755, 14.4376, 52], [50.0906, 14.4000, 165], [50.0866, 14.4112, 70], [50.0778, 14.4497, 48], [50.0856, 14.4211, 26]].map(o => ({x: wx(o[1]), y: wy(o[0]), r: o[2]}));
+  const AREAS = [[50.0870, 14.4205, 560, 440, 12], [50.0882, 14.4045, 340, 300, -20], [50.0790, 14.4250, 700, 600, 38], [50.0907, 14.3955, 300, 170, 0], [50.0760, 14.4445, 650, 480, 2], [50.0930, 14.4485, 560, 210, 5], [50.0848, 14.4525, 460, 320, 8], [50.1005, 14.4310, 700, 320, 0], [50.0995, 14.4095, 430, 220, 0], [50.0718, 14.4030, 440, 400, 15], [50.0655, 14.4265, 380, 260, 0]];
+  const blocks = [];
+  (() => { const sp = 66, done = new Set(); for (const A of AREAS) { const cx = wx(A[1]), cy = wy(A[0]); for (let gx = Math.floor((cx - A[2]) / sp); gx <= Math.ceil((cx + A[2]) / sp); gx++) for (let gy = Math.floor((cy - A[3]) / sp); gy <= Math.ceil((cy + A[3]) / sp); gy++) {
+    const key = gx + ":" + gy; if (done.has(key)) continue;
+    const x = gx * sp + (rnd() - .5) * 22, y = gy * sp + (rnd() - .5) * 22, ex = (x - cx) / A[2], ey = (y - cy) / A[3]; if (ex * ex + ey * ey > 1) continue; done.add(key);
+    if (riverDist(x, y) < 132 || inPark(x, y, 18) || OPEN.some(o => Math.hypot(x - o.x, y - o.y) < o.r) || lmPts.some(p => Math.hypot(x - p[0], y - p[1]) < 46)) continue;
+    const big = rnd(), w = 26 + big * 20, d = 22 + rnd() * 16, h = (13 + rnd() * 15) * FZ, gable = rnd() < 0.72, wc = [MAT.wall, MAT.wall2, MAT.wall3][Math.floor(rnd() * 3)], rcol = gable ? [MAT.roof, MAT.roof2, MAT.roof3][Math.floor(rnd() * 3)] : MAT.flat;
+    const faces = []; prismFaces(x, y, w, d, h, A[4] + (rnd() - .5) * 26, gable ? "g" : "f", gable ? 7 + rnd() * 5 : 0, wc, rcol, faces, {w: "fw", r: "fr"}); blocks.push({x, y, z: terrain(x, y), faces});
+  } } })();
+
+  /* ---------- camera ---------- */
+  let ct = 1, st = 0, cp = 1, sp = 0, D = 3000, F = 600, CX = 0, CY = 0, NEAR = 100;
+  function setup() { ct = Math.cos(cam.th); st = Math.sin(cam.th); cp = Math.cos(cam.ph); sp = Math.sin(cam.ph); D = 1.2 * (H / cam.s); F = cam.s * D; CX = W / 2; CY = H * (0.52 + 0.2 * sp); NEAR = D * 0.05; }
+  function tc(x, y, z) { const dx = x - cam.tx, dy = y - cam.ty, xr = dx * ct - dy * st, yr = dx * st + dy * ct; return [xr, yr * cp + z * sp, D + yr * sp - z * cp]; }
+  function pc(c) { return [CX + F * c[0] / c[2], CY - F * c[1] / c[2], c[2]]; }
+  function camPos() { return [cam.tx - D * sp * st, cam.ty - D * sp * ct, D * cp]; }
+  function unproject(sx, sy) { const u = (sx - CX) / F, v = (CY - sy) / F, den = cp - v * sp; if (den <= 0.02) return null; const yr = v * D / den, zc = D + yr * sp, xr = u * zc; return [cam.tx + xr * ct + yr * st, cam.ty - xr * st + yr * ct]; }
+  function clipPoly(cs) { const out = []; for (let i = 0; i < cs.length; i++) { const a = cs[i], b = cs[(i + 1) % cs.length], ai = a[2] >= NEAR, bi = b[2] >= NEAR; if (ai) out.push(a); if (ai !== bi) { const t = (NEAR - a[2]) / (b[2] - a[2]); out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, NEAR]); } } return out; }
+  function pathPoly(pts) { const cs = clipPoly(pts.map(p => tc(p[0], p[1], p[2] || 0))); if (cs.length < 3) return false; g.beginPath(); cs.forEach((c, i) => { const s = pc(c); i ? g.lineTo(s[0], s[1]) : g.moveTo(s[0], s[1]); }); g.closePath(); return true; }
+  function seg(a, b) { let A = tc(a[0], a[1], a[2] || 0), B = tc(b[0], b[1], b[2] || 0); if (A[2] < NEAR && B[2] < NEAR) return null; if (A[2] < NEAR) { const t = (NEAR - A[2]) / (B[2] - A[2]); A = [A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, NEAR]; } else if (B[2] < NEAR) { const t = (NEAR - B[2]) / (A[2] - B[2]); B = [B[0] + (A[0] - B[0]) * t, B[1] + (A[1] - B[1]) * t, NEAR]; } return [pc(A), pc(B)]; }
+  const proj = (x, y, z) => { const c = tc(x, y, z); return c[2] < NEAR ? null : pc(c); };
+
+  /* ---------- scena (in cache) ---------- */
+  function renderScene(high) {
+    setup(); g = sctx; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const hz = sp > 0.05 ? CY - F * cp / sp : -1e4, hzs = clamp(hz, 0, H);
+    // cielo notturno
+    const sky = g.createLinearGradient(0, 0, 0, Math.max(20, hzs)); sky.addColorStop(0, "#040a12"); sky.addColorStop(0.7, "#0d1f33"); sky.addColorStop(1, "#22405f");
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    if (hz > 24) { for (const s of stars) { const y = s[1] * hz * 0.9; g.fillStyle = `rgba(241,234,219,${s[3]})`; g.fillRect(s[0] * W, y, s[2], s[2]); }
+      const mx = W * 0.8, my = hz * 0.32, mg = g.createRadialGradient(mx, my, 2, mx, my, 46); mg.addColorStop(0, "rgba(241,234,219,.35)"); mg.addColorStop(1, "rgba(241,234,219,0)"); g.fillStyle = mg; g.fillRect(mx - 50, my - 50, 100, 100); g.beginPath(); g.arc(mx, my, 7, 0, Math.PI * 2); g.fillStyle = "#efe6d2"; g.fill(); g.beginPath(); g.arc(mx + 3, my - 2, 6.2, 0, Math.PI * 2); g.fillStyle = "#0d1f33"; g.fill();
+      const glow = g.createLinearGradient(0, hz - 40, 0, hz); glow.addColorStop(0, "rgba(240,190,110,0)"); glow.addColorStop(1, "rgba(240,190,110,.16)"); g.fillStyle = glow; g.fillRect(0, hz - 40, W, 40); }
+    // suolo
+    if (pathPoly([[-18000, -18000], [18000, -18000], [18000, 18000], [-18000, 18000]])) { const gr = g.createLinearGradient(0, Math.max(0, hz), 0, H); gr.addColorStop(0, "#16222e"); gr.addColorStop(1, "#0a0f15"); g.fillStyle = gr; g.fill(); }
+    g.beginPath(); const gs = cam.s > 0.6 ? 100 : 200, gx0 = Math.round(cam.tx / gs) * gs, gy0 = Math.round(cam.ty / gs) * gs, n = 16;
+    for (let i = -n; i <= n; i++) { const s1 = seg([gx0 + i * gs, gy0 - n * gs], [gx0 + i * gs, gy0 + n * gs]); if (s1) { g.moveTo(s1[0][0], s1[0][1]); g.lineTo(s1[1][0], s1[1][1]); } const s2 = seg([gx0 - n * gs, gy0 + i * gs], [gx0 + n * gs, gy0 + i * gs]); if (s2) { g.moveTo(s2[0][0], s2[0][1]); g.lineTo(s2[1][0], s2[1][1]); } }
+    g.strokeStyle = "rgba(127,180,234,.055)"; g.lineWidth = 1; g.stroke();
+    // parchi, fiume, colline
+    for (const p of parks) if (pathPoly(p)) { g.fillStyle = "rgba(34,66,48,.75)"; g.fill(); }
+    if (pathPoly(riverPoly)) { const gr = g.createLinearGradient(0, Math.max(0, hz), 0, H); gr.addColorStop(0, "#14395a"); gr.addColorStop(1, "#1c5888"); g.fillStyle = gr; g.fill(); g.strokeStyle = "rgba(140,190,240,.55)"; g.lineWidth = 1.2; g.stroke(); }
+    g.beginPath(); let on = false; for (const p of rc) { const s = proj(p[0], p[1], 0); if (!s) { on = false; continue; } on ? g.lineTo(s[0], s[1]) : g.moveTo(s[0], s[1]); on = true; }
+    g.setLineDash([3, 14]); g.strokeStyle = "rgba(190,220,250,.35)"; g.lineWidth = 1.2; g.stroke(); g.setLineDash([]);
+    for (const c of contours) if (pathPoly(c.pts)) { g.strokeStyle = `rgba(127,180,234,${0.05 + c.k * 0.04})`; g.lineWidth = 1; g.stroke(); }
+    // zone trappola
+    for (const z of zones) for (const pt of z.pts) { const x = wx(pt[1]), y = wy(pt[0]); if (pathPoly(ring(x, y, pt[2], 30, terrain))) { g.fillStyle = emph ? "rgba(226,85,59,.22)" : "rgba(226,85,59,.07)"; g.fill(); g.setLineDash([5, 5]); g.strokeStyle = emph ? "rgba(255,154,130,.9)" : "rgba(255,154,130,.26)"; g.lineWidth = emph ? 1.6 : 1; g.stroke(); g.setLineDash([]); } }
+    // ponti
+    g.lineCap = "round"; for (const b of bridges) { const s = seg(b.a, b.b); if (!s) continue; const w = clamp(F / ((s[0][2] + s[1][2]) / 2) * 16, 1.4, 9); g.beginPath(); g.moveTo(s[0][0], s[0][1]); g.lineTo(s[1][0], s[1][1]); g.strokeStyle = b.g ? "rgba(240,212,138,.28)" : "rgba(0,0,0,.45)"; g.lineWidth = w + (b.g ? 7 : 2); g.stroke(); g.strokeStyle = b.g ? "#f0cc6e" : "#8a8f98"; g.lineWidth = b.g ? w * 1.15 : w; g.stroke(); }
+    // alberi
+    if (high && cam.s > 0.12) for (const t of trees) { const s = proj(t[0], t[1], t[2] + 6); if (!s || s[0] < -10 || s[0] > W + 10 || s[1] < hz || s[1] > H + 10) continue; const r = clamp(F / s[2] * 9 * t[3], 0.8, 6); g.beginPath(); g.arc(s[0], s[1], r, 0, Math.PI * 2); g.fillStyle = "#24442f"; g.fill(); g.beginPath(); g.arc(s[0] - r * .25, s[1] - r * .3, r * .55, 0, Math.PI * 2); g.fillStyle = "#33603f"; g.fill(); }
+    // edifici (pittore: dal fondo verso la camera)
+    const cpw = camPos(), list = [], lim = (W + H) * 0.15, fabOn = cam.s > 0.07;
+    const push = f => { if (f.n[0] * (cpw[0] - f.fc[0]) + f.n[1] * (cpw[1] - f.fc[1]) + f.n[2] * (cpw[2] - f.fc[2]) <= 0) return; const cs = f.pts.map(p => tc(p[0], p[1], p[2])); for (const c of cs) if (c[2] < NEAR) return; list.push({f, cs, z: cs.reduce((s, c) => s + c[2], 0) / cs.length}); };
+    if (fabOn) for (const b of blocks) { const s = proj(b.x, b.y, b.z); if (!s || s[0] < -lim || s[0] > W + lim || s[1] < hz - 30 || s[1] > H + lim) continue; const far = s[2] > D * 2.6; for (const f of b.faces) { if ((!high || far) && f.kind === "fw") continue; push(f); } }
+    for (const f of lmFaces) push(f);
+    list.sort((a, b) => b.z - a.z);
+    for (const it of list) { const cs = it.cs; g.beginPath(); for (let i = 0; i < cs.length; i++) { const s = pc(cs[i]); i ? g.lineTo(s[0], s[1]) : g.moveTo(s[0], s[1]); } g.closePath(); g.fillStyle = it.f.col; g.fill(); if (it.f.kind[0] === "l") { g.strokeStyle = it.f.kind === "lr" ? "rgba(240,212,138,.5)" : "rgba(0,0,0,.3)"; g.lineWidth = .7; g.stroke(); } }
+    g.beginPath(); for (let k = 0; k < petr.length; k++) { const lv = petr[k].map(p => proj(...p)); if (lv.some(v => !v)) continue; const nx = k < petr.length - 1 ? petr[k + 1].map(p => proj(...p)) : null; for (let i = 0; i < 4; i++) { g.moveTo(lv[i][0], lv[i][1]); g.lineTo(lv[(i + 1) % 4][0], lv[(i + 1) % 4][1]); if (nx && nx.every(Boolean)) { g.moveTo(lv[i][0], lv[i][1]); g.lineTo(nx[i][0], nx[i][1]); g.moveTo(lv[i][0], lv[i][1]); g.lineTo(nx[(i + 1) % 4][0], nx[(i + 1) % 4][1]); } } } g.strokeStyle = "rgba(240,212,138,.85)"; g.lineWidth = 1; g.stroke();
+    // nebbia verso l'orizzonte
+    if (hz > -H) { const fog = g.createLinearGradient(0, hz, 0, hz + H * 0.22); fog.addColorStop(0, "rgba(34,64,95,.92)"); fog.addColorStop(1, "rgba(34,64,95,0)"); g.fillStyle = fog; g.fillRect(0, Math.max(0, hz), W, H * 0.22); }
+    // nomi
+    g.textAlign = "center"; g.textBaseline = "middle";
+    for (const d of dlab) { const s = proj(d.x, d.y, d.z); if (!s || s[1] < hz + 14 || s[1] > H - 30) continue; const fs = clamp(F / s[2] * 52, 12, 17); g.font = `600 ${fs}px "Barlow Condensed",sans-serif`; g.lineWidth = 3; g.strokeStyle = "rgba(8,13,19,.85)"; g.strokeText(d.t, s[0], s[1]); g.fillStyle = "rgba(241,234,219,.78)"; g.fillText(d.t, s[0], s[1]); }
+    { const s = proj(wx(14.4098), wy(50.0808), 0); if (s && s[1] > hz + 10) { g.font = `italic 600 ${clamp(F / s[2] * 48, 12, 17)}px "Barlow Condensed",sans-serif`; g.fillStyle = "rgba(170,210,245,.85)"; g.fillText("Vltava", s[0], s[1]); } }
+    // segnaposti
+    picks = []; const lab = [];
+    const vis = pins.map(p => { const x = wx(p.lo), y = wy(p.la), s = proj(x, y, terrain(x, y)); return {p, s}; }).filter(o => o.s && o.s[0] > -30 && o.s[0] < W + 30 && o.s[1] > hz + 4 && o.s[1] < H + 30).sort((a, b) => b.s[2] - a.s[2]);
+    for (const {p, s} of vis) {
+      const k = clamp(D / s[2], 0.55, 1.45), isSel = p.id === sel, big = p.top || isSel;
+      if (big) { const len = 56 * k, r = 7 * k, hx = s[0], hy = s[1] - len, gr = g.createLinearGradient(hx, hy, hx, s[1]); gr.addColorStop(0, p.col); gr.addColorStop(1, "rgba(0,0,0,0)");
+        g.beginPath(); g.ellipse(s[0], s[1], r * 1.5, r * .55, 0, 0, Math.PI * 2); g.fillStyle = p.col + "55"; g.fill();
+        g.beginPath(); g.moveTo(s[0], s[1]); g.lineTo(hx, hy); g.strokeStyle = gr; g.lineWidth = 2.4; g.stroke();
+        g.beginPath(); g.arc(hx, hy, r * 2.2, 0, Math.PI * 2); g.fillStyle = p.col + "30"; g.fill();
+        g.beginPath(); g.arc(hx, hy, r, 0, Math.PI * 2); g.fillStyle = p.col; g.fill(); g.lineWidth = isSel ? 2.6 : 1.4; g.strokeStyle = isSel ? "#f0d48a" : "#0b1016"; g.stroke();
+        picks.push({id: p.id, x: hx, y: hy, r: r + 12}); lab.push({x: hx, y: hy - r - 5, t: p.label, sub: p.sub, col: p.col, sel: isSel, id: p.id, pr: isSel ? 0 : 1 + s[2] / 1e5});
+      } else { const r = 4.2 * k, hy = s[1] - 9 * k; g.beginPath(); g.moveTo(s[0], s[1]); g.lineTo(s[0], hy); g.strokeStyle = p.col + "aa"; g.lineWidth = 1.3; g.stroke(); g.beginPath(); g.arc(s[0], hy, r, 0, Math.PI * 2); g.fillStyle = p.col; g.fill(); g.lineWidth = 1.2; g.strokeStyle = "#0b1016"; g.stroke(); picks.push({id: p.id, x: s[0], y: hy, r: r + 11}); }
+    }
+    if (emph) for (const z of zones) { const pt = z.pts[0], x = wx(pt[1]), y = wy(pt[0]), s = proj(x, y, terrain(x, y)); if (!s || s[1] < hz) continue; g.beginPath(); g.moveTo(s[0], s[1] - 15); g.lineTo(s[0] + 9, s[1] + 2); g.lineTo(s[0] - 9, s[1] + 2); g.closePath(); g.fillStyle = "#e2553b"; g.fill(); g.strokeStyle = "#0b1016"; g.lineWidth = 1.2; g.stroke(); g.fillStyle = "#fff"; g.font = "700 11px Barlow,sans-serif"; g.fillText("!", s[0], s[1] - 5); picks.push({id: z.id, x: s[0], y: s[1] - 6, r: 20}); }
+    let ulab = null; if (user) { const x = wx(user.lo), y = wy(user.la), s = proj(x, y, terrain(x, y)); if (s && s[1] > hz) ulab = {x: s[0], y: s[1] + 14}; }
+    placeLabels(lab, ulab);
+    return hz;
+  }
+  /* ---------- sovrapposizione animata: la tua posizione ---------- */
+  function drawUser(t) {
+    if (!user) return; g = ctx; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const x = wx(user.lo), y = wy(user.la), z = terrain(x, y), s = proj(x, y, z); if (!s) return;
+    if (user.acc && user.acc < 400 && pathPoly(ring(x, y, user.acc, 30, terrain))) { g.fillStyle = "rgba(127,180,234,.08)"; g.fill(); }
+    for (let i = 0; i < 3; i++) { const ph = RM ? (i + 1) / 4 : ((t / 1800) + i / 3) % 1; if (pathPoly(ring(x, y, (14 + ph * 120) / Math.max(0.5, cam.s * 3.2), 30, terrain))) { g.strokeStyle = `rgba(143,189,240,${(1 - ph) * 0.75})`; g.lineWidth = 1.8; g.stroke(); } }
+    const k = clamp(D / s[2], 0.7, 1.4), top = s[1] - 64 * k, gr = g.createLinearGradient(0, top, 0, s[1]); gr.addColorStop(0, "#f1eadb"); gr.addColorStop(1, "rgba(241,234,219,0)");
+    g.beginPath(); g.moveTo(s[0], s[1]); g.lineTo(s[0], top); g.strokeStyle = gr; g.lineWidth = 2.6; g.stroke();
+    const d = 7.5 * k; g.beginPath(); g.moveTo(s[0], top - d); g.lineTo(s[0] + d, top); g.lineTo(s[0], top + d); g.lineTo(s[0] - d, top); g.closePath(); g.fillStyle = "#f1eadb"; g.fill(); g.strokeStyle = "#3c7fc4"; g.lineWidth = 2.2; g.stroke();
+    g.beginPath(); g.arc(s[0], s[1], 4 * k, 0, Math.PI * 2); g.fillStyle = "#f1eadb"; g.fill();
+  }
+  function placeLabels(lab, ulab) {
+    lab.sort((a, b) => a.pr - b.pr);
+    const all = []; const boxes = []; if (ulab) { const w = 66; boxes.push([ulab.x - w / 2, ulab.y, ulab.x + w / 2, ulab.y + 26]); all.push({x: ulab.x, y: ulab.y, me: 1}); }
+    for (const L of lab) { const w = Math.min(214, 34 + (L.t.length + (L.sub ? L.sub.length + 1 : 0)) * 7.1), bx = [L.x - w / 2 - 4, L.y - 28, L.x + w / 2 + 4, L.y + 2]; if (all.length < 4 && !boxes.some(b => bx[0] < b[2] && bx[2] > b[0] && bx[1] < b[3] && bx[3] > b[1])) { boxes.push(bx); all.push(L); } }
+    while (labelEls.length < all.length) { const el = document.createElement("button"); el.type = "button"; el.className = "ml"; el.addEventListener("click", () => { if (el.dataset.id && cb.pick) cb.pick(el.dataset.id); }); labelBox.appendChild(el); labelEls.push(el); }
+    labelEls.forEach((el, i) => { const L = all[i]; if (!L || L.x < -20 || L.x > W + 20 || L.y < 0 || L.y > H + 20) { el.hidden = true; return; } el.hidden = false; const key = (L.me ? "me" : L.id) + "|" + (L.t || "") + "|" + (L.sub || ""); if (el.dataset.k !== key) { el.dataset.k = key; el.dataset.id = L.me ? "" : L.id; el.classList.toggle("me", !!L.me); el.innerHTML = L.me ? "Sei qui" : `<i style="background:${L.col}"></i>${esc(L.t)}${L.sub ? `<small>${esc(L.sub)}</small>` : ""}`; } el.classList.toggle("sel", !!L.sel); el.style.transform = L.me ? `translate(${Math.round(L.x)}px,${Math.round(L.y)}px) translate(-50%,0)` : `translate(${Math.round(L.x)}px,${Math.round(L.y)}px) translate(-50%,-100%)`; });
+  }
+
+  /* ---------- ciclo di disegno ---------- */
+  const ease = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  function stepAnim(t) { const a = anim; if (!a.t0) a.t0 = t; const k = clamp((t - a.t0) / a.dur, 0, 1), e = ease(k); for (const key of ["tx", "ty", "s", "ph"]) cam[key] = a.from[key] + (a.to[key] - a.from[key]) * e; let dth = a.to.th - a.from.th; dth = Math.atan2(Math.sin(dth), Math.cos(dth)); cam.th = a.from.th + dth * e; if (k >= 1) anim = null; }
+  const ckey = () => [cam.tx.toFixed(1), cam.ty.toFixed(1), cam.s.toFixed(5), cam.th.toFixed(5), cam.ph.toFixed(5), W, H].join("|");
+  function frame(t) {
+    raf = 0; if (!visible || !W || !H) return;
+    if (anim) stepAnim(t);
+    const moving = !!anim || ptrs.size > 0 || performance.now() - lastMove < 160, key = ckey();
+    if (key !== sceneKey || dirty) { renderScene(!moving); sceneKey = key; dirty = false; needHigh = moving; if (cb.bearing) cb.bearing(cam.th); }
+    else if (needHigh && !moving) { renderScene(true); needHigh = false; }
+    const pulse = !RM && performance.now() - lastAct < 30000;
+    if (!moving && pulse && t - lastT < 40) { raf = requestAnimationFrame(frame); return; }
+    lastT = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(scene, 0, 0); setup(); drawUser(t);
+    if (moving || pulse || needHigh) raf = requestAnimationFrame(frame);
+  }
+  const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  const wake = () => { lastAct = performance.now(); kick(); };
+  function go(to, dur) { const target = Object.assign({}, cam, to); target.s = clamp(target.s, 0.05, 1.6); if (RM || dur === 0) { Object.assign(cam, target); anim = null; } else anim = {from: Object.assign({}, cam), to: target, dur: dur || 900}; wake(); }
+
+  /* ---------- interazione ---------- */
+  const ptrs = new Map(); let prev = null, moved = false, downAt = 0, down0 = null;
+  function gstate() { const a = [...ptrs.values()]; if (a.length === 1) return {x: a[0].x, y: a[0].y, n: 1}; const [p, q] = a; return {x: (p.x + q.x) / 2, y: (p.y + q.y) / 2, d: Math.hypot(q.x - p.x, q.y - p.y), a: Math.atan2(q.y - p.y, q.x - p.x), n: 2}; }
+  function panBy(x0, y0, x1, y1) { setup(); const a = unproject(x0, y0), b = unproject(x1, y1); if (!a || !b) return; cam.tx = clamp(cam.tx + a[0] - b[0], -9000, 9000); cam.ty = clamp(cam.ty + a[1] - b[1], -9000, 9000); }
+  function zoomAt(f, x, y) { setup(); const a = unproject(x, y); cam.s = clamp(cam.s * f, 0.05, 1.6); setup(); const b = unproject(x, y); if (a && b) { cam.tx += a[0] - b[0]; cam.ty += a[1] - b[1]; } }
+  function bind() {
+    const xy = e => { const r = cv.getBoundingClientRect(); return {x: e.clientX - r.left, y: e.clientY - r.top}; };
+    cv.addEventListener("pointerdown", e => { try { cv.setPointerCapture(e.pointerId); } catch (er) {} ptrs.set(e.pointerId, xy(e)); prev = gstate(); moved = false; downAt = performance.now(); down0 = xy(e); anim = null; wake(); if (cb.move) cb.move(); });
+    cv.addEventListener("pointermove", e => { if (!ptrs.has(e.pointerId)) return; const p = xy(e); ptrs.set(e.pointerId, p); const gs = gstate(); if (!prev || prev.n !== gs.n) { prev = gs; return; } if (down0 && Math.hypot(p.x - down0.x, p.y - down0.y) > 7) moved = true; if (!moved) return; if (gs.n === 2) { zoomAt(gs.d / (prev.d || gs.d), gs.x, gs.y); cam.th -= gs.a - prev.a; } panBy(prev.x, prev.y, gs.x, gs.y); prev = gs; lastMove = performance.now(); wake(); });
+    const end = e => { if (!ptrs.has(e.pointerId)) return; const one = ptrs.size === 1; ptrs.delete(e.pointerId); prev = ptrs.size ? gstate() : null; lastMove = performance.now(); if (one && !moved && performance.now() - downAt < 500) tap(xy(e)); wake(); };
+    cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+    cv.addEventListener("wheel", e => { e.preventDefault(); const p = xy(e); zoomAt(Math.exp(-e.deltaY * 0.0016), p.x, p.y); anim = null; lastMove = performance.now(); wake(); }, {passive: false});
+    cv.addEventListener("dblclick", e => { const p = xy(e); zoomAt(1.7, p.x, p.y); wake(); });
+    cv.addEventListener("keydown", e => { const k = e.key, step = 60 / cam.s; let used = true; setup(); const mv = (dx, dy) => { cam.tx += dx * ct + dy * st; cam.ty += -dx * st + dy * ct; };
+      if (k === "ArrowUp") mv(0, step); else if (k === "ArrowDown") mv(0, -step); else if (k === "ArrowLeft") mv(-step, 0); else if (k === "ArrowRight") mv(step, 0); else if (k === "+" || k === "=") cam.s = clamp(cam.s * 1.25, .05, 1.6); else if (k === "-") cam.s = clamp(cam.s / 1.25, .05, 1.6); else if (k === "q" || k === "Q") cam.th -= .2; else if (k === "e" || k === "E") cam.th += .2; else if (k === "0") cam.th = 0; else used = false; if (used) { e.preventDefault(); wake(); } });
+  }
+  function tap(p) { let best = null, bd = 1e9; for (const k of picks) { const d = Math.hypot(k.x - p.x, k.y - p.y); if (d < k.r && d < bd) { bd = d; best = k; } } if (best && cb.pick) { cb.pick(best.id); return; } setup(); const gp = unproject(p.x, p.y); if (gp && cb.ground) { const ll = toLL(gp[0], gp[1]); cb.ground(ll[0], ll[1], p.x, p.y); } }
+  function resize() { if (!wrap) return; const r = wrap.getBoundingClientRect(); W = Math.round(r.width); H = Math.round(r.height); dpr = Math.min(2, window.devicePixelRatio || 1); for (const c of [cv, scene]) { c.width = Math.max(1, W * dpr); c.height = Math.max(1, H * dpr); } cv.style.width = W + "px"; cv.style.height = H + "px"; dirty = true; kick(); }
+
+  return {
+    init(canvas, wrapper, labels, callbacks, start) {
+      cv = canvas; wrap = wrapper; labelBox = labels; ctx = cv.getContext("2d"); Object.assign(cb, callbacks || {});
+      bind(); new ResizeObserver(resize).observe(wrap);
+      new IntersectionObserver(en => { visible = en[0].isIntersecting; if (visible) kick(); }).observe(wrap);
+      document.addEventListener("visibilitychange", () => { visible = !document.hidden; if (visible) kick(); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { dirty = true; kick(); });
+      resize(); if (start) { cam.tx = wx(start.lo); cam.ty = wy(start.la); }
+      const dest = Object.assign({}, cam, {s: clamp(Math.min(W || 360, (H || 360) * 1.25) / 1250, 0.2, 0.6)});
+      cam.s = 0.07; cam.ph = 0.5; cam.th = -2.4; go(dest, 1800);
+    },
+    setPins(list) { pins = list; dirty = true; wake(); },
+    setZones(list, e) { zones = list; emph = !!e; dirty = true; wake(); },
+    setUser(u) { user = u; dirty = true; wake(); },
+    select(id) { sel = id; dirty = true; wake(); },
+    flyTo(la, lo, s, extra) { go(Object.assign({tx: wx(lo), ty: wy(la), s: s || cam.s}, extra || {})); },
+    fit(la, lo, pts) { const x0 = wx(lo), y0 = wy(la); let m = 300; for (const p of pts) m = Math.max(m, Math.hypot(wx(p.lo) - x0, wy(p.la) - y0)); m = Math.min(m, 4500); go({tx: x0, ty: y0, s: clamp(Math.min(W || 360, (H || 360) * 1.25) * 0.42 / m, 0.08, 0.9)}); },
+    zoomBy(f) { go({s: cam.s * f}, 350); },
+    rotateBy(a) { go({th: cam.th + a}, 450); },
+    north() { go({th: 0}, 600); },
+    toggle3d() { mode3d = !mode3d; go({ph: mode3d ? 1.12 : 0.0001}, 700); return mode3d; },
+    resize, wake, stats: () => ({blocks: blocks.length, trees: trees.length, faces: lmFaces.length}),
+    bench(n, hi) { const t0 = performance.now(); for (let i = 0; i < n; i++) renderScene(hi !== false); dirty = true; kick(); return Math.round((performance.now() - t0) / n * 10) / 10; }
+  };
+})();
+
+/* ===== Praha Pilot — logica dell'app ===== */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const NF = new Intl.NumberFormat("it-IT"), NE = new Intl.NumberFormat("it-IT", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const KEY = "praha-pilot.v1";
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const CENTER = {la: 50.0870, lo: 14.4210};
+const DEMO = {la: 50.08753, lo: 14.42132, name: "Piazza della Città Vecchia", cz: "Staroměstské náměstí", src: "demo"};
+const MONTHS = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+
+const S = {loc: Object.assign({}, DEMO), budget: 300, cat: "all", radius: 2000, onlyB: true, sort: "smart", rate: RATE0, tab: "esplora", sel: null, trapsOn: true,
+  wallet: {total: 3000, days: 4, items: []}, est: {days: 4, lunch: true, dinner: false, nights: 2}, tr: {rides: 4, days: 3}, chat: []};
+const DEF = JSON.stringify(S);
+function save() { try { localStorage.setItem(KEY, JSON.stringify({loc: S.loc.src === "gps" ? null : S.loc, budget: S.budget, cat: S.cat, radius: S.radius, onlyB: S.onlyB, sort: S.sort, rate: S.rate, trapsOn: S.trapsOn, wallet: S.wallet, est: S.est, tr: S.tr, chat: S.chat.slice(-30)})); } catch (e) {} }
+function load() { try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (!d) return; for (const k of Object.keys(d)) if (d[k] != null) S[k] = d[k]; } catch (e) {} }
+
+/* ---- utilità ---- */
+const kc = n => NF.format(Math.round(n)) + " Kč";
+const eur = n => NE.format(n / S.rate) + " €";
+const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+function hav(a, b, c, d) { const t = Math.PI / 180, x = Math.sin((c - a) * t / 2) ** 2 + Math.cos(a * t) * Math.cos(c * t) * Math.sin((d - b) * t / 2) ** 2; return 12742000 * Math.asin(Math.sqrt(x)); }
+const walkMin = m => Math.max(1, Math.round(m * 1.3 / 78));
+const distTxt = m => m < 1000 ? Math.round(m / 10) * 10 + " m" : NE.format(m / 1000).replace(/0$/, "") + " km";
+const dir = (la, lo) => `https://www.google.com/maps/dir/?api=1&destination=${la},${lo}&travelmode=walking`;
+const gsearch = (q, la, lo) => `https://www.google.com/maps/search/${encodeURIComponent(q)}/@${la},${lo},16z`;
+const ico = (id, cls) => `<svg class="ic ${cls || ""}" aria-hidden="true"><use href="#${id}"/></svg>`;
+const byId = id => P.find(p => p.id === id);
+const isNight = () => { const h = new Date().getHours(); return h >= 21 || h < 5; };
+const quarter = (la, lo) => QUARTERS.reduce((b, q) => { const d = hav(la, lo, q[1], q[2]); return d < b.d ? {d, n: q[0]} : b; }, {d: 1e9, n: ""}).n;
+function nearPlace(la, lo, max) { let best = null, bd = max || 280; for (const p of PLACES) { const d = hav(la, lo, p[2], p[3]); if (d < bd) { bd = d; best = p; } } return best; }
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove("on"), 3600); }
+
+function status(p) {
+  const now = new Date();
+  if (p.dt) { const a = new Date(p.dt[0] + "T00:00:00"), b = new Date(p.dt[1] + "T23:59:59"); if (now < a) return {soon: 1, t: "dal " + a.getDate() + " " + MONTHS[a.getMonth()].slice(0, 3)}; if (now > b) return {closed: 1, t: "concluso"}; return {open: 1, t: "fino al " + b.getDate() + " " + MONTHS[b.getMonth()].slice(0, 3)}; }
+  if (p.sea) { const m = now.getMonth() + 1, [s, e] = p.sea; if (!(m >= s && m <= e)) return {closed: 1, t: "chiuso fino ad " + MONTHS[s - 1]}; }
+  return null;
+}
+const cost = (p, cat) => cat === "eat" && p.pe ? p.pe : p.p;
+function priceTxt(p, cat) { const [a, b] = cost(p, cat == null ? S.cat : cat); if (p.c[0] === "casino") return "Ingresso gratis"; if (b === 0) return "Gratis"; if (a === 0) return "Gratis · fino a " + kc(b); if (a === b) return kc(a); return NF.format(a) + "–" + kc(b); }
+function eurTxt(p, cat) { const [a, b] = cost(p, cat == null ? S.cat : cat); if (b === 0 || p.c[0] === "casino") return ""; return a === 0 ? "fino a " + eur(b) : NE.format(a / S.rate) + "–" + eur(b); }
+
+/* ---- risultati ---- */
+function compute(loc, B, cat) {
+  const R = S.radius;
+  let list = P.filter(p => cat === "all" ? p.c[0] !== "casino" : p.c.includes(cat)).map(p => { const d = hav(loc.la, loc.lo, p.la, p.lo), st = status(p), c = cost(p, cat); return {p, d, st, c, inB: c[0] <= B, full: c[1] <= B}; });
+  let pool = list.filter(x => x.d <= R), expanded = false;
+  if (pool.filter(x => x.inB && !(x.st && x.st.closed)).length < 3 && R < 1e7) { pool = list; expanded = true; }
+  const over = pool.filter(x => !x.inB).length;
+  let shown = S.onlyB ? pool.filter(x => x.inB) : pool.slice();
+  for (const x of shown) x.score = x.d / 1000 + (x.c[0] / Math.max(B, 120)) * 0.7 - (x.p.v - 3) * 0.32 + (x.st && x.st.closed ? 8 : 0) + (x.inB ? 0 : 3) + (x.st && x.st.soon ? 0.4 : 0);
+  if (S.sort === "near") shown.sort((a, b) => a.d - b.d); else if (S.sort === "cheap") shown.sort((a, b) => (a.c[0] - b.c[0]) || (a.d - b.d)); else shown.sort((a, b) => a.score - b.score);
+  return {shown, expanded, over};
+}
+function trapsNear(loc, within) { return TRAPS.map(t => { const d = Math.min(...t.pts.map(p => Math.max(0, hav(loc.la, loc.lo, p[0], p[1]) - p[2]))); return {t, d}; }).filter(x => x.d <= within).sort((a, b) => a.d - b.d); }
+
+/* ---- schede ---- */
+function walkBadge(d) { const far = d > 2500; return `<span class="b">${ico("i-walk")}${walkMin(d)} min · ${distTxt(d)}${far ? " · oppure mezzi 36 Kč" : ""}</span>`; }
+function card(x, B) {
+  const p = x.p, c = CAT[p.c[0]], st = x.st;
+  const cc = x.c, bud = p.c[0] === "casino" ? `<span class="b gold">Tetto consigliato ${kc(Math.min(300, Math.max(B, 100)))}</span>` : x.full ? `<span class="b ok">${ico("i-check")}Nel budget</span>` : x.inB ? `<span class="b gold">Al limite del budget</span>` : `<span class="b bad">Fuori budget</span>`;
+  const stb = st ? `<span class="b ${st.closed ? "bad" : st.soon ? "gold" : "ok"}">${ico("i-clock")}${esc(st.t)}</span>` : "";
+  return `<article class="res${S.sel === p.id ? " sel" : ""}${st && st.closed ? " dim" : ""}" id="r-${p.id}" data-id="${p.id}">
+  <div class="res-top"><span class="cat-ico" style="--c:${c.col}">${ico(c.i)}</span>
+   <div class="res-h"><h3>${esc(p.n)}</h3><p class="meta">${esc(p.t)}${p.a ? " · " + esc(p.a) : ""}</p></div>
+   <div class="price"><b>${priceTxt(p)}</b>${eurTxt(p) ? `<small>≈ ${eurTxt(p)}</small>` : ""}</div></div>
+  <div class="badges">${walkBadge(x.d)}${bud}${stb}${p.w ? `<span class="b soft">${esc(p.w)}</span>` : ""}${p.ver ? `<span class="b soft">verificato nov. 2026</span>` : ""}</div>
+  <p class="desc">${esc(p.d)}</p>
+  ${p.tip ? `<p class="tip"><b>Per spendere meno</b> ${esc(p.tip)}</p>` : ""}
+  ${p.warn ? `<p class="warn"><b>Attenzione</b> ${esc(p.warn)}</p>` : ""}
+  ${p.h ? `<p class="hours">${ico("i-clock")}${esc(p.h)} <span>(orari indicativi)</span></p>` : ""}
+  <div class="acts"><a class="btn sm" href="${dir(p.la, p.lo)}" target="_blank" rel="noopener">${ico("i-route")}Portami lì</a><button class="btn sm ghost" data-act="map" data-id="${p.id}">${ico("i-map")}Sulla mappa</button>${cc[1] > 0 ? `<button class="btn sm ghost" data-act="spend" data-id="${p.id}">${ico("i-plus")}Segna spesa</button>` : ""}</div>
+ </article>`;
+}
+function trapCard(x) {
+  const t = x.t, lv = ["", "Rischio basso", "Rischio medio", "Rischio alto"][t.s];
+  const alts = (t.alt || []).map(id => byId(id)).filter(Boolean).map(p => `<button class="btn sm ghost" data-act="goto" data-id="${p.id}">${ico("i-route")}${esc(p.n)}</button>`).join("");
+  return `<article class="res trap s${t.s}" id="r-${t.id}"><div class="res-top"><span class="cat-ico" style="--c:#ff5a3c">${ico("i-avoid")}</span><div class="res-h"><h3>${esc(t.n)}</h3><p class="meta">${x.d < 1 ? "Sei nella zona" : distTxt(x.d) + " da te"}${t.night ? " · soprattutto di notte" : ""}</p></div></div>
+  <div class="badges"><span class="b ${t.s === 3 ? "bad" : t.s === 2 ? "gold" : "soft"}">${ico("i-avoid")}${lv}</span><span class="b soft">Rischi: ${esc(t.loss)}</span></div>
+  <p class="desc">${esc(t.d)}</p><p class="tip"><b>Cosa fare invece</b> ${esc(t.x)}</p>${alts ? `<div class="acts">${alts}</div>` : ""}</article>`;
+}
+function casinoHead(B) {
+  return `<div class="note card"><h3>${ico("i-casino")}Prima di entrare</h3><ul class="dots">
+  <li>Solo maggiorenni (18+) con <b>documento originale valido</b>: all’ingresso ti registrano. Ingresso gratuito, abbigliamento curato.</li>
+  <li><b>Per spendere meno:</b> il banco vince sempre sul lungo periodo. Se vuoi l’esperienza decidi un tetto (es. ${kc(Math.min(300, Math.max(100, B)))} ≈ ${eur(Math.min(300, Math.max(100, B)))}), porta solo quei contanti, lascia la carta in hotel ed esci quando finiscono.</li>
+  <li>Evita le «herna» (sale slot nei bar aperte di notte).</li>
+  <li>In gita scolastica controlla il regolamento: spesso vieta casinò e alcol anche ai maggiorenni.</li>
+  <li>Se il gioco smette di essere un divertimento: Telefono Verde nazionale 800 558822 dell’Istituto Superiore di Sanità (anonimo e gratuito dall’Italia, lun–ven 10–16).</li></ul></div>`;
+}
+
+/* ---- Esplora ---- */
+function renderSign() {
+  const L = S.loc; $("#signQ").textContent = quarter(L.la, L.lo) + (L.src === "demo" ? " · posizione di prova" : L.src === "gps" ? " · GPS" : "");
+  $("#signN").textContent = (L.cz || L.name || "Praha");
+  const note = L.src === "demo" ? "Posizione di prova. Premi GPS, scrivi dove sei o tocca la mappa." : L.src === "gps" ? `Posizione GPS${L.acc ? " (±" + Math.round(L.acc) + " m)" : ""}, si aggiorna mentre ti muovi.` : "Posizione: " + (L.name || "punto scelto");
+  $("#locNote").textContent = note;
+}
+function renderExplore(fly) {
+  const B = S.budget, L = S.loc;
+  $("#budget").value = B; $("#budEur").textContent = "≈ " + eur(B);
+  $$("#budChips .chip").forEach(b => b.classList.toggle("on", +b.dataset.b === B));
+  $$("#cats .cat").forEach(b => { const on = b.dataset.c === S.cat; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  $$("#radius button").forEach(b => b.classList.toggle("on", +b.dataset.r === S.radius));
+  $("#onlyB").checked = S.onlyB; $("#sort").value = S.sort;
+  const box = $("#results"), sum = $("#summary"), ban = $("#banner");
+  let pins = [];
+  if (S.cat === "avoid") {
+    const near = trapsNear(L, 1e7);
+    sum.innerHTML = `<b>${near.filter(x => x.d < 600).length}</b> trappole entro 600 m da te${isNight() ? " · è sera: attenzione alle zone «di notte»" : ""}`;
+    ban.innerHTML = "";
+    box.innerHTML = near.map(trapCard).join("") + `<h3 class="sub">Ovunque in città</h3>` + EVERY.map(e => `<article class="res trap s1"><div class="res-h"><h3>${esc(e.n)}</h3></div><p class="desc">${esc(e.d)}</p><p class="tip"><b>Cosa fare</b> ${esc(e.x)}</p></article>`).join("");
+  } else {
+    const r = compute(L, B, S.cat), sh = r.shown, free = sh.filter(x => x.c[1] === 0).length;
+    const inB = sh.filter(x => x.inB && !(x.st && x.st.closed));
+    const lo = inB.length ? Math.min(...inB.map(x => x.c[0])) : 0, hi = inB.length ? Math.max(...inB.slice(0, 6).map(x => Math.min(x.c[1], Math.max(B, x.c[0])))) : 0;
+    sum.innerHTML = `<b>${sh.length}</b> posti${free ? ` · <b>${free}</b> gratis` : ""}${inB.length ? ` · spesa tipica ${lo === hi ? kc(lo) : NF.format(lo) + "–" + kc(hi)}` : ""}${r.over && S.onlyB ? ` · ${r.over} fuori budget nascosti` : ""}${r.expanded ? ` · pochi posti nel raggio scelto: mostro tutta Praga` : ""}`;
+    const tn = trapsNear(L, 350);
+    ban.innerHTML = tn.length ? `<button class="banner" data-act="traps">${ico("i-avoid")}<span><b>${tn.length} ${tn.length === 1 ? "trappola" : "trappole"} vicino a te:</b> ${esc(tn.slice(0, 2).map(x => x.t.n).join(" · "))}</span><em>Vedi</em></button>` : "";
+    box.innerHTML = (S.cat === "casino" ? casinoHead(B) : "") + (sh.length ? sh.map(x => card(x, B)).join("") : `<div class="empty card"><h3>Niente nel budget qui intorno</h3><p>Prova ad alzare la spesa massima, togli «Solo nel budget» o scegli «Vedere»: molte cose belle a Praga sono gratis.</p><button class="btn" data-act="cat" data-c="see">${ico("i-see")}Cose gratis da vedere</button></div>`);
+    pins = sh.slice(0, 40).map((x, i) => ({id: x.p.id, la: x.p.la, lo: x.p.lo, col: CAT[x.p.c[0]].col, top: i < 3, label: x.p.n, sub: x.c[1] === 0 ? "Gratis" : priceTxt(x.p)}));
+  }
+  const q = {all: "attrazioni", eat: "ristorante economico", shop: "supermercato", see: "attrazioni", fun: "bar", casino: "casino", avoid: "attrazioni"}[S.cat];
+  $("#gmore").href = gsearch(q, L.la, L.lo);
+  Map3D.setPins(pins);
+  Map3D.setZones(S.trapsOn || S.cat === "avoid" ? TRAPS : [], S.cat === "avoid");
+  Map3D.setUser({la: L.la, lo: L.lo, acc: L.acc});
+  $("#trapTog").classList.toggle("on", S.trapsOn);
+  if (fly) Map3D.fit(L.la, L.lo, pins.slice(0, 5));
+}
+function setLoc(loc, opt) {
+  S.loc = Object.assign({}, loc); if (loc.src !== "gps") stopWatch();
+  renderSign(); save(); if (!opt || !opt.quiet) { renderExplore(true); toast("Posizione: " + (loc.name || loc.cz || "aggiornata")); }
+}
+function selectItem(id, fly) {
+  S.sel = id; Map3D.select(id);
+  $$(".res.sel").forEach(e => e.classList.remove("sel"));
+  const el = document.getElementById("r-" + id); if (el) { el.classList.add("sel"); if (!fly) el.scrollIntoView({behavior: RM ? "auto" : "smooth", block: "nearest"}); }
+  const p = byId(id); if (p && fly) { Map3D.flyTo(p.la, p.lo, 0.55); if (matchMedia("(max-width:979px)").matches) window.scrollTo({top: 0, behavior: RM ? "auto" : "smooth"}); }
+  const t = TRAPS.find(x => x.id === id); if (t) { if (S.cat !== "avoid") { S.cat = "avoid"; renderExplore(); } const e2 = document.getElementById("r-" + id); if (e2) e2.scrollIntoView({behavior: RM ? "auto" : "smooth", block: "nearest"}); }
+}
+
+/* ---- ricerca del luogo ---- */
+const STOP = new Set(["piazza", "square", "metro", "station", "stazione", "ponte", "torre", "chiesa", "parco", "collina", "monastero", "quartiere", "casa", "teatro", "museo", "namesti", "nadrazi", "jewish", "lesser", "town", "wall", "muro", "bus", "treno", "san", "national", "nazionale"]);
+const CANDS = PLACES.map(p => ({name: p[0], cz: p[1], la: p[2], lo: p[3], sub: "Luogo", keys: [norm(p[0]), norm(p[1])].concat(p[4].split(" ").filter(w => w.length >= 4 && !STOP.has(w))), hay: norm(p[0] + " " + p[1] + " " + p[4])}))
+  .concat(P.map(p => ({name: p.n, cz: p.cz || "", la: p.la, lo: p.lo, sub: CAT[p.c[0]].n, keys: [norm(p.n)].concat(p.cz ? [norm(p.cz)] : []), hay: norm(p.n + " " + (p.cz || "") + " " + (p.a || "")), poi: p.id})))
+  .concat(HELP.map(h => ({name: h.n, cz: "", la: h.la, lo: h.lo, sub: "Aiuto", keys: [norm(h.n)], hay: norm(h.n + " " + h.a)})));
+function findPlaces(q) {
+  const n = norm(q); if (n.length < 2) return [];
+  const toks = n.split(" ");
+  return CANDS.map(c => { let s = 0; if (c.hay.startsWith(n)) s = 4; else if (c.hay.includes(" " + n)) s = 3; else if (c.hay.includes(n)) s = 2; else if (toks.every(t => c.hay.includes(t))) s = 1; return {c, s}; }).filter(x => x.s).sort((a, b) => b.s - a.s || a.c.name.length - b.c.name.length).slice(0, 7).map(x => x.c);
+}
+function placeIn(text) { const t = " " + norm(text) + " "; let best = null, bl = 0; for (const c of CANDS) for (const k of c.keys) { if (k.length > bl && k.length >= 4 && t.includes(" " + k + " ")) { best = c; bl = k.length + (c.sub === "Luogo" ? 0.5 : 0); } } return best; }
+function showSugg(list, online) {
+  const ul = $("#sugg");
+  if (!list.length) { ul.innerHTML = `<li class="none">Nessun luogo trovato. Prova un monumento o una fermata della metro vicina, oppure tocca la mappa nel punto in cui sei.${typeof onlineSearch === "function" ? `<button type="button" class="btn sm ghost" id="onlineBtn">${ico("i-search")}Cerca l’indirizzo online</button>` : ""}</li>`; ul.hidden = false; return; }
+  ul.innerHTML = list.map((c, i) => `<li><button type="button" data-i="${i}">${ico(c.sub === "Luogo" ? "i-pin" : "i-search")}<span><b>${esc(c.name)}</b><small>${esc(c.cz && c.cz !== c.name ? c.cz + " · " : "")}${esc(online ? "risultato online" : c.sub)}</small></span></button></li>`).join("");
+  ul.hidden = false; showSugg.list = list;
+}
+/*ONLINE*/
+async function onlineSearch(q) {
+  const ul = $("#sugg"); ul.innerHTML = `<li class="none">Cerco online…</li>`; ul.hidden = false;
+  try {
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 7000);
+    const r = await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&countrycodes=cz&viewbox=14.22,50.18,14.71,49.94&bounded=1&accept-language=it&q=" + encodeURIComponent(q), {signal: ctl.signal});
+    clearTimeout(tm); const js = await r.json();
+    showSugg(js.map(x => ({name: x.display_name.split(",").slice(0, 2).join(","), cz: "", la: +x.lat, lo: +x.lon, sub: "online"})), true);
+  } catch (e) { ul.innerHTML = `<li class="none">La ricerca online non è disponibile qui (o manca internet). Scegli un luogo vicino dall’elenco oppure tocca la mappa nel punto in cui sei.</li>`; }
+}
+/*/ONLINE*/
+
+/* ---- GPS ---- */
+let watchId = null;
+function stopWatch() { if (watchId != null && navigator.geolocation) navigator.geolocation.clearWatch(watchId); watchId = null; }
+function gps() {
+  const btn = $("#gpsBtn");
+  if (!("geolocation" in navigator)) { toast("Questo browser non offre la posizione GPS."); return; }
+  btn.classList.add("busy");
+  const ok = pos => {
+    btn.classList.remove("busy"); const {latitude: la, longitude: lo, accuracy: acc} = pos.coords, d = hav(la, lo, CENTER.la, CENTER.lo);
+    if (d > 30000) { toast(`Sei a ${NF.format(Math.round(d / 1000))} km da Praga: uso ancora la posizione di prova.`); $("#locNote").textContent = `Il GPS funziona, ma sei a ${NF.format(Math.round(d / 1000))} km da Praga. A Praga premi di nuovo GPS.`; return; }
+    const np = nearPlace(la, lo, 220);
+    setLoc({la, lo, acc, name: np ? "Vicino a " + np[0] : "La tua posizione", cz: np ? np[1] : quarter(la, lo), src: "gps"});
+    if (watchId == null) watchId = navigator.geolocation.watchPosition(p2 => { const c = p2.coords; if (S.loc.src !== "gps") return; if (hav(c.latitude, c.longitude, S.loc.la, S.loc.lo) < 40) return; const n2 = nearPlace(c.latitude, c.longitude, 220); S.loc = {la: c.latitude, lo: c.longitude, acc: c.accuracy, name: n2 ? "Vicino a " + n2[0] : "La tua posizione", cz: n2 ? n2[1] : quarter(c.latitude, c.longitude), src: "gps"}; renderSign(); renderExplore(false); }, () => {}, {enableHighAccuracy: true, maximumAge: 15000});
+  };
+  const bad = err => {
+    btn.classList.remove("busy"); let framed = true; try { framed = window.self !== window.top; } catch (e) {}
+    const isFile = !/^https?:$/.test(location.protocol);
+    const msg = framed ? "In questa versione il GPS è bloccato. Scrivi dove sei o tocca la mappa; con il file dell’app aperto nel browser il GPS funziona." : isFile ? "Aperta come file, su alcuni telefoni la pagina non può usare il GPS. Scrivi dove sei o tocca la mappa; con l’app pubblicata su un sito (https) il GPS funziona." : err.code === 1 ? "Permesso di posizione negato: riattivalo nelle impostazioni del browser per questo sito." : "Non riesco a leggere il GPS adesso: riprova all’aperto, oppure scrivi dove sei.";
+    $("#locNote").textContent = msg; toast(msg);
+  };
+  try { navigator.geolocation.getCurrentPosition(ok, bad, {enableHighAccuracy: true, timeout: 12000, maximumAge: 30000}); } catch (e) { bad({code: 1}); }
+}
+
+/* ---- Assistente ---- */
+const KW = {
+  eat: "mangiare mangio fame pranzo pranzare cena cenare colazione cibo ristorante ristoranti pizza panino panini snack merenda dolce dolci gelato caffe birra pub supermercato spesa acqua vegetariano vegano pho mensa menu affamato",
+  shop: "comprare compro shopping souvenir regalo regali calamita calamite negozio negozi vestiti acquisti drogheria cosmetici",
+  see: "vedere visitare visita monumento monumenti foto panorama vista belvedere museo musei chiesa castello torre attrazioni attrazione giro",
+  fun: "svago divertimento divertirmi serata stasera notte ballare discoteca club locale locali uscire cinema mercatino mercatini natale festa party musica concerto",
+  casino: "casino giocare roulette poker slot blackjack scommesse fiches",
+  avoid: "truffa truffe fregare fregano fregato fregatura fregature evitare evito pericolo pericoloso pericolose sicuro sicurezza borseggi borseggiatori ladri trappola trappole scam"
+};
+const TOPIC = {transport: "tram metro biglietto biglietti mezzi taxi aeroporto bus autobus uber bolt funicolare muovermi spostarmi litacka multa controllore controllori", money: "cambio cambiare cambiavalute bancomat atm prelevare prelievo contanti commissione commissioni valuta tasso", sos: "aiuto emergenza polizia ospedale farmacia ambasciata perso persa rubato rubata medico consolato", phrase: "dice frase frasi ceco parlare tradurre pronuncia"};
+const TIPS = {eat: ["A pranzo cerca la lavagna «denní menu»: zuppa e piatto a circa 200 Kč.", "Acqua e snack al supermercato: 10–20 Kč invece di 50–60.", "Chiedi «kohoutková voda», l’acqua del rubinetto, invece della bottiglia."], shop: ["I regali tipici (cialde, cioccolato Studentská, Kofola) al supermercato costano molto meno che nei negozi turistici.", "Per gli acquisti evita via Karlova e via Celetná: prezzi più alti."], see: ["Torri: tariffa giovani 16–26 anni e −50% nella prima ora dopo l’apertura.", "Domenica 6 dicembre 2026 musei e gallerie statali sono gratis."], fun: ["Fissa un tetto per la serata e porta solo quei contanti.", "I mercatini di quartiere (náměstí Míru, Tylovo) costano meno della Città Vecchia."], casino: ["Decidi prima il tetto e porta solo quei contanti.", "Serve un documento originale: ti registrano all’ingresso."], all: ["Il bello di Praga è spesso gratis: panorami, ponti e piazze.", "Mangia due strade lontano dalle piazze: stessi piatti, prezzi più bassi."]};
+function hits(t, list) { const w = " " + t + " "; return list.split(" ").reduce((n, k) => n + (w.includes(" " + k + " ") || (k.length > 5 && w.includes(" " + k.slice(0, -1))) ? 1 : 0), 0); }
+function parseBudget(q) {
+  const low = q.toLowerCase().replace(/(\d)\.(\d{3})/g, "$1$2"), n0 = norm(q);
+  if (/\b(gratis|gratuit[oaie]|senza spendere|zero soldi|niente soldi)\b/.test(n0)) return {kc: 0};
+  const re = /(\d+(?:[.,]\d+)?)\s*(€|euro|eur\b|kč|kc\b|czk|coron[ae]|korun[ay]?)?/g; let m, cand = null;
+  while ((m = re.exec(low))) { const before = low.slice(Math.max(0, m.index - 12), m.index), after = low.slice(m.index + m[0].length, m.index + m[0].length + 12); if (!m[2] && (/(tram|linea|siamo|alle|ore|numero|metro)\s*$/.test(before) || /^\s*(persone|amici|min|minuti|ore|giorni|notti|anni|km|m\b)/.test(after))) continue; if (m[2]) { cand = m; break; } if (!cand) cand = m; }
+  if (!cand) return null; const n = parseFloat(cand[1].replace(",", ".")), u = cand[2] || "";
+  if (/€|eur/.test(u)) return {kc: Math.round(n * S.rate), eur: n};
+  if (u) return {kc: Math.round(n)};
+  return n <= 60 ? {kc: Math.round(n * S.rate), eur: n, guess: 1} : {kc: Math.round(n)};
+}
+function pickHTML(x, C) { const p = x.p; return `<div class="a-pick"><div><b>${esc(p.n)}</b><span>${walkMin(x.d)} min a piedi · ${priceTxt(p, C)}</span></div><p>${esc(p.tip || p.d)}</p><div class="acts"><a class="btn sm" href="${dir(p.la, p.lo)}" target="_blank" rel="noopener">${ico("i-route")}Portami lì</a><button class="btn sm ghost" data-act="show" data-id="${p.id}">${ico("i-map")}Mostra</button></div></div>`; }
+function answer(q, dry) {
+  const t = norm(q), bud = parseBudget(q), pl = placeIn(q);
+  const sc = {}; for (const k in KW) sc[k] = hits(t, KW[k]); const tp = {}; for (const k in TOPIC) tp[k] = hits(t, TOPIC[k]);
+  if (/come si dice|come dico/.test(t)) tp.phrase += 3;
+  const cat = Object.keys(sc).sort((a, b) => sc[b] - sc[a])[0], topic = Object.keys(tp).sort((a, b) => tp[b] - tp[a])[0];
+  const useTopic = tp[topic] > 0 && (sc[cat] === 0 || tp[topic] > sc[cat]);
+  const loc = pl ? {la: pl.la, lo: pl.lo, name: pl.name, cz: pl.cz || pl.name, src: "search"} : S.loc;
+  const B = bud ? bud.kc : S.budget;
+  if (!dry) { if (pl) setLoc(loc, {quiet: 1}); if (bud) S.budget = B; }
+  const where = `<p class="a-head">${ico("i-pin")}<b>${esc(loc.name || loc.cz)}</b> · budget <b>${kc(B)}</b> ≈ ${eur(B)}${bud && bud.guess ? ` <small>(ho letto ${bud.eur} come euro)</small>` : ""}</p>`;
+  if (useTopic && topic === "transport") return `<p>Biglietti 2026 a Praga, in app <b>PID Lítačka</b> (cartaceo tra parentesi): 30 min <b>36 Kč</b> (39), 90 min <b>46 Kč</b> (50), 24 ore <b>140 Kč</b> (150), 72 ore <b>340 Kč</b> (350).</p><p>Con 4 o più corse al giorno conviene il 24 ore. Convalida sempre: multa 1.200 Kč. Taxi solo con app (Bolt, Uber, Liftago).</p><button class="btn sm" data-act="tab" data-tab="muoversi">${ico("i-tram")}Calcola il biglietto giusto</button>`;
+  if (useTopic && topic === "money") return `<p>Oggi 1 € ≈ <b>${NE.format(S.rate)} Kč</b>.</p><ul class="dots">${GOLD.slice(0, 3).map(g => `<li><b>${esc(g[0])}.</b> ${esc(g[1])}</li>`).join("")}</ul><button class="btn sm" data-act="tab" data-tab="portafoglio">${ico("i-wallet")}Controlla un cambio</button>`;
+  if (useTopic && topic === "sos") return `<p><b>112</b> emergenze (anche in inglese) · <b>155</b> ambulanza · <b>158</b> polizia.</p><p><b>Ambasciata d’Italia</b>: Nerudova 20, +420 233 080 111 (emergenze +420 603 517 770).<br><b>Farmacia 24 ore</b>: Na Františku 847/8, +420 222 801 397.</p><button class="btn sm" data-act="tab" data-tab="sos">${ico("i-sos")}Apri SOS</button>`;
+  if (useTopic && topic === "phrase") return `<ul class="phr">${PHRASES.slice(0, 9).map(f => `<li><b>${esc(f[0])}</b><span>${esc(f[1])}</span><em>${esc(f[2])}</em></li>`).join("")}</ul><button class="btn sm" data-act="tab" data-tab="sos">${ico("i-chat")}Tutte le frasi</button>`;
+  if (sc[cat] === 0 && !bud && !pl) return `<p>Posso aiutarti con <b>mangiare, comprare, vedere, svago, casinò, trappole, biglietti, cambio soldi ed emergenze</b>. Scrivi dove sei e quanto vuoi spendere, per esempio:</p><div class="qs">${["ho 150 corone e fame vicino al Ponte Carlo", "cosa vedo gratis a Malá Strana?", "dove mi fregano in piazza San Venceslao?", "serata con 300 Kč"].map(s => `<button class="chip" data-act="ask" data-q="${esc(s)}">${esc(s)}</button>`).join("")}</div>`;
+  const C = sc[cat] ? cat : "all";
+  if (!dry) { S.cat = C; save(); renderExplore(true); }
+  if (C === "avoid") { const n = trapsNear(loc, 1e7).slice(0, 3); return where + `<p>Le trappole più vicine:</p>` + n.map(x => `<div class="a-pick trap"><div><b>${esc(x.t.n)}</b><span>${x.d < 1 ? "sei nella zona" : distTxt(x.d)}</span></div><p>${esc(x.t.x)}</p></div>`).join("") + `<p class="a-tip"><b>Ovunque:</b> ${esc(EVERY[0].n)} ${esc(EVERY[0].x)}</p>`; }
+  const saveS = {r: S.radius, o: S.onlyB, s: S.sort}; S.sort = "smart"; S.onlyB = true;
+  const r = compute(loc, B, C); S.radius = saveS.r; S.onlyB = saveS.o; S.sort = saveS.s;
+  const eve = /\b(sera|serata|stasera|notte|ballare|discoteca|uscire|club|locale|locali)\b/.test(t);
+  const picks = r.shown.filter(x => x.inB && !(x.st && x.st.closed) && (!eve || (C !== "fun" && C !== "all") || x.p.ev)).slice(0, 3);
+  const tn = trapsNear(loc, 450)[0], tip = TIPS[C][Math.floor(Math.random() * TIPS[C].length)];
+  let h = where;
+  if (!picks.length) h += `<p>Con ${kc(B)} qui intorno non trovo ${C === "all" ? "nulla" : esc(CAT[C].n.toLowerCase())} nel budget. ${C === "eat" ? "Il supermercato più vicino resta la scelta migliore." : "Molte cose belle sono gratis: prova «cosa vedo gratis qui?»."}</p>`;
+  else { const f = picks[0]; h += `<p>${C === "casino" ? "Casinò più vicini:" : "Ti consiglio:"}</p>` + picks.map(x => pickHTML(x, C)).join("") + `<p class="a-est">Spesa stimata per la prima scelta: <b>${f.c[1] === 0 ? "0 Kč" : (f.p.c[0] === "casino" ? "il tetto che decidi" : NF.format(f.c[0]) + "–" + kc(Math.min(f.c[1], Math.max(B, f.c[0]))))}</b>${f.d > 2500 ? " + mezzi 36 Kč" : " · a piedi 0 Kč"}</p>`; }
+  h += `<p class="a-tip"><b>Per spendere meno:</b> ${esc(tip)}</p>`;
+  if (tn) h += `<p class="a-warn"><b>Qui vicino evita:</b> ${esc(tn.t.n)}. ${esc(tn.t.x)}</p>`;
+  return h;
+}
+function renderChat() { const box = $("#chat"); box.innerHTML = S.chat.map(m => m.me ? `<div class="msg me"><p>${esc(m.t)}</p></div>` : `<div class="msg bot">${m.ex ? `<small class="ex">Esempio</small>` : ""}${m.h}</div>`).join(""); box.scrollTop = box.scrollHeight; }
+function ask(q) { q = q.trim(); if (!q) return; S.chat.push({me: 1, t: q}); S.chat.push({h: answer(q)}); S.chat = S.chat.slice(-30); save(); renderChat(); const last = $$("#chat .msg"); if (last.length > 1) last[last.length - 2].scrollIntoView({behavior: RM ? "auto" : "smooth", block: "start"}); }
+
+/* ---- Portafoglio ---- */
+const ECATS = [["eat", "Mangiare"], ["see", "Ingressi"], ["tr", "Trasporti"], ["shop", "Acquisti"], ["fun", "Svago"], ["oth", "Altro"]];
+function dial(spent, total) {
+  const pct = total > 0 ? spent / total : 0, R = 84, cx = 100, cy = 100, a0 = -135, a1 = 135;
+  const pt = (a, r) => { const t = (a - 90) * Math.PI / 180; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; };
+  const arc = (a, b, r) => { const p = pt(a, r), q = pt(b, r); return `M${p[0].toFixed(1)} ${p[1].toFixed(1)}A${r} ${r} 0 ${b - a > 180 ? 1 : 0} 1 ${q[0].toFixed(1)} ${q[1].toFixed(1)}`; };
+  let ticks = ""; for (let i = 0; i < 24; i++) { const a = i * 15, p = pt(a, 95), q = pt(a, i % 6 ? 91 : 88); ticks += `<line x1="${p[0].toFixed(1)}" y1="${p[1].toFixed(1)}" x2="${q[0].toFixed(1)}" y2="${q[1].toFixed(1)}"/>`; }
+  const ha = a0 + Math.min(pct, 1.06) * (a1 - a0), hp = pt(ha, 70), sun = pt(ha, 58);
+  const col = pct > 1 ? "#e2553b" : pct > 0.75 ? "#d9b45a" : "#3c7fc4";
+  return `<svg viewBox="0 0 200 200" class="dialsvg" role="img" aria-label="Speso ${Math.round(pct * 100)}% del budget">
+  <circle cx="100" cy="100" r="98" fill="#0b1016" stroke="#d9b45a" stroke-width="2"/><g stroke="#d9b45a" stroke-width="1.6" stroke-linecap="round">${ticks}</g>
+  <path d="${arc(a0, a1, R)}" fill="none" stroke="#1d2a38" stroke-width="10" stroke-linecap="round"/>
+  <path d="${arc(a0, a0 + 0.75 * (a1 - a0), R)}" fill="none" stroke="#24476e" stroke-width="10" stroke-linecap="round"/>
+  <path d="${arc(a0 + 0.75 * (a1 - a0), a1, R)}" fill="none" stroke="#5a4a26" stroke-width="10" stroke-linecap="round"/>
+  ${pct > 0.005 ? `<path d="${arc(a0, a0 + Math.min(pct, 1) * (a1 - a0), R)}" fill="none" stroke="${col}" stroke-width="10" stroke-linecap="round"/>` : ""}
+  <line x1="100" y1="100" x2="${hp[0].toFixed(1)}" y2="${hp[1].toFixed(1)}" stroke="#f0d48a" stroke-width="3" stroke-linecap="round"/><circle cx="${sun[0].toFixed(1)}" cy="${sun[1].toFixed(1)}" r="7" fill="#d9b45a" stroke="#0b1016" stroke-width="2"/><circle cx="100" cy="100" r="6" fill="#d9b45a"/></svg>`;
+}
+function renderWallet() {
+  const w = S.wallet, spent = w.items.reduce((s, i) => s + i.a, 0), left = w.total - spent, today = new Date().toDateString();
+  const sToday = w.items.filter(i => new Date(i.ts).toDateString() === today).reduce((s, i) => s + i.a, 0), daily = w.total / Math.max(1, w.days);
+  $("#wTotal").value = w.total; $("#wDays").value = w.days; $("#dial").innerHTML = dial(spent, w.total);
+  $("#wLeft").textContent = kc(left); $("#wLeft").classList.toggle("neg", left < 0); $("#wLeftE").textContent = "≈ " + eur(left);
+  $("#wStats").innerHTML = `<div><b>${kc(spent)}</b><span>spesi</span></div><div><b>${kc(sToday)}</b><span>oggi, su ${kc(daily)} al giorno</span></div>`;
+  $("#eList").innerHTML = w.items.length ? w.items.slice().reverse().map(i => `<li><span class="cat-ico sm" style="--c:${(CAT[i.c] || CAT.all).col}">${ico((CAT[i.c] || {i: i.c === "tr" ? "i-tram" : "i-wallet"}).i)}</span><span class="en"><b>${esc(i.n || ECATS.find(e => e[0] === i.c)[1])}</b><small>${new Date(i.ts).toLocaleDateString("it-IT", {weekday: "short", day: "numeric"})} · ${new Date(i.ts).toLocaleTimeString("it-IT", {hour: "2-digit", minute: "2-digit"})}</small></span><b class="ea">${kc(i.a)}</b><button class="icon-btn sm" data-act="delexp" data-ts="${i.ts}" aria-label="Elimina spesa">${ico("i-trash")}</button></li>`).join("") : `<li class="none">Nessuna spesa ancora. Ogni volta che paghi, segnala qui: vedi subito quanto ti resta.</li>`;
+  const by = ECATS.map(e => [e[1], w.items.filter(i => i.c === e[0]).reduce((s, i) => s + i.a, 0)]).filter(x => x[1] > 0);
+  $("#eBy").innerHTML = by.length ? by.map(x => `<div class="bar"><span>${esc(x[0])}</span><i style="width:${Math.max(4, x[1] / Math.max(...by.map(y => y[1])) * 100)}%"></i><b>${kc(x[1])}</b></div>`).join("") : "";
+  $("#cRate").textContent = NE.format(S.rate);
+  renderCheck(); renderX(); renderEst();
+}
+function renderCheck() {
+  const it = PRICES[+$("#pcItem").value || 0], v = parseFloat(String($("#pcPrice").value).replace(",", "."));
+  if (!(v > 0)) { $("#pcOut").innerHTML = `<p class="hint">${esc(it[3])}. Giusto fino a ${kc(it[1])}.</p>`; return; }
+  const [k, lab] = v <= it[1] ? ["ok", "Prezzo giusto"] : v <= it[2] ? ["mid", "Caro: prezzo da zona turistica"] : ["bad", "Trappola: lascia stare"];
+  $("#pcOut").innerHTML = `<div class="verdict ${k}"><b>${lab}</b><span>${kc(v)} ≈ ${eur(v)} · giusto fino a ${kc(it[1])}</span><small>${esc(it[3])}</small></div>`;
+}
+function renderX() {
+  const e = parseFloat(String($("#xEur").value).replace(",", ".")), k = parseFloat(String($("#xKc").value).replace(",", "."));
+  if (!(e > 0 && k > 0)) { $("#xOut").innerHTML = `<p class="hint">Scrivi quanti euro dai e quante corone ti promettono. Tasso di riferimento: 1 € = ${NE.format(S.rate)} Kč.</p>`; return; }
+  const fair = e * S.rate, r = k / fair, lost = fair - k;
+  const [c, lab] = r >= 0.97 ? ["ok", "Ottimo cambio"] : r >= 0.94 ? ["ok", "Cambio accettabile"] : r >= 0.88 ? ["mid", "Caro"] : ["bad", "Truffa: non cambiare"];
+  $("#xOut").innerHTML = `<div class="verdict ${c}"><b>${lab} · ${Math.round(r * 100)}% del valore</b><span>${lost > 0 ? "Perdi " + kc(lost) + " ≈ " + eur(lost) : "Nessuna perdita"} rispetto al tasso ufficiale (${kc(fair)}).</span>${r < 0.94 ? `<small>Se hai già cambiato: torna entro 3 ore allo stesso sportello con lo scontrino e chiedi l’annullamento (fino a 1.000 €).</small>` : ""}</div>`;
+}
+const EST = {lunch: [120, 220, 450], dinner: [180, 320, 650], snack: [50, 120, 250], trans: [46, 113, 400], sights: [50, 200, 500], night: [150, 300, 700], souv: [150, 400, 1200]};
+function estTotals() { const e = S.est, d = Math.max(1, e.days); return [0, 1, 2].map(i => { const rows = [["Pasti", (e.lunch ? EST.lunch[i] * d : 0) + (e.dinner ? EST.dinner[i] * d : 0)], ["Snack e acqua", EST.snack[i] * d], ["Trasporti", EST.trans[i] * d], ["Ingressi", EST.sights[i] * d], ["Serate", EST.night[i] * e.nights], ["Souvenir", EST.souv[i]]]; return {rows, tot: rows.reduce((s, r) => s + r[1], 0)}; }); }
+function renderEst() {
+  const e = S.est; $("#esDays").value = e.days; $("#esLunch").checked = e.lunch; $("#esDinner").checked = e.dinner; $("#esNights").value = e.nights;
+  const T = estTotals(), names = ["Risparmio", "Normale", "Turista"];
+  $("#esOut").innerHTML = `<div class="scroll"><table class="est"><thead><tr><th></th>${names.map((n, i) => `<th class="${i === 0 ? "best" : ""}">${n}</th>`).join("")}</tr></thead><tbody>${T[0].rows.map((r, j) => `<tr><td>${r[0]}</td>${T.map((t, i) => `<td class="n${i === 0 ? " best" : ""}">${NF.format(t.rows[j][1])}</td>`).join("")}</tr>`).join("")}<tr class="tot"><td>Totale</td>${T.map((t, i) => `<td class="n${i === 0 ? " best" : ""}">${kc(t.tot)}<small>≈ ${eur(t.tot)}</small></td>`).join("")}</tr></tbody></table></div>
+  <p class="save-line">Con lo stile <b>Risparmio</b> spendi <b>${kc(T[2].tot - T[0].tot)}</b> in meno del turista medio (≈ ${eur(T[2].tot - T[0].tot)}).</p>
+  <div class="acts"><button class="btn sm" data-act="usebud" data-i="0">Usa ${kc(T[0].tot)} come budget</button><button class="btn sm ghost" data-act="usebud" data-i="1">Usa ${kc(T[1].tot)}</button></div>`;
+}
+
+/* ---- Muoversi ---- */
+function renderTransport() {
+  $("#tix").innerHTML = `<thead><tr><th>Biglietto</th><th class="n">App PID Lítačka</th><th class="n">Cartaceo</th><th class="n">SMS*</th></tr></thead><tbody>${TICKETS.map(t => `<tr><td>${t[0]}</td><td class="n best">${kc(t[1])}</td><td class="n">${kc(t[2])}</td><td class="n">${kc(t[3])}</td></tr>`).join("")}</tbody>`;
+  const r = Math.max(1, +S.tr.rides || 1), d = Math.max(1, +S.tr.days || 1); $("#trRides").value = r; $("#trDays").value = d;
+  const opts = [{n: `${r * d} biglietti da 30 min`, c: r * d * 36, p: r * d * 39}, {n: `${d} × biglietto 24 ore`, c: d * 140, p: d * 150}];
+  if (d >= 2) { const n72 = Math.floor(d / 3), rem = d % 3; const remC = Math.min(rem * 140, rem ? 340 : 0, rem * r * 36); opts.push({n: n72 ? `${n72} × 72 ore${rem ? " + " + rem + " giorn" + (rem > 1 ? "i" : "o") + " a parte" : ""}` : "1 × 72 ore", c: n72 ? n72 * 340 + remC : 340, p: n72 ? n72 * 350 + Math.min(rem * 150, rem ? 350 : 0, rem * r * 39) : 350}); }
+  opts.sort((a, b) => a.c - b.c); const b = opts[0];
+  $("#trOut").innerHTML = `<div class="verdict ok"><b>Ti conviene: ${esc(b.n)}</b><span>${kc(b.c)} ≈ ${eur(b.c)} in app (cartaceo ${kc(b.p)})</span></div><ul class="alts">${opts.slice(1).map(o => `<li>${esc(o.n)}: ${kc(o.c)} <small>(+${kc(o.c - b.c)})</small></li>`).join("")}</ul>`;
+}
+
+/* ---- SOS ---- */
+function renderSOS() {
+  $("#sosn").innerHTML = SOSN.map(s => `<a class="sosn" href="tel:${s[0]}"><b>${s[0]}</b><span>${esc(s[1])}</span></a>`).join("");
+  $("#help").innerHTML = HELP.map(h => `<article class="res"><div class="res-h"><h3>${esc(h.n)}</h3><p class="meta">${esc(h.a)}</p></div><p class="desc">${h.tel.map(t => `<a href="tel:${t[0]}">${esc(t[1])}</a>${t[2] ? " <small>(" + esc(t[2]) + ")</small>" : ""}`).join("<br>")}</p><p class="hours">${ico("i-clock")}${esc(h.h)}</p><div class="acts"><a class="btn sm" href="${dir(h.la, h.lo)}" target="_blank" rel="noopener">${ico("i-route")}Portami lì</a></div></article>`).join("");
+  $("#gold").innerHTML = GOLD.map(g => `<li><b>${esc(g[0])}</b><span>${esc(g[1])}</span></li>`).join("");
+  $("#phr").innerHTML = PHRASES.map(f => `<li><b>${esc(f[0])}</b><span>${esc(f[1])}</span><em>${esc(f[2])}</em></li>`).join("");
+  $("#gifts").innerHTML = GIFTS.map(g => `<li><span><b>${esc(g[0])}</b><small>${esc(g[3])}</small></span><em>${NF.format(g[1])}–${kc(g[2])}</em></li>`).join("");
+}
+
+/* ---- schede (tab) ---- */
+const TABS = ["esplora", "assistente", "portafoglio", "muoversi", "sos"];
+function setTab(t, push) {
+  if (!TABS.includes(t)) t = "esplora"; S.tab = t; document.body.dataset.tab = t;
+  TABS.forEach(x => { $("#pane-" + x).hidden = x !== t; const b = $(`#tabs [data-tab="${x}"]`); b.setAttribute("aria-selected", x === t); b.classList.toggle("on", x === t); });
+  if (push && location.hash !== "#" + t) location.hash = t;
+  if (t === "portafoglio") renderWallet(); if (t === "esplora") { renderExplore(false); Map3D.resize(); }
+  if (matchMedia("(max-width:979px)").matches) window.scrollTo(0, 0); else $(".panel").scrollTop = 0;
+}
+
+/* ---- avvio ---- */
+let started = false;
+function boot(data) {
+  if (started) return; started = true;
+  load(); if (data && data.loc) Object.assign(S, data);
+  if (!S.loc || !S.loc.la) S.loc = Object.assign({}, DEMO);
+  $("#pcItem").innerHTML = PRICES.map((p, i) => `<option value="${i}">${esc(p[0])}</option>`).join("");
+  $("#eCat").innerHTML = ECATS.map(e => `<option value="${e[0]}">${e[1]}</option>`).join("");
+  $("#rateTxt").textContent = NE.format(S.rate);
+  $("#oticks").innerHTML = Array.from({length: 24}, (_, i) => { const a = i * Math.PI / 12, r2 = i % 6 ? 44 : 46.5; return `<line x1="${(50 + 40.5 * Math.sin(a)).toFixed(2)}" y1="${(50 - 40.5 * Math.cos(a)).toFixed(2)}" x2="${(50 + r2 * Math.sin(a)).toFixed(2)}" y2="${(50 - r2 * Math.cos(a)).toFixed(2)}"/>`; }).join("");
+  Map3D.init($("#map"), $("#mapwrap"), $("#mapLabels"), {
+    pick: id => selectItem(id, false),
+    ground: (la, lo, x, y) => { const pop = $("#mapPop"), np = nearPlace(la, lo, 200); pop.dataset.la = la; pop.dataset.lo = lo; $("#popTxt").textContent = np ? "Vicino a " + np[0] : quarter(la, lo); pop.style.left = Math.min(Math.max(x, 110), $("#mapwrap").clientWidth - 110) + "px"; pop.style.top = Math.max(y, 90) + "px"; pop.hidden = false; },
+    bearing: th => { $("#hand").style.transform = `rotate(${(-th * 180 / Math.PI).toFixed(1)}deg)`; },
+    move: () => { $("#mapPop").hidden = true; $("#mapHint").classList.add("gone"); }
+  }, S.loc);
+  renderSign(); renderExplore(false); renderTransport(); renderSOS(); renderWallet();
+  if (!S.chat.length) { const q = "Ho fame, 200 corone, vicino al Ponte Carlo"; S.chat = [{me: 1, t: q}, {h: answer(q, true), ex: 1}]; }
+  renderChat();
+  setTab((location.hash || "").slice(1) || "esplora");
+  setTimeout(() => $("#mapHint").classList.add("gone"), 7000);
+
+  /* eventi */
+  window.addEventListener("hashchange", () => setTab(location.hash.slice(1)));
+  $("#tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) setTab(b.dataset.tab, true); });
+  const where = $("#where");
+  where.addEventListener("input", () => { const v = where.value.trim(); if (v.length < 2) { $("#sugg").hidden = true; return; } showSugg(findPlaces(v)); });
+  where.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); const l = findPlaces(where.value); if (l.length) choose(l[0]); else showSugg([]); } if (e.key === "Escape") $("#sugg").hidden = true; });
+  const choose = c => { setLoc({la: c.la, lo: c.lo, name: c.name, cz: c.cz || c.name, src: "search"}); where.value = ""; $("#sugg").hidden = true; where.blur(); if (c.poi) setTimeout(() => selectItem(c.poi, false), 60); };
+  $("#sugg").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) choose(showSugg.list[+b.dataset.i]); if (e.target.closest("#onlineBtn") && typeof onlineSearch === "function") onlineSearch(where.value); });
+  document.addEventListener("click", e => { if (!e.target.closest(".search")) $("#sugg").hidden = true; });
+  $("#gpsBtn").addEventListener("click", gps); $("#mloc").addEventListener("click", () => { if (S.loc.src === "gps" || S.loc.src === "demo") gps(); Map3D.flyTo(S.loc.la, S.loc.lo, 0.45); });
+  $("#budget").addEventListener("input", e => { const v = Math.max(0, Math.min(100000, Math.round(+e.target.value || 0))); S.budget = v; save(); renderExplore(false); });
+  $("#budChips").addEventListener("click", e => { const b = e.target.closest("[data-b]"); if (b) { S.budget = +b.dataset.b; save(); renderExplore(true); } });
+  $("#cats").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b) { S.cat = b.dataset.c; S.sel = null; save(); renderExplore(true); } });
+  $("#radius").addEventListener("click", e => { const b = e.target.closest("[data-r]"); if (b) { S.radius = +b.dataset.r; save(); renderExplore(true); } });
+  $("#onlyB").addEventListener("change", e => { S.onlyB = e.target.checked; save(); renderExplore(false); });
+  $("#sort").addEventListener("change", e => { S.sort = e.target.value; save(); renderExplore(false); });
+  $("#zin").addEventListener("click", () => Map3D.zoomBy(1.4)); $("#zout").addEventListener("click", () => Map3D.zoomBy(1 / 1.4));
+  $("#m3d").addEventListener("click", e => { const on = Map3D.toggle3d(); e.currentTarget.textContent = on ? "2D" : "3D"; e.currentTarget.setAttribute("aria-label", on ? "Vista dall’alto" : "Vista 3D"); });
+  $("#compass").addEventListener("click", () => Map3D.north());
+  $("#trapTog").addEventListener("click", () => { S.trapsOn = !S.trapsOn; save(); renderExplore(false); toast(S.trapsOn ? "Zone trappola visibili sulla mappa" : "Zone trappola nascoste"); });
+  $("#popSet").addEventListener("click", () => { const pop = $("#mapPop"), la = +pop.dataset.la, lo = +pop.dataset.lo, np = nearPlace(la, lo, 200); pop.hidden = true; setLoc({la, lo, name: np ? "Vicino a " + np[0] : "Punto scelto sulla mappa", cz: np ? np[1] : quarter(la, lo), src: "map"}); });
+  $("#popClose").addEventListener("click", () => { $("#mapPop").hidden = true; });
+  $("#ask").addEventListener("submit", e => { e.preventDefault(); const i = $("#q"); ask(i.value); i.value = ""; });
+  $("#suggQ").addEventListener("click", e => { const b = e.target.closest("[data-q]"); if (b) ask(b.dataset.q); });
+  $("#chatClear").addEventListener("click", () => { S.chat = []; save(); renderChat(); });
+  document.addEventListener("click", e => {
+    const a = e.target.closest("[data-act]"); if (!a) return; const act = a.dataset.act, id = a.dataset.id;
+    if (act === "map") selectItem(id, true);
+    else if (act === "show") { setTab("esplora", true); const p = byId(id); if (p && !p.c.includes(S.cat) && S.cat !== "all") { S.cat = p.c[0]; renderExplore(false); } setTimeout(() => selectItem(id, true), 80); }
+    else if (act === "goto") { const p = byId(id); if (p) { S.cat = p.c[0]; save(); renderExplore(false); setTimeout(() => selectItem(id, true), 60); } }
+    else if (act === "traps") { S.cat = "avoid"; save(); renderExplore(true); }
+    else if (act === "cat") { S.cat = a.dataset.c; save(); renderExplore(true); }
+    else if (act === "tab") setTab(a.dataset.tab, true);
+    else if (act === "ask") ask(a.dataset.q);
+    else if (act === "spend") { const p = byId(id); setTab("portafoglio", true); { const c0 = cost(p, S.cat); $("#eAmt").value = c0[0] || c0[1]; } $("#eNote").value = p.n; $("#eCat").value = {eat: "eat", see: "see", shop: "shop", fun: "fun", casino: "fun"}[p.c[0]] || "oth"; $("#eAmt").focus(); }
+    else if (act === "delexp") { S.wallet.items = S.wallet.items.filter(i => String(i.ts) !== a.dataset.ts); save(); renderWallet(); }
+    else if (act === "usebud") { S.wallet.total = estTotals()[+a.dataset.i].tot; S.wallet.days = S.est.days; save(); renderWallet(); toast("Budget del viaggio aggiornato"); $("#wTotal").scrollIntoView({behavior: RM ? "auto" : "smooth", block: "center"}); }
+  });
+  $("#wTotal").addEventListener("input", e => { S.wallet.total = Math.max(0, Math.round(+e.target.value || 0)); save(); renderWallet(); });
+  $("#wDays").addEventListener("input", e => { S.wallet.days = Math.max(1, Math.min(30, Math.round(+e.target.value || 1))); save(); renderWallet(); });
+  $("#addExp").addEventListener("submit", e => { e.preventDefault(); let a = parseFloat(String($("#eAmt").value).replace(",", ".")); if (!(a > 0)) { toast("Scrivi quanto hai speso"); return; } if ($("#eCur").value === "eur") a = a * S.rate; S.wallet.items.push({a: Math.round(a), c: $("#eCat").value, n: $("#eNote").value.trim(), ts: Date.now()}); $("#eAmt").value = ""; $("#eNote").value = ""; save(); renderWallet(); toast("Spesa registrata: " + kc(a)); });
+  const conv = from => { const k = $("#cKc"), e = $("#cEur"); if (from === "kc") { const v = parseFloat(String(k.value).replace(",", ".")); e.value = v >= 0 ? (v / S.rate).toFixed(2) : ""; } else { const v = parseFloat(String(e.value).replace(",", ".")); k.value = v >= 0 ? Math.round(v * S.rate) : ""; } };
+  $("#cKc").addEventListener("input", () => conv("kc")); $("#cEur").addEventListener("input", () => conv("eur"));
+  $("#pcItem").addEventListener("change", renderCheck); $("#pcPrice").addEventListener("input", renderCheck);
+  $("#xEur").addEventListener("input", renderX); $("#xKc").addEventListener("input", renderX);
+  ["esDays", "esNights"].forEach(id => $("#" + id).addEventListener("input", e => { S.est[id === "esDays" ? "days" : "nights"] = Math.max(id === "esDays" ? 1 : 0, Math.min(30, Math.round(+e.target.value || 0))); save(); renderEst(); }));
+  $("#esLunch").addEventListener("change", e => { S.est.lunch = e.target.checked; save(); renderEst(); });
+  $("#esDinner").addEventListener("change", e => { S.est.dinner = e.target.checked; save(); renderEst(); });
+  ["trRides", "trDays"].forEach(id => $("#" + id).addEventListener("input", e => { S.tr[id === "trRides" ? "rides" : "days"] = Math.max(1, Math.min(id === "trRides" ? 12 : 10, Math.round(+e.target.value || 1))); save(); renderTransport(); }));
+  const modal = $("#modal");
+  const openM = () => { $("#mRate").value = S.rate; modal.hidden = false; $("#mRate").focus(); };
+  $("#setBtn").addEventListener("click", openM); $("#rateBtn").addEventListener("click", openM);
+  $("#mClose").addEventListener("click", () => { modal.hidden = true; });
+  modal.addEventListener("click", e => { if (e.target === modal) modal.hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") modal.hidden = true; });
+  $("#mSave").addEventListener("click", () => { const v = parseFloat(String($("#mRate").value).replace(",", ".")); if (v > 10 && v < 40) { S.rate = v; save(); $("#rateTxt").textContent = NE.format(v); renderExplore(false); renderWallet(); toast("Tasso aggiornato: 1 € = " + NE.format(v) + " Kč"); modal.hidden = true; } else toast("Inserisci un tasso realistico, per esempio 24,3"); });
+  $("#mReset").addEventListener("click", e => { const b = e.currentTarget; if (!b.dataset.arm) { b.dataset.arm = 1; b.textContent = "Tocca di nuovo per cancellare tutto"; setTimeout(() => { delete b.dataset.arm; b.textContent = "Cancella spese e preferenze"; }, 4000); return; }
+    delete b.dataset.arm; b.textContent = "Cancella spese e preferenze"; try { localStorage.removeItem(KEY); } catch (er) {} stopWatch();
+    const d = JSON.parse(DEF); for (const k of Object.keys(d)) S[k] = d[k];
+    $("#rateTxt").textContent = NE.format(S.rate); renderSign(); renderExplore(true); renderWallet(); renderTransport(); renderChat(); modal.hidden = true; toast("Dati cancellati"); });
+}
+window.claude?.hot?.snapshot?.(() => S);
+window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? null);
+
+})();
+</script>
+</body>
+</html>
